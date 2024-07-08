@@ -1,4 +1,5 @@
 # BARIVARA WebApp
+[![Netlify Status](https://api.netlify.com/api/v1/badges/25c95ffa-7052-443c-b934-0b32c8d31ada/deploy-status)](https://app.netlify.com/sites/barivara-ab/deploys)
 
 ## This is ``Front-End`` for this app!
 
