@@ -1,0 +1,352 @@
+[
+    
+    {
+        "roomNo":5,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Sohaner MA",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":"Mango Tree (আমগাছ )",
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": false,
+        "leaseholder": [
+            
+           
+        ],
+        "rent": 0
+    },
+    {
+        "roomNo":6,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Ali hossain",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":9,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Rokonuzzaman",
+                "phoneNumber": "+8801653345388",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":7,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Rina",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":"Kitchen (Pani Meter)",
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+        ],
+        "rent": 0
+    },
+    {
+        "roomNo":8,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Kulsum",
+                "phoneNumber": "+8801926533333",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+
+
+
+
+
+
+
+
+
+
+    {
+        "roomNo":10,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Kulsum",
+                "phoneNumber": "+8801926533333",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":15,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": false,
+        "leaseholder": [
+            
+            {
+                "name": "Kulsum",
+                "phoneNumber": "+8801926533333",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":8,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Kulsum",
+                "phoneNumber": "+8801926533333",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":8,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Kulsum",
+                "phoneNumber": "+8801926533333",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":8,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Kulsum",
+                "phoneNumber": "+8801926533333",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":8,
+        "position": "",
+        "category": "Lal Gate(লাল গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Kulsum",
+                "phoneNumber": "+8801926533333",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 2800
+    },
+    {
+        "roomNo":12,
+        "position": "bottom",
+        "category": "Kechi Gate(কেচি গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+          
+            {
+                "name": "Rajib",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },
+            {
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 3200
+    },
+    {
+        "roomNo":13,
+        "position": "bottom",
+        "category": "Kechi Gate(কেচি গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+          
+            {
+                "name": "Rajib 2",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },
+            {
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 3200
+    },
+    {
+        "roomNo":14,
+        "position": "bottom",
+        "category": "Kechi Gate(কেচি গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            {
+                "name": "Abirer ma",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },
+            {
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+            
+        ],
+        "rent": 3200
+    },
+    {
+        "roomNo":15,
+        "position": "top",
+        "category": "Kechi Gate(কেচি গেইট)",
+        "hasMeter": true,
+        "leaseholder": [
+            
+            {
+                "name": "Pewpew",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-06-01T18:55:40.216Z"
+            },{
+                "name": "A",
+                "phoneNumber": "+8801726533453",
+                "rentFrom":"2024-03-01T18:55:40.216Z",
+                "rentTo":"2024-05-01T18:55:40.216Z"
+
+            }
+        ],
+        "rent": 1200
+    }
+]
