@@ -9,7 +9,7 @@ const ModalUniversal = ({ roomData }) => {
     <div className="text-black">
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button
-        className="btn btn-primary btn-xs mx-auto rounded-sm w-full"
+        className="btn btn-warning btn-xs mx-auto rounded-sm w-full"
         onClick={() => document.getElementById(roomNo).showModal()}
       >
         view

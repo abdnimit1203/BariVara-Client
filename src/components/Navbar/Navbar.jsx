@@ -84,9 +84,9 @@ const Navbar = () => {
           </div>
           
           
-          <div className="flex-1 px-2 mx-2 xl:ml-6">
-          <Link to={'/'}>
-          <img src="/logo.png" alt="BariVara logo" className="w-20" />
+          <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6  w-full">
+          <Link to={'/'} className="mx-auto">
+          <img src="/logo.png" alt="BariVara logo" className="w-20 mx-auto" />
           </Link>
         </div>
           <div className="flex-none hidden lg:block space-x-6">
@@ -100,7 +100,7 @@ const Navbar = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="menu p-4 w-80 min-h-full bg-neutral space-x-6">
+        <div className="menu p-4 w-80 min-h-full bg-neutral space-y-2 xl:space-x-6">
           {navlinks}
         </div>
       </div>
