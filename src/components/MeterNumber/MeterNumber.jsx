@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import HeaderText from "../../utils/HeaderText";
 import MeterForm from "../Forms/MeterForm";
-import axiosInstance from "../../utils/axiosConfig";
-import CompoWrapper from './../Wrapper/CompoWrapper';
+import { FcDisplay } from "react-icons/fc";
+import { FaEdit } from "react-icons/fa";
+import CompoWrapper from "../Wrapper/CompoWrapper";
+import useMonthlyMeterData from "../../hooks/useMonthlyMeterData";
+import useRooms from "../../hooks/useRooms";
+import Loader from "../../utils/Loader";
 
 const MeterNumber = () => {
   const now = new Date();
@@ -22,60 +26,112 @@ const MeterNumber = () => {
   ];
   const month = monthNames[now.getMonth()];
   const year = now.getFullYear();
-
-  console.log(`Current Month: ${month}`);
-  console.log(`Current Year: ${year}`);
+  const [selectedEndMonth, setSelectedEndMonth] = useState(month);
+  // console.log(`Current Month: ${month}`);
+  // console.log(`Current Year: ${year}`);
 
   // DATA FETCHING
+  const [rooms, isLoading, refetch] = useRooms();
+  // console.log(rooms);
+
+  const [monthlyData, isLoading2, refetch2] = useMonthlyMeterData(
+    selectedEndMonth,
+    year
+  );
+  console.log("monthlyData : ", monthlyData);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get("/rooms");
-        console.log(response.data); // Log data to console
-        setNewData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    if (selectedEndMonth) {
+      refetch2();
+    }
+  }, [refetch2, selectedEndMonth]);
+  const handleChange = (event) => {
+    setSelectedEndMonth(event.target.value);
+  };
 
-    fetchData();
-  }, []);
-  const [newData, setNewData] = useState([]);
-  console.log(newData);
   return (
     <CompoWrapper>
       <HeaderText
         title={"Insert Meter Number"}
         subTitle={`Current Month : ${month} , ${year}`}
       />
-      <div className="overflow-x-auto rounded-t-lg ">
-            <table
-              className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm"
-            //   ref={componentRef}
-            >
-              <thead className="ltr:text-left rtl:text-right bg-secondary text-white h-12">
-                <tr>
-                <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
-                   Room No
-                  </th>
-                <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
-                    Meter No
-                  </th>
-                 
-                </tr>
-              </thead>
+      <div className="flex justify-between  mb-2 gap-2">
+        <p className="border w-fit p-2 rounded-full m-2">
+          Meter inserted: {monthlyData[0]?.meterReadings?.length} / 15
+        </p>
+        <select
+          id="month"
+          value={selectedEndMonth}
+          onChange={handleChange}
+          className="border-2 border-secondary rounded-lg p-2"
+        >
+          <option value="">--Select End of Month</option>
+          {monthNames.map((item, index) => (
+            <option key={index} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
 
-              <tbody className="divide-y divide-gray-200">
-      {newData.map((item, index) => (
-         <tr key={index} className="h-12 odd:bg-[#f8f8f8]">
-            <td className="pl-2 font-semibold" >Room No : {item.roomNo} <br />Name: {item.leaseholder[0].name}</td>
-            <td className="">  <MeterForm roomData={item} month={month} year={year} /></td >
-        
-        </tr>
-      ))}
-      </tbody>
-      </table>
+      <div className="overflow-x-auto rounded-t-lg ">
+        <table
+          className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm"
+          //   ref={componentRef}
+        >
+          <thead className="ltr:text-left rtl:text-right bg-secondary text-white h-12">
+            <tr>
+              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
+                Room No
+              </th>
+              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
+                Meter No
+              </th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-gray-200 ">
+            {isLoading && <Loader/>}
+            {rooms
+              .filter((data) => data.hasMeter === true)
+              .map((item, index) => {
+                const meterReading = monthlyData[0]?.meterReadings?.find(
+                  (item2) => item2.roomNo === item.roomNo
+                );
+                return (
+                  <tr key={index} className="h-12 odd:bg-[#f8f8f8] ">
+                    <td className="p-3 font-semibold leading-relaxed">
+                      Room No :{" "}
+                      <span className="text-white bg-primary p-1 rounded-full">
+                        {item?.roomNo}
+                      </span>{" "}
+                      <br />
+                      Name: {item?.leaseholder[0]?.name}
+                    </td>
+                    <td className="font-semibold text-center border-l-2 ">
+                      {meterReading ? (
+                        <span className="flex justify-center items-center  gap-2">
+                          <FcDisplay className="inline text-xl border pb-1 border-b-2 border-primary" />
+
+                          {meterReading.meterNumber}
+                          <FaEdit className="inline text-xl text-secondary ml-6"/>
+
+                        </span>
+                      ) : (
+                        <MeterForm
+                          roomData={item}
+                          month={selectedEndMonth}
+                          year={year}
+                          refetch={refetch}
+                          refetch2={refetch2}
+                        />
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
       </div>
     </CompoWrapper>
   );

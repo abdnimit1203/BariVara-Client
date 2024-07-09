@@ -4,8 +4,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 import axiosInstance from "../../utils/axiosConfig";
 
-const MeterForm = ({ roomData,month,year }) => {
-    
+
+const MeterForm = ({ roomData, month, year,refetch,refetch2 }) => {
+
+ 
   const {
     register,
     handleSubmit,
@@ -16,33 +18,40 @@ const MeterForm = ({ roomData,month,year }) => {
     const formData = {
       ...data,
       meterNumber: parseFloat(parseFloat(data.meterNumber).toFixed(2)),
-      roomNo:roomData.roomNo,
-      month:month,
-      year:year
-
+      roomNo: roomData.roomNo,
+      month: month,
+      year: year,
     };
+    if (month === '') {
+      toast.error("Please Select a valid Month!")
+    }else{
 
-    console.log("Form Data:", formData);
-console.log(roomData)
-    axiosInstance
-      .post("/monthlyData", formData)
-      .then((res) => {
-        console.log("New meter Data : ", res.data);
-        toast.success("meter data submitted!");
-        // setRefetch(!refetch)
-        reset();
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error.response.data);
-        // toast.error("Opps! something went wrong!");
-        toast.error(error.response.data);
-      });
+      console.log("Form Data:", formData);
+      console.log(roomData);
+      axiosInstance
+        .post("/monthlyData", formData)
+        .then((res) => {
+          console.log("New meter Data : ", res.data);
+          toast.success("meter data submitted!");
+          // setRefetch(!refetch)
+          reset();
+          refetch2()
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error.response.data);
+          // toast.error("Opps! something went wrong!");
+          toast.error(error.response.data);
+        });
+    }
   };
 
   return (
-    <div className="bg-white pb-8">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex px-2 justify-center items-center gap-4">
+    <div >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex px-2 justify-center items-center gap-4"
+      >
         <div>
           <input
             id="meterNumber"
