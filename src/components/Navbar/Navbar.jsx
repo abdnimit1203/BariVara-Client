@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { FcDisplay } from "react-icons/fc";
+import { FaHouseChimneyUser,FaMoneyBill  } from 'react-icons/fa6';
 
 const Navbar = () => {
   const navlinks = (
@@ -14,7 +15,7 @@ const Navbar = () => {
             : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
         }
       >
-        Home
+      <FaHouseChimneyUser className="md:hidden inline text-xl mr-3"/>  Home
       </NavLink>
       <NavLink
         to="/meterNumber"
@@ -28,6 +29,19 @@ const Navbar = () => {
       >
        <FcDisplay className="md:hidden inline text-xl mr-3"/>
        Meter Number
+      </NavLink>
+      <NavLink
+        to="/monthlyBills"
+        className={({ isActive, isPending }) =>
+          isPending
+            ? "pending"
+            : isActive
+            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
+            : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
+        }
+      >
+       <FaMoneyBill  className="md:hidden inline text-xl mr-3 text-green-400 "/>
+       Monthly Bills
       </NavLink>
       <NavLink
         to="/login"
@@ -100,7 +114,10 @@ const Navbar = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="menu p-4 w-80 min-h-full bg-neutral space-y-2 xl:space-x-6">
+        <div className="menu p-4 w-80 min-h-full bg-neutral space-y-4 xl:space-x-6 justify-center ">
+        <Link to={'/'} className="mx-auto">
+          <img src="/logo.png" alt="BariVara logo" className="w-20 mx-auto mb-10 animate-wave border-b-2" />
+          </Link>
           {navlinks}
         </div>
       </div>

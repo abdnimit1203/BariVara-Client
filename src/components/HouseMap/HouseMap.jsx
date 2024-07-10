@@ -17,9 +17,9 @@ const HouseMap = () => {
           <Loader />
         </div>
       ) : (
-        <div className="text-white">
+        <div className="text-white bg-gray-100 mb-6">
           {/* There is a navigator compass on bottom left . This is  */}
-
+          
           {/* Tin Shed(টিনশেড) MAP AREA STARTS */}
           <section>
             <div>
@@ -28,14 +28,18 @@ const HouseMap = () => {
                 alt="Tin Shade"
                 className="mt-1 rounded-t-2xl"
               />
-              <h3 className="bg-sky-700 text-center font-semibold  text-lg uppercase mb-2 ">
+              <h3 className="bg-sky-700 text-center font-semibold  text-lg uppercase  ">
                 Tin Shed(টিনশেড)
               </h3>
             </div>
             {/* Divider image portion starts */}
-
-            <div className="grid grid-cols-2 gap-2">
-              <div className="space-y-2">
+            <div className="flex items-center flex-col">
+            <div className="bg-sky-200 w-[16%] h-4 border-2 border-sky-300"></div>
+            <div className="bg-sky-200 w-[14%] h-4 border-2 border-sky-300"></div>
+            <div className="bg-sky-200 w-[12%] h-4 border-2 border-sky-300"></div>
+          </div>
+            <div className="grid grid-cols-5 gap-2">
+              <div className="space-y-2 col-span-2">
                 {rooms
                   .filter(
                     (room) =>
@@ -58,7 +62,10 @@ const HouseMap = () => {
                     </div>
                   ))}
               </div>
-              <div className="space-y-2">
+              <div className="h-full bg-sky-950 relative">
+                  <span className="w-2 h-full left-[45%] border-dotted border-2 absolute"></span>
+              </div>
+              <div className="space-y-2 col-span-2">
                 {rooms
                   .filter(
                     (room) =>

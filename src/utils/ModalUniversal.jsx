@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 
+import { FaEdit } from "react-icons/fa";
 import ClipboardButton from "./ClipboardButton";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const ModalUniversal = ({ roomData }) => {
-  const { roomNo, category, leaseholder, rent } = roomData;
+  console.log("Single Room = ", roomData);
+  const {_id, roomNo,position, category, leaseholder, rent } = roomData;
   return (
     <div className="text-black">
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
@@ -29,6 +32,11 @@ const ModalUniversal = ({ roomData }) => {
             <h4 className="font-bold text-xl text-center  p-2 border-blue-500">
               ভাড়া : {rent}
             </h4>
+            <div className="flex justify-end items-center gap-2 text-red-700  ">
+              <Link to={`/singleroom/${_id}`} className="btn btn-error text-white mx-auto">
+                <FaEdit className="inline" /> GO TO EDIT PAGE
+              </Link>
+            </div>
             <div className="overflow-x-auto">
               <table className="table table-zebra">
                 {/* head */}
@@ -43,6 +51,10 @@ const ModalUniversal = ({ roomData }) => {
                   <tr>
                     <td className="bg-blue-100">লোকেশন </td>
                     <td>{category}</td>
+                  </tr>
+                  <tr>
+                    <td className="bg-blue-100">সাইড  </td>
+                    <td>{position}</td>
                   </tr>
                   {/* row 2 */}
                   <tr>
@@ -90,67 +102,63 @@ const ModalUniversal = ({ roomData }) => {
                 </tbody>
               </table>
               <div className="collapse ">
-                <input type="checkbox"  className="peer" />
+                <input type="checkbox" className="peer" />
                 <div className="collapse-title text-center text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content ">
                   View More
                 </div>
                 <div className="collapse-content focus:bg-secondary focus:text-secondary">
-                {
-                                leaseholder?.map((item,index)=>( <table key={index} className="table">
-                                    <thead>
-                                      <tr>
-                                        <th></th>
-                                        <th></th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                               
-                                      <tr>
-                                        <td className="bg-blue-100">ভাড়াটিয়া </td>
-                                        <td>{item?.name}</td>
-                                      </tr>
-                                      {/* row 3 */}
-                                      <tr>
-                                        <td className="bg-blue-100">ফোন নম্বর </td>
-                                        <td className="flex justify-between">
-                                          {item?.phoneNumber}{" "}
-                                          <ClipboardButton
-                                            textToCopy={item?.phoneNumber}
-                                          />
-                                        </td>
-                                      </tr>
-                                      {/* row 4 */}
-                                      <tr>
-                                        <td className="bg-blue-100">আগমন </td>
-                                        <td>
-                                          {new Date(item?.rentFrom).toLocaleDateString(
-                                            "en-US",
-                                            {
-                                              month: "long",
-                                              year: "numeric",
-                                            }
-                                          )}
-                                        </td>
-                                      </tr>
-                                      {/* row 5 */}
-                                      <tr>
-                                        <td className="bg-blue-100">বিদায় </td>
-                                        <td>
-                                          {item?.rentTo
-                                            ? new Date(item?.rentTo).toLocaleDateString(
-                                                "en-US",
-                                                {
-                                                  month: "long",
-                                                  year: "numeric",
-                                                }
-                                              )
-                                            : "Present..."}
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                    </table>))
-                            }
-               
+                  {leaseholder?.map((item, index) => (
+                    <table key={index} className="table">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td className="bg-blue-100">ভাড়াটিয়া </td>
+                          <td>{item?.name}</td>
+                        </tr>
+                        {/* row 3 */}
+                        <tr>
+                          <td className="bg-blue-100">ফোন নম্বর </td>
+                          <td className="flex justify-between">
+                            {item?.phoneNumber}{" "}
+                            <ClipboardButton textToCopy={item?.phoneNumber} />
+                          </td>
+                        </tr>
+                        {/* row 4 */}
+                        <tr>
+                          <td className="bg-blue-100">আগমন </td>
+                          <td>
+                            {new Date(item?.rentFrom).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}
+                          </td>
+                        </tr>
+                        {/* row 5 */}
+                        <tr>
+                          <td className="bg-blue-100">বিদায় </td>
+                          <td>
+                            {item?.rentTo
+                              ? new Date(item?.rentTo).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    month: "long",
+                                    year: "numeric",
+                                  }
+                                )
+                              : "Present..."}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ))}
                 </div>
               </div>
             </div>

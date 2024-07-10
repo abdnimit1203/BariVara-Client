@@ -47,7 +47,7 @@ const MeterForm = ({ roomData, month, year,refetch,refetch2 }) => {
   };
 
   return (
-    <div >
+    
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex px-2 justify-center items-center gap-4"
@@ -74,7 +74,7 @@ const MeterForm = ({ roomData, month, year,refetch,refetch2 }) => {
           Submit
         </button>
       </form>
-    </div>
+  
   );
 };
 

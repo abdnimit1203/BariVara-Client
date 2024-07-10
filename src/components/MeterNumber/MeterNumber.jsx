@@ -55,17 +55,17 @@ const MeterNumber = () => {
         title={"Insert Meter Number"}
         subTitle={`Current Month : ${month} , ${year}`}
       />
-      <div className="flex justify-between  mb-2 gap-2">
-        <p className="border w-fit p-2 rounded-full m-2">
+      <div className="grid grid-cols-3 pb-2">
+        <p className="border w-fit p-2 rounded-full m-2 col-span-2">
           Meter inserted: {monthlyData[0]?.meterReadings?.length} / 15
         </p>
         <select
           id="month"
           value={selectedEndMonth}
           onChange={handleChange}
-          className="border-2 border-secondary rounded-lg p-2"
+          className="border-2 border-secondary rounded-lg p-2 "
         >
-          <option value="">--Select End of Month</option>
+          <option value="">--Select current month</option>
           {monthNames.map((item, index) => (
             <option key={index} value={item}>
               {item}
