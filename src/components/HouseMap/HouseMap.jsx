@@ -13,11 +13,11 @@ const HouseMap = () => {
   return (
     <CompoWrapper>
       {isLoading ? (
-        <div className="flex  items-center justify-center min-h-[calc(100vh-250px)]">
+        <div className="flex  items-center justify-center min-h-[calc(100vh-250px)] ">
           <Loader />
         </div>
       ) : (
-        <div className="text-white bg-gray-100 mb-6">
+        <div className="text-white bg-gray-100 mb-6 ">
           {/* There is a navigator compass on bottom left . This is  */}
           
           {/* Tin Shed(টিনশেড) MAP AREA STARTS */}

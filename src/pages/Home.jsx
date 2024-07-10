@@ -3,10 +3,10 @@ import HeaderText from "../utils/HeaderText";
 
 const Home = () => {
   return (
-    <div>
+    <div className="max-w-[500px] mx-auto">
       <HeaderText
-        title={"Nureja Villa"}
-        subTitle={"Holding:32 , Syed Ali munsi Road"}
+        title={"NURAJA BEGUM"}
+        subTitle={"Holding:31 , Syed Ali munsi Road"}
       />
     
         <h2 className="text-xl text-center font-bold">MAP</h2>
