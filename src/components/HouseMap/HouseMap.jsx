@@ -158,7 +158,7 @@ const HouseMap = () => {
                     </div>
                   ))}
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 ">
                 {rooms
                   .filter(
                     (room) =>
@@ -168,7 +168,7 @@ const HouseMap = () => {
                   .map((item, index) => (
                     <div
                       key={index}
-                      className="bg-rose-700 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center "
+                      className="bg-rose-700 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center"
                     >
                       <div className="flex-center gap-2 font-semibold">
                         <FaHouseChimneyUser className="flex-center" />

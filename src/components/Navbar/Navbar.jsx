@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { FcDisplay } from "react-icons/fc";
-import { FaHouseChimneyUser,FaMoneyBill  } from 'react-icons/fa6';
+import { FaHouseChimneyUser, FaMoneyBill } from "react-icons/fa6";
 
 const Navbar = () => {
   const navlinks = (
@@ -15,7 +15,7 @@ const Navbar = () => {
             : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
         }
       >
-      <FaHouseChimneyUser className="md:hidden inline text-xl mr-3"/>  Home
+        <FaHouseChimneyUser className="md:hidden inline text-xl mr-3" /> Home
       </NavLink>
       <NavLink
         to="/meterNumber"
@@ -27,8 +27,8 @@ const Navbar = () => {
             : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
         }
       >
-       <FcDisplay className="md:hidden inline text-xl mr-3"/>
-       Meter Number
+        <FcDisplay className="md:hidden inline text-xl mr-3" />
+        Meter Number
       </NavLink>
       <NavLink
         to="/monthlyBills"
@@ -40,8 +40,8 @@ const Navbar = () => {
             : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
         }
       >
-       <FaMoneyBill  className="md:hidden inline text-xl mr-3 text-green-400 "/>
-       Monthly Bills
+        <FaMoneyBill className="md:hidden inline text-xl mr-3 text-green-400 " />
+        Monthly Bills
       </NavLink>
       <NavLink
         to="/login"
@@ -96,13 +96,17 @@ const Navbar = () => {
               </svg>
             </label>
           </div>
+
+          <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6 w-full lg:ml-0">
           
-          
-          <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6  w-full -ml-10 lg:ml-0">
-          <Link to={'/'} className="mx-auto">
-          <img src="/logo.png" alt="BariVara logo" className="w-20 mx-auto" />
-          </Link>
-        </div>
+            <Link to={"/"} className="mx-auto">
+              <img
+                src="/logo.png"
+                alt="BariVara logo"
+                className="w-20 -ml-5"
+              />
+            </Link>
+          </div>
           <div className="flex-none hidden lg:block space-x-6">
             <div className="menu menu-horizontal space-x-3">{navlinks}</div>
           </div>
@@ -115,8 +119,12 @@ const Navbar = () => {
           className="drawer-overlay"
         ></label>
         <div className="menu p-4 w-80 min-h-full bg-neutral space-y-4 xl:space-x-6 justify-center ">
-        <Link to={'/'} className="mx-auto">
-          <img src="/logo.png" alt="BariVara logo" className="w-20 mx-auto mb-10 animate-wave border-b-2" />
+          <Link to={"/"} className="mx-auto">
+            <img
+              src="/logo.png"
+              alt="BariVara logo"
+              className="w-20 mx-auto mb-10 animate-wave border-b-2"
+            />
           </Link>
           {navlinks}
         </div>
