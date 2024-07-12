@@ -98,7 +98,7 @@ const Navbar = () => {
           </div>
           
           
-          <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6  w-full">
+          <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6  w-full -ml-10 lg:ml-0">
           <Link to={'/'} className="mx-auto">
           <img src="/logo.png" alt="BariVara logo" className="w-20 mx-auto" />
           </Link>
