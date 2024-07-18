@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="max-w-[500px] mx-auto">
       <HeaderText
-        title={"NURAJA BEGUM"}
+        title={"নুরেজা ভিলা"}
         subTitle={"Holding:31 , Syed Ali munsi Road"}
       />
 

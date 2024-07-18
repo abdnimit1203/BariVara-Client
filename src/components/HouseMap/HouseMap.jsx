@@ -128,7 +128,7 @@ const HouseMap = () => {
                           : item.roomNo === "Mango Tree (আমগাছ)"
                           ? "bg-lime-500"
                           : "bg-rose-700"
-                      } shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center`}
+                      } shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center h-20`}
                     >
                       <div className="flex-center gap-2 font-semibold">
                         {item.roomNo === "WashRoom" ? (
@@ -141,7 +141,7 @@ const HouseMap = () => {
                           <FaHouseChimneyUser className="flex-center" />
                         )}
 
-                        <span>
+                        <span className="text-sm">
                           {isNumericKey(item.roomNo)
                             ? `Room : ${item.roomNo}`
                             : `${item.roomNo}`}
@@ -168,7 +168,7 @@ const HouseMap = () => {
                   .map((item, index) => (
                     <div
                       key={index}
-                      className="bg-rose-700 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center"
+                      className="bg-rose-700 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center h-20"
                     >
                       <div className="flex-center gap-2 font-semibold">
                         <FaHouseChimneyUser className="flex-center" />

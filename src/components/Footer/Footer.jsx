@@ -15,7 +15,7 @@ const Footer = () => {
         <Link
           to={"https://abdullah-portfolio-frontend.netlify.app/"}
           target="__blank"
-          className="font-semibold text-secondary"
+          className="font-semibold text-primary"
         >
           ABD NIMIT
         </Link>{" "}
@@ -24,16 +24,16 @@ const Footer = () => {
       
       <div className="flex gap-2 text-xl ">
        
-        <Link to={'https://www.facebook.com/abd.nimit'} target="__blank" className="hover:text-secondary ">
+        <Link to={'https://www.facebook.com/abd.nimit'} target="__blank" className="hover:text-primary ">
           <FaFacebook />
         </Link>
-        <Link to={'https://www.instagram.com/abd_nimit'} target="__blank" className="hover:text-secondary ">
+        <Link to={'https://www.instagram.com/abd_nimit'} target="__blank" className="hover:text-primary ">
           <FaInstagram />
         </Link>
-        <Link to={'https://github.com/abdnimit1203'} target="__blank" className="hover:text-secondary ">
+        <Link to={'https://github.com/abdnimit1203'} target="__blank" className="hover:text-primary ">
           <FaGithub />
         </Link>
-        <Link to={'https://www.linkedin.com/in/abdullah-ibne-ali'} target="__blank" className="hover:text-secondary ">
+        <Link to={'https://www.linkedin.com/in/abdullah-ibne-ali'} target="__blank" className="hover:text-primary ">
           <FaLinkedin />
         </Link>
       </div>

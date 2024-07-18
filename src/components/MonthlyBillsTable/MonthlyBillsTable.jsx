@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import HeaderText from "../../utils/HeaderText";
-import MeterForm from "../Forms/MeterForm";
 import { FaEdit } from "react-icons/fa";
 import { FaSackDollar } from "react-icons/fa6";
 import CompoWrapper from "../Wrapper/CompoWrapper";
@@ -10,6 +9,7 @@ import Loader from "../../utils/Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getMonth, getYear } from "date-fns";
+import BillCalculations from "../BillCalculations/BillCalculations";
 
 const MonthlyBillsTable = () => {
   const now = new Date();
@@ -28,59 +28,62 @@ const MonthlyBillsTable = () => {
     "December",
   ];
 
-  //Give previous month name
-  const getPreviousMonth = (month) => {
+  const month = monthNames[now.getMonth()];
+  const year = now.getFullYear();
+
+  // Function for getting next month name
+  const getNextMonth = (month) => {
     const index = monthNames.indexOf(month);
     if (index === -1) {
       return "Invalid month name";
     }
-    // If the index is 0 (January), return the last month (December)
-    const previousIndex = (index - 1 + monthNames.length) % monthNames.length;
-    return monthNames[previousIndex];
+    const nextIndex = (index + 1) % monthNames.length;
+    return monthNames[nextIndex];
   };
-  const month = monthNames[now.getMonth()];
-  const year = now.getFullYear();
 
   // Month Year Selector
-
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedYear, setSelectedYear] = useState(getYear(selectedDate));
   const [selectedMonth, setSelectedMonth] = useState(
     monthNames[getMonth(selectedDate)]
   );
+  const [nextMonth, setNextMonth] = useState(
+    getNextMonth(monthNames[getMonth(selectedDate)])
+  );
+  const [waterMeter, setWaterMeter] = useState(0)
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setSelectedYear(getYear(date));
     setSelectedMonth(monthNames[getMonth(date)]);
-    const prevMonth = getPreviousMonth(monthNames[getMonth(date)]);
-    setPreviousMonth(prevMonth);
+    setNextMonth(getNextMonth(monthNames[getMonth(date)]));
   };
 
-  const [previousMonth, setPreviousMonth] = useState(getPreviousMonth(month));
-  // console.log(`Current Month: ${month}`);
-  // console.log(`Current Year: ${year}`);
-
   // DATA FETCHING
+
+  // Room data
   const [rooms, isLoading, refetch] = useRooms();
 
+  // Selected month data
   const [selectedMonthsData, isLoading2, refetch2] = useMonthlyMeterData(
     selectedMonth,
     selectedYear
   );
-  console.log("selectedMonthsData : ", selectedMonthsData);
-  const [previousMonthsData, isLoading3, refetch3] = useMonthlyMeterData(
-    previousMonth,
+
+  // Next month data
+  const [nextMonthsData, isLoading3, refetch3] = useMonthlyMeterData(
+    nextMonth,
     selectedYear
   );
-  console.log("previousMonthsData : ", previousMonthsData);
 
-  useEffect(() => {
-    if (selectedMonth) {
-      refetch2();
-      refetch3();
-    }
-  }, [refetch2, refetch3, selectedMonth]);
+  // const prevWater = selectedMonthsData[0]?.meterReadings.find(
+  //   (item) => item.roomNo === "Water Meter (পানি)"
+  // );
+  // const nextWater = nextMonthsData[0]?.meterReadings.find(
+  //   (item) => item.roomNo === "Water Meter (পানি)"
+  // );
+  // console.log("NEXT ==",nextWater.meterNumber - prevWater.meterNumber)
+  
 
   return (
     <CompoWrapper>
@@ -88,80 +91,88 @@ const MonthlyBillsTable = () => {
         title={"💵 Monthly Bill Page"}
         subTitle={`Current Month : ${month} , ${year}`}
       />
-      <div>
-        <div>
-          <p>Selected Month: {selectedMonth}</p>
-          <p>Selected Year: {selectedYear}</p>
-        </div>
-      </div>
-      <div className="flex gap-2  w-[100%] p-2 items-center font-semibold">
-        <p>Current Month : </p>
+
+      <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
+        <p>BILLING MONTH :</p>
         <DatePicker
           selected={selectedDate}
           onChange={handleDateChange}
           dateFormat="MMMM yyyy"
           showMonthYearPicker
-          className="border-primary border-2 w-[80%] p-2 rounded-full font-semibold text-primary "
+          className="border-primary border-2 w-[80%] p-2 rounded-full font-semibold text-primary focus:outline-sky-600"
         />
       </div>
-      <div className=" pb-2 drop-shadow-xl">
-        <p className="border w-fit p-2 rounded-full m-2 col-span-2 font-semibold ">
-          BILLING MONTH:{" "}
-          <span className="font-semibold bg-primary p-2 rounded-full text-white drop-shadow-xl">
-            {previousMonth}
-          </span>
-        </p>
+
+      <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
+        <p>NEXT MONTH :</p>
+        {nextMonth}
       </div>
 
-      <div className="overflow-x-auto rounded-t-lg ">
-        <table
-          className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm"
-          //   ref={componentRef}
-        >
+      <div className="overflow-x-auto rounded-t-lg">
+        <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="ltr:text-left rtl:text-right bg-secondary text-white h-12">
             <tr>
-              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
+              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
                 Room No
               </th>
-              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
-                Meter No
+              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
+                Selected Month Bill
+              </th>
+              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
+                Next Month Bill
               </th>
             </tr>
           </thead>
-
-          <tbody className="divide-y divide-gray-200 ">
+          <tbody className="divide-y divide-gray-200">
             {isLoading && <Loader />}
             {rooms
-              .filter((data) => data.hasMeter === true)
+              .filter(
+                (data) =>
+                  Number.isInteger(data.roomNo) === true ||
+                  data.roomNo === "Water Meter (পানি)"
+              )
               .map((item, index) => {
-                const meterReading = selectedMonthsData[0]?.meterReadings?.find(
+                const selectedMonthReading =
+                  selectedMonthsData[0]?.meterReadings?.find(
+                    (item2) => item2.roomNo === item.roomNo
+                  );
+                const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );
                 return (
-                  <tr key={index} className="h-12 odd:bg-[#f8f8f8] ">
+                  <tr key={index} className="h-12 odd:bg-[#f8f8f8]">
                     <td className="p-3 font-semibold leading-relaxed">
-                      Room No :{" "}
+                      Room No:{" "}
                       <span className="text-white bg-primary p-1 rounded-full">
                         {item?.roomNo}
                       </span>{" "}
                       <br />
                       Name: {item?.leaseholder[0]?.name}
                     </td>
-                    <td className="font-semibold text-center border-l-2 ">
-                      {meterReading ? (
-                        <span className="flex justify-center items-center  gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
-                          <FaSackDollar className="inline text-xl text-secondary " />
-                          {meterReading.meterNumber} টাকা
+                    <td className="font-semibold text-center border-l-2">
+                      {selectedMonthReading && nextMonthReading ? (
+                        // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
+                        //   <FaSackDollar className="inline text-xl text-secondary" />
+                        //   {selectedMonthReading.meterNumber}
+                        //   <FaEdit className="inline text-xl text-secondary ml-6" />
+                        // </span>
+                        <BillCalculations
+                          billingMonthMeter={selectedMonthReading}
+                          nextMonthMeter={nextMonthReading}
+                        />
+                      ) : (
+                        <p>Data missing</p>
+                      )}
+                    </td>
+                    <td className="font-semibold text-center border-l-2">
+                      {nextMonthReading ? (
+                        <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
+                          <FaSackDollar className="inline text-xl text-secondary" />
+                          {nextMonthReading.meterNumber}
                           <FaEdit className="inline text-xl text-secondary ml-6" />
                         </span>
                       ) : (
-                        <MeterForm
-                          roomData={item}
-                          month={selectedMonth}
-                          year={year}
-                          refetch={refetch}
-                          refetch2={refetch2}
-                        />
+                        <p>Data missing</p>
                       )}
                     </td>
                   </tr>
