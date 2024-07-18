@@ -34,6 +34,8 @@ const BillCalculations = ({ billingMonthMeter, nextMonthMeter }) => {
     room?.rent;
 
   console.log("BILLING ROOMS : ", room);
+
+  
   return (
     <div className="flex flex-col justify-center ">
       <div className="">

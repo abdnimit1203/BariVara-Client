@@ -50,7 +50,7 @@ const MonthlyBillsTable = () => {
   const [nextMonth, setNextMonth] = useState(
     getNextMonth(monthNames[getMonth(selectedDate)])
   );
-  const [waterMeter, setWaterMeter] = useState(0)
+  const [waterMeter, setWaterMeter] = useState(0);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -83,7 +83,6 @@ const MonthlyBillsTable = () => {
   //   (item) => item.roomNo === "Water Meter (পানি)"
   // );
   // console.log("NEXT ==",nextWater.meterNumber - prevWater.meterNumber)
-  
 
   return (
     <CompoWrapper>
@@ -116,14 +115,11 @@ const MonthlyBillsTable = () => {
                 Room No
               </th>
               <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
-                Selected Month Bill
-              </th>
-              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
-                Next Month Bill
+                Total Bill
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y-2 divide-gray-200">
             {isLoading && <Loader />}
             {rooms
               .filter(
@@ -140,7 +136,7 @@ const MonthlyBillsTable = () => {
                   (item2) => item2.roomNo === item.roomNo
                 );
                 return (
-                  <tr key={index} className="h-12 odd:bg-[#f8f8f8]">
+                  <tr key={index} className="h-12  odd:bg-[#f8f8f8]">
                     <td className="p-3 font-semibold leading-relaxed">
                       Room No:{" "}
                       <span className="text-white bg-primary p-1 rounded-full">
@@ -149,7 +145,7 @@ const MonthlyBillsTable = () => {
                       <br />
                       Name: {item?.leaseholder[0]?.name}
                     </td>
-                    <td className="font-semibold text-center border-l-2">
+                    <td className="font-semibold text-center border-l-2 w-[35%]">
                       {selectedMonthReading && nextMonthReading ? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
                         //   <FaSackDollar className="inline text-xl text-secondary" />
@@ -160,17 +156,6 @@ const MonthlyBillsTable = () => {
                           billingMonthMeter={selectedMonthReading}
                           nextMonthMeter={nextMonthReading}
                         />
-                      ) : (
-                        <p>Data missing</p>
-                      )}
-                    </td>
-                    <td className="font-semibold text-center border-l-2">
-                      {nextMonthReading ? (
-                        <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
-                          <FaSackDollar className="inline text-xl text-secondary" />
-                          {nextMonthReading.meterNumber}
-                          <FaEdit className="inline text-xl text-secondary ml-6" />
-                        </span>
                       ) : (
                         <p>Data missing</p>
                       )}
