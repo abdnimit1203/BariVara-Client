@@ -15,7 +15,7 @@ const BillCalculations = ({ billingMonthMeter, nextMonthMeter }) => {
     setIsModalOpen(false);
   };
 
-  console.log("BILL CALLCULATION DATA LIST", billingMonthMeter, nextMonthMeter);
+  console.log("BILL CALCULATION DATA LIST", billingMonthMeter, nextMonthMeter);
   //   if(billingMonthMeter.roomNo ==="Water Meter (পানি)"){
   //     setWaterMeter(9)
   //     console.log(waterMeter)

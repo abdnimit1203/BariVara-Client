@@ -45,7 +45,7 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Tin Shed(টিনশেড)" &&
                       room.position === "right"
-                  )
+                  ).sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}
@@ -71,7 +71,7 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Tin Shed(টিনশেড)" &&
                       room.position === "left"
-                  )
+                  ).sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}
@@ -116,8 +116,7 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Lal Gate(লাল গেইট)" &&
                       room.position === "right"
-                  )
-                  .map((item, index) => (
+                  ).sort((a, b) => a.roomNo - b.roomNo).map((item, index) => (
                     <div
                       key={index}
                       className={`${
@@ -164,7 +163,7 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Lal Gate(লাল গেইট)" &&
                       room.position === "left"
-                  )
+                  ).sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}
@@ -208,8 +207,7 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Kechi Gate(কেচি গেইট)" &&
                       room.position === "top"
-                  )
-                  .map((item, index) => (
+                  ).sort((a, b) => a.roomNo - b.roomNo).map((item, index) => (
                     <div
                       key={index}
                       className="bg-amber-800 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center w-1/3 "
@@ -231,7 +229,7 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Kechi Gate(কেচি গেইট)" &&
                       room.position === "bottom"
-                  )
+                  ).sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}

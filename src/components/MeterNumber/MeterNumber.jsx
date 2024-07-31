@@ -52,7 +52,7 @@ const MeterNumber = () => {
   return (
     <CompoWrapper>
       <HeaderText
-        title={"Insert Meter Number"}
+        title={"Insert Meter Number 🔢"}
         subTitle={`Current Month : ${month} , ${year}`}
       />
       <div className="grid grid-cols-3 pb-2">
@@ -93,8 +93,7 @@ const MeterNumber = () => {
           <tbody className="divide-y divide-gray-200 ">
             {isLoading && <Loader/>}
             {rooms
-              .filter((data) => data.hasMeter === true)
-              .map((item, index) => {
+              .filter((data) => data.hasMeter === true).sort((a, b) => a.roomNo - b.roomNo).map((item, index) => {
                 const meterReading = monthlyData[0]?.meterReadings?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );

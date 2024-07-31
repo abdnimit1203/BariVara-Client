@@ -125,8 +125,8 @@ const MonthlyBillsTable = () => {
               .filter(
                 (data) =>
                   Number.isInteger(data.roomNo) === true ||
-                  data.roomNo === "Water Meter (পানি)"
-              )
+                  data.roomNo === "Water Meter (পানি)" 
+              ).sort((a, b) => a.roomNo - b.roomNo)
               .map((item, index) => {
                 const selectedMonthReading =
                   selectedMonthsData[0]?.meterReadings?.find(
@@ -146,7 +146,8 @@ const MonthlyBillsTable = () => {
                       Name: {item?.leaseholder[0]?.name}
                     </td>
                     <td className="font-semibold text-center border-l-2 w-[35%]">
-                      {selectedMonthReading && nextMonthReading ? (
+                      {selectedMonthReading && nextMonthReading || 
+                      item?.roomNo === 3? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
                         //   <FaSackDollar className="inline text-xl text-secondary" />
                         //   {selectedMonthReading.meterNumber}
@@ -156,7 +157,9 @@ const MonthlyBillsTable = () => {
                           billingMonthMeter={selectedMonthReading}
                           nextMonthMeter={nextMonthReading}
                         />
-                      ) : (
+                      ) :
+                      
+                      (
                         <p>Data missing</p>
                       )}
                     </td>
