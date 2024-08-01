@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/singleroom/:id",
-                element: <SingleRoom></SingleRoom>,
+                element:<PrivateRoutes><SingleRoom/></PrivateRoutes> ,
                 loader: ({params})=> fetch(`${baseURL}/rooms/${params.id}`)
               },
             // {

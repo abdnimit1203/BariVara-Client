@@ -11,13 +11,13 @@ const userData = {
   password: "123456",
 };
 const Login = () => {
-    const location = useLocation()
-   const navigate = useNavigate()
-    const user = JSON.parse(localStorage.getItem('loginInfo'));
+  const location = useLocation();
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("loginInfo"));
 
-    if (user) {
-        return <Navigate to="/" />;
-      }
+  if (user) {
+    return <Navigate to="/" />;
+  }
   const {
     register,
     handleSubmit,
@@ -26,13 +26,16 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = (data) => {
+    const lowerUsername = data.username.toLowerCase();
+    const updatedData = { ...data, username: lowerUsername };
     if (
-      data.username === userData.username &&
-      data.password === userData.password || data.username === userData.username2 
+      (data.username.toLowerCase() === userData.username &&
+        data.password === userData.password) ||
+      data.username.toLowerCase() === userData.username2
     ) {
       toast.success("Login Successful!");
-      localStorage.setItem("loginInfo", JSON.stringify(data));
-      reset()
+      localStorage.setItem("loginInfo", JSON.stringify(updatedData));
+      reset();
       navigate(location?.state ? location.state : "/");
     } else {
       toast.error("Username or password not matched");
@@ -42,7 +45,7 @@ const Login = () => {
     <CompoWrapper>
       <div className="flex  flex-col gap-2 min-h-screen items-center justify-center  ">
         <div className=" bg-neutral px-10 rounded-t-full  ">
-          <Link to={'/'}>
+          <Link to={"/"}>
             <img
               src="/logo.png"
               alt="logo"

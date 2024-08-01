@@ -28,7 +28,8 @@ console.log(location)
       heightAuto: false,
       padding: "3em",
       color: "white",
-      background: "#ffc404",
+      background: "#0CC0DF",
+      
     });
   }
 

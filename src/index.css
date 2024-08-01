@@ -13,3 +13,6 @@ body{
   justify-content: center;
   text-align: center;
 }
+.btn-ok{
+  background-color: blueviolet;
+}
