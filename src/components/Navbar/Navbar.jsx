@@ -1,8 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { FcDisplay } from "react-icons/fc";
 import { FaHouseChimneyUser, FaMoneyBill } from "react-icons/fa6";
+import Clock from "../../utils/Clock";
+import LogoutButton from "../Buttons/LogOutButton";
 
 const Navbar = () => {
+  const user = JSON.parse(localStorage.getItem('loginInfo'));
+ 
   const navlinks = (
     <>
       <NavLink
@@ -43,30 +47,42 @@ const Navbar = () => {
         <FaMoneyBill className="md:hidden inline text-xl mr-3 text-green-400 " />
         Monthly Bills
       </NavLink>
-      <NavLink
-        to="/login"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
-            : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-        }
-      >
-        Login
-      </NavLink>
-      <NavLink
-        to="/register"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
-            : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-        }
-      >
-        Register
-      </NavLink>
+      {
+        user? 
+        <>
+        <div className="border-4 shadow-xl shadow-black p-4 justify-center text-center flex-col space-y-4 rounded-xl">
+          {
+            user.username === "admin"?
+            <img src="/admin.PNG" alt="admin-abd" className="w-20 mx-auto rounded-full" />
+            :
+            <img src="/abba.jpg" alt="admin-abd" className="w-20 mx-auto rounded-full" />
+          }
+          <p>Hello, {user.username}</p>
+          <Clock/>
+          <LogoutButton/>
+        </div>
+        </>:
+        <><NavLink
+            to="/login"
+            className={({ isActive, isPending }) => isPending
+              ? "pending"
+              : isActive
+                ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
+                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"}
+          >
+            Login
+          </NavLink><NavLink
+            to="/register"
+            className={({ isActive, isPending }) => isPending
+              ? "pending"
+              : isActive
+                ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
+                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"}
+          >
+              Register
+            </NavLink></>
+      }
+      
     </>
   );
   return (
@@ -97,7 +113,7 @@ const Navbar = () => {
             </label>
           </div>
 
-          <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6 w-full lg:ml-0">
+          <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6 w-full lg:ml-0 relative">
           
             <Link to={"/"} className="mx-auto">
               <img

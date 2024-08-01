@@ -86,30 +86,31 @@ const MonthlyBillsTable = () => {
 
   return (
     <CompoWrapper>
-      <HeaderText
-        title={"💵 Monthly Bill Page"}
-        subTitle={`Current Month : ${month} , ${year}`}
-      />
-
-      <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
-        <p>BILLING MONTH :</p>
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          dateFormat="MMMM yyyy"
-          showMonthYearPicker
-          className="border-primary border-2 w-[80%] p-2 rounded-full font-semibold text-primary focus:outline-sky-600"
+      <section className="border-2 border-primary px-4 my-2 rounded-lg shadow-lg">
+        <HeaderText
+          title={"💵 Monthly Bill Page"}
+          subTitle={`Current Month : ${month} , ${year}`}
         />
-      </div>
 
-      <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
-        <p>NEXT MONTH :</p>
-        {nextMonth}
-      </div>
+        <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
+          <p>BILLING MONTH :</p>
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            dateFormat="MMMM yyyy"
+            showMonthYearPicker
+            className="border-primary border-2 w-[80%] p-2 rounded-full font-semibold text-primary focus:outline-sky-600"
+          />
+        </div>
 
+        <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
+          <p>NEXT MONTH :</p>
+          {nextMonth}
+        </div>
+      </section>
       <div className="overflow-x-auto rounded-t-lg">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-          <thead className="ltr:text-left rtl:text-right bg-secondary text-white h-12">
+          <thead className="ltr:text-left rtl:text-right bg-primary text-white h-12">
             <tr>
               <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
                 Room No
@@ -125,8 +126,9 @@ const MonthlyBillsTable = () => {
               .filter(
                 (data) =>
                   Number.isInteger(data.roomNo) === true ||
-                  data.roomNo === "Water Meter (পানি)" 
-              ).sort((a, b) => a.roomNo - b.roomNo)
+                  data.roomNo === "Water Meter (পানি)"
+              )
+              .sort((a, b) => a.roomNo - b.roomNo)
               .map((item, index) => {
                 const selectedMonthReading =
                   selectedMonthsData[0]?.meterReadings?.find(
@@ -146,8 +148,8 @@ const MonthlyBillsTable = () => {
                       Name: {item?.leaseholder[0]?.name}
                     </td>
                     <td className="font-semibold text-center border-l-2 w-[35%]">
-                      {selectedMonthReading && nextMonthReading || 
-                      item?.roomNo === 3? (
+                      {(selectedMonthReading && nextMonthReading) ||
+                      item?.roomNo === 3 ? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
                         //   <FaSackDollar className="inline text-xl text-secondary" />
                         //   {selectedMonthReading.meterNumber}
@@ -156,10 +158,9 @@ const MonthlyBillsTable = () => {
                         <BillCalculations
                           billingMonthMeter={selectedMonthReading}
                           nextMonthMeter={nextMonthReading}
+                          billingRoomNo={item.roomNo}
                         />
-                      ) :
-                      
-                      (
+                      ) : (
                         <p>Data missing</p>
                       )}
                     </td>

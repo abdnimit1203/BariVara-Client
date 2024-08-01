@@ -100,12 +100,19 @@ const MeterNumber = () => {
                 return (
                   <tr key={index} className="h-12 odd:bg-[#f8f8f8] ">
                     <td className="p-3 font-semibold leading-relaxed">
-                      Room No :{" "}
+                     <span className="text-xs opacity-70 mr-2">
+                     রুম : 
+                     </span>
                       <span className="text-white bg-primary p-1 rounded-full">
                         {item?.roomNo}
                       </span>{" "}
                       <br />
-                      Name: {item?.leaseholder[0]?.name}
+                      <span className="text-xs opacity-70 mr-1">
+                      নাম  : 
+                     </span> 
+                     <span className="text-xs drop-shadow-xl mr-2">
+                     {item?.leaseholder[0]?.name}
+                     </span>
                     </td>
                     <td className="font-semibold text-center border-l-2 ">
                       {meterReading ? (

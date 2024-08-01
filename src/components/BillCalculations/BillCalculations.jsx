@@ -1,9 +1,17 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import useRooms from "../../hooks/useRooms";
 import UniversalModal from "../Modals/UniversalModal";
 import { FaSackDollar } from "react-icons/fa6";
 
-const BillCalculations = ({ billingMonthMeter, nextMonthMeter }) => {
+const BillCalculations = ({
+  billingMonthMeter,
+  nextMonthMeter,
+  billingRoomNo,
+}) => {
+  // console.log("AMAR billingMonthMeter :" , billingMonthMeter)
+  // console.log("AMAR nextMonthMeter :" , nextMonthMeter)
+  // console.log("AMAR billingRoomNo :" , billingRoomNo)
   //Modal related
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -24,18 +32,23 @@ const BillCalculations = ({ billingMonthMeter, nextMonthMeter }) => {
   // }
 
   // Single Room data
-  const [room, isLoading, refetch] = useRooms(billingMonthMeter?.roomNo);
+  const [room, isLoading, refetch] = useRooms(billingRoomNo);
   let myDue = 0;
   if (room?.leaseholder) {
     myDue = room?.leaseholder[0]?.due;
   }
-  const total =
-    (nextMonthMeter?.meterNumber - billingMonthMeter?.meterNumber) * 10 +
-    room?.rent;
+  let total = 0;
+  if (billingRoomNo === 3) {
+    total = room?.rent;
+    console.log("MYYYYYYY TOTAL = ", room?.rent )
+  } else {
+    total =
+      (nextMonthMeter?.meterNumber - billingMonthMeter?.meterNumber) * 10 +
+      room?.rent + myDue;
+  }
 
-  console.log("BILLING ROOMS : ", room);
+  console.log("BILLING ROOMS : ", room ,myDue);
 
-  
   return (
     <div className="flex flex-col justify-center ">
       <div className="">
@@ -46,7 +59,9 @@ const BillCalculations = ({ billingMonthMeter, nextMonthMeter }) => {
       </div>
       <div className="App">
         {/* Your content */}
-        <button onClick={openModal} className="underline text-xs text-success">Details</button>
+        <button onClick={openModal} className="underline text-xs text-success">
+          Details
+        </button>
 
         <UniversalModal
           isOpen={isModalOpen}
@@ -92,9 +107,9 @@ const BillCalculations = ({ billingMonthMeter, nextMonthMeter }) => {
             <hr className="border-[1px] border-slate-700" />
           </div>
           <div className="grid grid-cols-2 justify-between pt-2 ">
-              <p className="text-red-600 text-xl">Total</p>
-              <p>{total}</p>
-            </div>
+            <p className="text-red-600 text-xl">Total</p>
+            <p>{total}</p>
+          </div>
         </UniversalModal>
       </div>
       {/* <div className="grid grid-cols-2 justify-between">

@@ -4,15 +4,20 @@ import NewLeaseHolderForm from "../Forms/NewLeaseHolderForm";
 import { GiMoneyStack } from "react-icons/gi";
 import { GrMoney } from "react-icons/gr";
 import { BsSpeedometer2 } from "react-icons/bs";
+import CompoWrapper from "../Wrapper/CompoWrapper";
+import monthYearFormat from './../../utils/monthYearFormat';
 
 const SingleRoom = () => {
   const roomData = useLoaderData();
   const { _id, category, position, hasMeter, leaseholder, rent, roomNo } =
     roomData;
+    // console.log(roomData)
   const [isVisible, setIsVisible] = useState(true);
   return (
+    <CompoWrapper>
+
     <div>
-      <a
+      <section
         href="#"
         className="relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8"
       >
@@ -40,7 +45,7 @@ const SingleRoom = () => {
               <div className="border border-primary p-2  rounded-lg shadow-lg ">
                 নাম : {leaseholder[0]?.name} <br />
                 ফোন : {leaseholder[0]?.phoneNumber} <br />
-                ভাড়া শুরু : {new Date(leaseholder[0]?.rentFrom).toDateString()}
+                ভাড়া শুরু :{ monthYearFormat(leaseholder[0]?.rentFrom)}
               </div>
             </div>
           ) : (
@@ -48,7 +53,7 @@ const SingleRoom = () => {
           )}
         </div>
 
-        <dl className="mt-6 flex gap-4 sm:gap-6 ">
+        <dl className="mt-6 flex gap-2 sm:gap-2 ">
           <div className="flex flex-col-reverse border border-primary p-2  rounded-lg shadow-lg ">
             <dt className="text-sm font-medium text-gray-600">{rent} টাকা </dt>
             <dd className="text-xs text-gray-500 pb-2 underline underline-offset-4">
@@ -74,8 +79,16 @@ const SingleRoom = () => {
               <GrMoney className="inline text-secondary text-xl" /> Advance
             </dd>
           </div>
+          <div className="flex flex-col-reverse border border-primary p-2  rounded-lg shadow-lg ">
+            <dt className="text-sm font-medium text-gray-600">
+              {leaseholder[0]?.due} টাকা
+            </dt>
+            <dd className="text-xs text-gray-500 pb-2 underline underline-offset-4">
+              <GrMoney className="inline text-secondary text-xl" /> Due
+            </dd>
+          </div>
         </dl>
-      </a>
+      </section>
       <div>
         <button
           className="btn btn-sm btn-secondary text-white m-2"
@@ -88,6 +101,7 @@ const SingleRoom = () => {
         </div>
       </div>
     </div>
+    </CompoWrapper>
   );
 };
 
