@@ -59,7 +59,7 @@ const ModalUniversal = ({ roomData }) => {
                   {/* row 2 */}
                   <tr>
                     <td className="bg-blue-100">ভাড়াটিয়া </td>
-                    <td>{leaseholder[0]?.name}</td>
+                    <td className="bg-primary text-base-100 text-lg drop-shadow-lg">{leaseholder[0]?.name}</td>
                   </tr>
                   {/* row 3 */}
                   <tr>

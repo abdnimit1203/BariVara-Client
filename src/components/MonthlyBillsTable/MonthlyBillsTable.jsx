@@ -10,6 +10,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getMonth, getYear } from "date-fns";
 import BillCalculations from "../BillCalculations/BillCalculations";
+import InfoTooltip from "../../utils/InfoTooltip";
+import { IoIosWarning } from "react-icons/io";
 
 const MonthlyBillsTable = () => {
   const now = new Date();
@@ -86,21 +88,26 @@ const MonthlyBillsTable = () => {
 
   return (
     <CompoWrapper>
-      <section className="border-2 border-primary px-4 my-2 rounded-lg shadow-lg">
+      <section className="border-2 border-primary px-4 my-2 rounded-lg shadow-lg ">
         <HeaderText
           title={"💵 Monthly Bill Page"}
           subTitle={`Current Month : ${month} , ${year}`}
         />
 
-        <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
-          <p>BILLING MONTH :</p>
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="MMMM yyyy"
-            showMonthYearPicker
-            className="border-primary border-2 w-[80%] p-2 rounded-full font-semibold text-primary focus:outline-sky-600"
-          />
+        <div className="grid grid-cols-8 gap-2  w-[100%] p-2 items-center font-semibold ">
+          <p className="col-span-3">ভাড়ার মাস:</p>
+          <span className="col-span-4">
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              dateFormat="MMMM yyyy"
+              showMonthYearPicker
+              className="border-primary border-2 w-[100%] p-2 rounded-full font-semibold text-primary focus:outline-sky-600"
+            />
+          </span>
+          <span className="col-span-1">
+            <InfoTooltip tipTexts="চলতি মাসে বিল দেয়া হয় গত মাসের টি ।  তাই গত মাস সিলেক্ট করুন " />
+          </span>
         </div>
 
         <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
@@ -161,7 +168,10 @@ const MonthlyBillsTable = () => {
                           billingRoomNo={item.roomNo}
                         />
                       ) : (
-                        <p>Data missing</p>
+                        <p className="flex-center text-error animate-pulse">
+                          <IoIosWarning className="text-lg mr-1"/>
+                          Data missing
+                        </p>
                       )}
                     </td>
                   </tr>
