@@ -29,6 +29,8 @@ const MeterNumber = () => {
   const month = monthNames[now.getMonth()];
   const year = now.getFullYear();
   const [selectedEndMonth, setSelectedEndMonth] = useState(month);
+  const [insertedWaterMeter, setInsertedWaterMeter] = useState(false);
+
   // console.log(`Current Month: ${month}`);
   // console.log(`Current Year: ${year}`);
 
@@ -43,6 +45,17 @@ const MeterNumber = () => {
     year
   );
   console.log("monthlyData : ", monthlyData);
+
+//  water meter inserted login
+useEffect(() => {
+  if (monthlyData[0]?.meterReadings.find(room => room.roomNo == "Water Meter (পানি)")) { 
+    console.log("ACHE");
+    setInsertedWaterMeter(true);
+    console.log("Water meter is present");
+  } else {
+    console.log("Water meter not present"); 
+  }
+}, [monthlyData]);
 
   useEffect(() => {
     if (selectedEndMonth) {
@@ -130,7 +143,10 @@ const MeterNumber = () => {
                           year={year}/>
                           
                         </span>
-                      ) : (
+                      ) : 
+                        (["12", "13", "14"].includes(item?.roomNo) && !insertedWaterMeter?
+                       <span className="text-error animate-pulse duration-300">⚠️Insert Water Meter </span>
+                        :
                         <MeterForm
                           roomData={item}
                           month={selectedEndMonth}

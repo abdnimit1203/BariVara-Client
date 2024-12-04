@@ -16,10 +16,7 @@ const NewLeaseHolderForm = ({id}) => {
   const onSubmit = (data) => {
     const formData = {
       ...data,
-      advance: parseFloat(data.advance),
-      due:0,
-      rentTo:null
-      
+      advance: parseFloat(data.advance), 
     };
    
       console.log("Form Data:", formData);

@@ -64,11 +64,11 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
         title="EDIT METER NUMBER 📝"
       >
         <div className="flex flex-col gap-4  ">
-          <section className="flex flex-row gap-2 ">
-            <div className="bg-warning px-6 flex-center rounded-lg">
+          <section className="flex flex-row gap-2 border rounded-lg py-2 ">
+            <div className="bg-warning px-6 ml-2 flex-center rounded-lg">
               <p>Info:</p>
             </div>
-            <div className="flex flex-col text-left pl-4">
+            <div className="flex flex-col text-left pl-4 drop-shadow-lg p-2 gap-2">
               <p>
                 Room Number :{" "}
                 <span className="bg-primary px-2 text-[15px] text-white rounded-lg ">

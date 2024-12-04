@@ -3,7 +3,7 @@ import Clock from "./Clock";
 
 const UserProfile = () => {
   const user = JSON.parse(localStorage.getItem("loginInfo"));
-  console.log("USER = ", user);
+  // console.log("USER = ", user);
   return (
     <div>
       <div className=" border-4 shadow-xl shadow-black flex p-4 justify-center text-center flex-col space-y-4 rounded-xl lg:flex-row lg:p-1 lg:">

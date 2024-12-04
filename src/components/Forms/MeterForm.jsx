@@ -25,6 +25,8 @@ const MeterForm = ({ roomData, month, year, refetch, refetch2 }) => {
       month: month,
       year: year,
     };
+   
+
     // for Creating MonthlyBill
     const formData2 = {
       paid: "false",
@@ -32,6 +34,7 @@ const MeterForm = ({ roomData, month, year, refetch, refetch2 }) => {
       month: month,
       year: year,
     };
+    console.log("formData2 = ", formData2);
     if (month === "") {
       toast.error("Please Select a valid Month!");
     } else {

@@ -1,4 +1,5 @@
-import  { useState } from "react";
+import { useState } from "react";
+import { FiPlus } from "react-icons/fi";
 
 const Calculator = () => {
   const [input, setInput] = useState(""); // Stores the current input
@@ -53,9 +54,10 @@ const Calculator = () => {
         </button>
         <button
           onClick={() => handleClick("+")}
-          className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+          className="p-4 text-xl bg-orange-500 text-white rounded-lg  hover:bg-orange-600"
         >
-          +
+          <FiPlus className="inline text-2xl" />
+
         </button>
 
         <button
@@ -105,7 +107,7 @@ const Calculator = () => {
           onClick={() => handleClick("*")}
           className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
         >
-          ×
+          ✕
         </button>
 
         <button
@@ -130,7 +132,7 @@ const Calculator = () => {
           onClick={() => handleClick("/")}
           className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
         >
-         ÷
+          /
         </button>
       </div>
     </div>
