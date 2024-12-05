@@ -12,6 +12,7 @@ import { getMonth, getYear } from "date-fns";
 import BillCalculations from "../BillCalculations/BillCalculations";
 import InfoTooltip from "../../utils/InfoTooltip";
 import { IoIosWarning } from "react-icons/io";
+import useMonthlyBills from './../../hooks/useMonthlyBills';
 
 const MonthlyBillsTable = () => {
   const now = new Date();
@@ -82,14 +83,13 @@ console.log(month, year)
     nextMonth,
     selectedYear
   );
+  // Monthly data at once
+  const [monthlyBillsData, isLoading4, refetch4] = useMonthlyBills(
+    selectedMonth,
+    selectedYear
+  );
+console.log("NEW DATA :", monthlyBillsData)
 
-  // const prevWater = selectedMonthsData[0]?.meterReadings.find(
-  //   (item) => item.roomNo === "Water Meter (পানি)"
-  // );
-  // const nextWater = nextMonthsData[0]?.meterReadings.find(
-  //   (item) => item.roomNo === "Water Meter (পানি)"
-  // );
-  // console.log("NEXT ==",nextWater.meterNumber - prevWater.meterNumber)
 
   return (
     <CompoWrapper>
@@ -137,7 +137,7 @@ console.log(month, year)
             {rooms
               .filter(
                 (data) =>
-                  Number.isInteger(data.roomNo) === false ||
+                  isNaN(data.roomNo) === false ||
                   data.roomNo === "Water Meter (পানি)"
               )
               .sort((a, b) => a.roomNo - b.roomNo)
@@ -147,6 +147,9 @@ console.log(month, year)
                     (item2) => item2.roomNo === item.roomNo
                   );
                 const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
+                  (item2) => item2.roomNo === item.roomNo
+                );
+                const myData = monthlyBillsData?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );
                 return (
@@ -161,17 +164,17 @@ console.log(month, year)
                     </td>
                     <td className="font-semibold text-center border-l-2 w-[35%]">
                       {(selectedMonthReading && nextMonthReading) ||
-                      item?.roomNo === 3 ? (
+                      item?.roomNo === "3" ? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
                         //   <FaSackDollar className="inline text-xl text-secondary" />
                         //   {selectedMonthReading.meterNumber}
                         //   <FaEdit className="inline text-xl text-secondary ml-6" />
                         // </span>
                         <BillCalculations
-                          billingMonthMeter={selectedMonthReading}
-                          nextMonthMeter={nextMonthReading}
+                          room ={item}
                           billingRoomNo={item.roomNo}
                           selectedMonth={selectedMonth}
+                          myData={myData}
                         />
                     
                       ) : (

@@ -4,18 +4,9 @@ import useRooms from "../../hooks/useRooms";
 import UniversalModal from "../Modals/UniversalModal";
 import { FaSackDollar } from "react-icons/fa6";
 
-const BillCalculations = ({
-  billingMonthMeter,
-  nextMonthMeter,
-  billingRoomNo,
-  selectedMonth,
-}) => {
-  // console.log("AMAR billingMonthMeter :" , billingMonthMeter)
-  // console.log("AMAR nextMonthMeter :" , nextMonthMeter)
-  // console.log("AMAR billingRoomNo :" , billingRoomNo)
-  //Modal related
+const BillCalculations = ({ room, billingRoomNo, selectedMonth, myData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  console.log(room);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -23,118 +14,160 @@ const BillCalculations = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  console.log("BILL CALCULATION DATA LIST", billingMonthMeter, nextMonthMeter);
-  //   if(billingMonthMeter.roomNo ==="Water Meter (পানি)"){
-  //     setWaterMeter(9)
-  //     console.log(waterMeter)
-  //   }else{
-  //     console.log("Nai")
-  // }
-
-  // Single Room data
-  const [room, isLoading, refetch] = useRooms(billingRoomNo);
-  let myDue = 0;
-  if (room?.leaseholder) {
-    myDue = room?.leaseholder[0]?.due;
-  }
-  let total = 0;
-  if (billingRoomNo === 3) {
-    total = room?.rent;
-    console.log("MYYYYYYY TOTAL = ", room?.rent);
-  } else {
-    total =
-      (nextMonthMeter?.meterNumber - billingMonthMeter?.meterNumber) * 10 +
-      room?.rent +
-      myDue;
-  }
-
-  console.log("BILLING ROOMS : ", room, myDue);
+  console.log(myData);
 
   return (
     <div className="flex flex-col justify-center ">
       <div className="">
         <p className="flex justify-center text-center gap-2">
           <FaSackDollar className="inline text-xl text-secondary" />
-          {total} টাকা
+          {myData?.roomNo == undefined ? (
+            <span>1800 টাকা</span>
+          ) : (
+            <span>{myData?.total} টাকা</span>
+          )}
         </p>
       </div>
       <div className="App">
         {/* Your content */}
-        <button onClick={openModal} className="underline text-xs text-success">
+        <button
+          onClick={openModal}
+          className="underline text-[16px] text-xs text-success"
+        >
           Details
         </button>
 
         <UniversalModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          title="BILL DETAILS"
+          title="💵 RENT RECEIPT 🧾"
         >
           {/* Content inside the modal */}
-          <div className="flex flex-col gap-6">
-            <div className="w-full border-4  border-dashed p-2 italic font-semibold drop-shadow-md bg-green-300  shadow-red-600 grid grid-cols-2 gap-2 justify-between text-left">
-              <div className="text-gray-500">
-                {" "}
-                <h2>ভাড়ার মাস : </h2>
-                <h2>ভাড়াটিয়া নাম : </h2>
-                <h2>রুম : </h2>
+          <div className="flex flex-col gap-6 p-4  ">
+            <div className="text-left font-medium">
+              <div className="border w-fit p-2 bg-yellow-300 rounded-t-lg">
+                DATE :{" "}
+                <span className="underline text-[16px] decoration-dotted b-2 drop-shadow-2xl text-lg">
+                  {new Date().toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
               </div>
-              <div>
-                <h2> {selectedMonth} </h2>
-                <h2>
+              <div className=" leading-7 border-x-8 p-3 border-error drop-shadow-lg bg-yellow-400 text-black rounded-ee-[2rem] ">
+                Room No :{" "}
+                <span className="underline text-[16px] bg-success text-white px-3  rounded-lg ">
+                  {room.roomNo}
+                </span>
+                <br />
+                ভাড়াটিয়া :{" "}
+                <span className="underline text-[16px] bg-success text-white px-3  rounded-lg ">
                   {room?.leaseholder?.length
                     ? room?.leaseholder[0].name
                     : "null"}{" "}
-                </h2>
-                <h2>{billingRoomNo} </h2>
+                </span>
+                <br />, আপনার{" "}
+                <span className="underline text-[16px] bg-primary text-white px-3  rounded-lg ">
+                  {selectedMonth}
+                </span>{" "}
+                মাস এর ভাড়া{" "}
+                <span className="underline text-[16px] bg-primary text-white px-3  rounded-lg ">
+                  {myData?.roomNo == undefined ? (
+                    <span> ৳1800 </span>
+                  ) : (
+                    <span>৳{myData?.total.toLocaleString("bn-BD", { useGrouping: false })} </span>
+                  )}
+                </span>
+                ধার্য করা হয়েছে ।
+               <hr className="my-2 border-black border-dotted"/>
+                এই মাসের ১০ তারিখের মধ্যে ভাড়া পরিশোধের জন্য আবেদন করা হলো ।
               </div>
             </div>
-            <div className="grid grid-cols-2 ">
-              <p>Curr Meter</p>
-              <p>{nextMonthMeter?.meterNumber}</p>
-            </div>
-            <div className="grid grid-cols-2 justify-between">
-              <p>Prev Meter</p>
-              <p>{billingMonthMeter?.meterNumber}</p>
-            </div>
-            <hr className="border-[1px] border-slate-700" />
+            <h2 className="text-lg">Details | বিবরণ </h2>
+            <hr className="-m-4" />
+            <section className="space-y-2 font_secondary text-base drop-shadow-lg py-1">
+              <div className="grid grid-cols-2 ">
+                <p>Current Meter</p>
+                <p>
+                  {myData?.currentReading.toLocaleString("bn-BD", {
+                    useGrouping: false,
+                  })}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 justify-between">
+                <p>Previous Meter</p>
+                <p>
+                  {myData?.previousReading.toLocaleString("bn-BD", {
+                    useGrouping: false,
+                  })}
+                </p>
+              </div>
+              <hr className="border-[1px] border-slate-700" />
 
-            <div className="grid grid-cols-2 justify-between">
-              <p>( - )</p>
-              <p>
-                {nextMonthMeter?.meterNumber - billingMonthMeter?.meterNumber}{" "}
-                (x10)
-              </p>
-            </div>
-            <div className="grid grid-cols-2 justify-between">
-              <p className="text-yellow-500 drop-shadow-xl">Current bill</p>
-              <p>
-                {(nextMonthMeter?.meterNumber -
-                  billingMonthMeter?.meterNumber) *
-                  10}
-              </p>
-            </div>
-            <div className="grid grid-cols-2 justify-between">
-              <p className="text-red-600">Rent</p>
-              <p>{room?.rent}</p>
-            </div>
+              <div className="grid grid-cols-2 justify-between">
+                <p>( - )</p>
+                <p>
+                  {(
+                    myData?.currentReading - myData?.previousReading
+                  ).toLocaleString("bn-BD", { useGrouping: false })}{" "}
+                  ✕ ১০
+                </p>
+              </div>
+              <div className="grid grid-cols-2 justify-between">
+                <p className="text-yellow-500 drop-shadow-xl">Current bill</p>
+                <p>
+                  {myData?.currentBill.toLocaleString("bn-BD", {
+                    useGrouping: false,
+                  })}
+                </p>
+              </div>
+              {
+                room.hasWaterBill?<div className="grid grid-cols-2 justify-between">
+                <p className="text-blue-500 drop-shadow-xl">Water bill</p>
+                <p>
+                  {myData?.waterBill.toLocaleString("bn-BD", {
+                    useGrouping: false,
+                  })}
+                </p>
+              </div>:""
+              }
+              
+              <div className="grid grid-cols-2 justify-between">
+                <p className="text-red-600">Rent</p>
+                <p>
+                  {myData?.rent.toLocaleString("bn-BD", { useGrouping: false })}
+                </p>
+              </div>
 
-            <div className="grid grid-cols-2 justify-between">
-              <p className="text-red-600">Due</p>
-              <p>{myDue ? myDue : "0"}</p>
-            </div>
-            <hr className="border-[1px] border-slate-700" />
+              <div className="grid grid-cols-2 justify-between">
+                <p className="text-red-600">Due</p>
+                <p>
+                  {myData?.due.toLocaleString("bn-BD", { useGrouping: false })}
+                </p>
+              </div>
+              <hr className="border-[1px] border-slate-700 " />
+            </section>
           </div>
-          <div className="grid grid-cols-2 justify-between pt-2 ">
-            <p className="text-red-600 text-xl">Total</p>
-            <p>{total}</p>
+          <div className="grid grid-cols-2 justify-between font_secondary text-xl">
+            <p className="text-red-600 ">Total</p>
+            <p className="t">
+              {myData?.total.toLocaleString("bn-BD", { useGrouping: false })}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 justify-end font_secondary pt-2">
+            <p className="">Payment Status : </p>
+            <button className="btn btn-xs bg-blue-700 text-white">{myData?.paid}</button>
+          </div>
+          <div className="grid grid-cols-3 justify-between items-center gap-2 font_secondary py-5 shadow-lg border bg-yellow-300 border-x-8 border-error m-4">
+            <p className="text-success ">Submit Payment</p>
+
+            <input type="text"  className="border-2 outline-2 outline-success py-1 rounded-md border-gray-400"/>
+            <button className="btn  btn-sm w-fit btn-success text-white">Submit</button>
           </div>
         </UniversalModal>
       </div>
-      {/* <div className="grid grid-cols-2 justify-between">
-        <p>Water bill ?</p>
-        <p>{room.hasWaterBill? `${(waterMeter +14)*10}`:"No"}</p>
-      </div> */}
+     
     </div>
   );
 };
