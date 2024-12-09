@@ -32,3 +32,5 @@ export const createMonthlyBill = (data) => API.post("/monthlyBill", data);
 // Update by ID
 export const updateMeterReadingById = (id, data) =>
   API.put(`/meterReadings/${id}`, data);
+export const updatePaymentById = (id, data) =>
+  API.put(`/monthlyBill/${id}`, data);

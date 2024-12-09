@@ -5,12 +5,12 @@ const UniversalModal = ({ isOpen, onClose, title, children }) => {
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="bg-white rounded-lg shadow-lg z-50 w-11/12 md:w-1/2 lg:w-1/3">
+          <div className="bg-white rounded-lg shadow-lg z-50 w-11/12 md:w-1/2 lg:w-1/3 max-h-screen overflow-y-auto">
             <div className="flex justify-between items-center p-4 border-b">
               <h3 className="text-lg font-semibold">{title}</h3>
               <button
                 onClick={onClose}
-                className="btn btn-sm btn-circle btn-ghost"
+                className="btn btn-sm btn-circle btn-ghost hover:bg-error"
               >
                 ✕
               </button>

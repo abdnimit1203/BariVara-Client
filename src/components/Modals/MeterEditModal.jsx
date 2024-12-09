@@ -12,6 +12,7 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
   console.log(month, year);
   // ----------------MODAL CALLING---------------
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -64,11 +65,11 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
         title="EDIT METER NUMBER 📝"
       >
         <div className="flex flex-col gap-4  ">
-          <section className="flex flex-row gap-2 border rounded-lg py-2 ">
+          <section className="flex flex-row gap-2 border rounded-lg py-2 glass bg-slate-800 ">
             <div className="bg-warning px-6 ml-2 flex-center rounded-lg">
               <p>Info:</p>
             </div>
-            <div className="flex flex-col text-left pl-4 drop-shadow-lg p-2 gap-2">
+            <div className="flex flex-col text-left pl-4 drop-shadow-lg p-2 gap-2 text-white">
               <p>
                 Room Number :{" "}
                 <span className="bg-primary px-2 text-[15px] text-white rounded-lg ">
@@ -76,8 +77,8 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
                 </span>{" "}
               </p>
               <p>
-                Previous Meter Number :{" "}
-                <span className="bg-error px-2 text-[15px] text-white rounded-lg ">
+                Previous inserted M Number :{" "}
+                <span className="bg-base-100 px-2 text-[15px] text-black rounded-lg block text-center py-1 font-mono text-xl ">
                   {meterNumber}
                 </span>{" "}
               </p>

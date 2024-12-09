@@ -56,8 +56,7 @@ console.log(month, year)
   const [nextMonth, setNextMonth] = useState(
     getNextMonth(monthNames[getMonth(selectedDate)])
   );
-  const [waterMeter, setWaterMeter] = useState(0);
-  console.log("Water Bill : ",waterMeter)
+
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -142,18 +141,18 @@ console.log("NEW DATA :", monthlyBillsData)
               )
               .sort((a, b) => a.roomNo - b.roomNo)
               .map((item, index) => {
-                const selectedMonthReading =
-                  selectedMonthsData[0]?.meterReadings?.find(
-                    (item2) => item2.roomNo === item.roomNo
-                  );
-                const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
-                  (item2) => item2.roomNo === item.roomNo
-                );
+                // const selectedMonthReading =
+                //   selectedMonthsData[0]?.meterReadings?.find(
+                //     (item2) => item2.roomNo === item.roomNo
+                //   );
+                // const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
+                //   (item2) => item2.roomNo === item.roomNo
+                // );
                 const myData = monthlyBillsData?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );
                 return (
-                  <tr key={index} className="h-12  odd:bg-[#f8f8f8]">
+                  <tr key={index} className="h-12  odd:bg-[#e7fdff]">
                     <td className="p-3 font-semibold leading-relaxed">
                       Room No:{" "}
                       <span className="text-white bg-primary p-1 rounded-full">
@@ -163,8 +162,11 @@ console.log("NEW DATA :", monthlyBillsData)
                       Name: {item?.leaseholder[0]?.name}
                     </td>
                     <td className="font-semibold text-center border-l-2 w-[35%]">
-                      {(selectedMonthReading && nextMonthReading) ||
-                      item?.roomNo === "3" ? (
+                      {
+                      
+                      monthlyBillsData?.find(
+                        (item2) => item2.roomNo === item.roomNo
+                      ) || item.roomNo ==="3" ? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
                         //   <FaSackDollar className="inline text-xl text-secondary" />
                         //   {selectedMonthReading.meterNumber}
@@ -175,6 +177,7 @@ console.log("NEW DATA :", monthlyBillsData)
                           billingRoomNo={item.roomNo}
                           selectedMonth={selectedMonth}
                           myData={myData}
+                          refetch4={refetch4}
                         />
                     
                       ) : (

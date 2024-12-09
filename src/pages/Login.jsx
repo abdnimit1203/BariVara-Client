@@ -32,9 +32,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex  flex-col gap-2 min-h-screen items-center justify-center ">
+    <div className="bg-[url('https://i.ibb.co.com/kSzPXSH/home002.jpg')] bg-center min-h-screen flex-center  ">
+      <div className="bg-[#ffffff] glass flex flex-col gap-2  items-center justify-center pt-8 rounded-xl">
+
+    
       {/* Form Headings */}
-      <div className=" bg-neutral px-10 rounded-t-full  ">
+      <div className=" bg-neutral px-10 rounded-t-full ">
         <Link to={"/"}>
           <img
             src="/logo.png"
@@ -44,8 +47,8 @@ const Login = () => {
         </Link>
       </div>
       <h2 className="text-3xl font-bold">LOG IN</h2>
-      <h2 className="text-lg font-bold opacity-70">Lets Hop In</h2>
-      <p>Login and start inserting data!</p>
+      <h2 className="text-lg font-bold opacity-70">Lets Hop In </h2>
+      <p className="w-[80%]">Login and start insert and calculate data!</p>
       <section className="flex gap-6 flex-center">
         <span className="p-2 border rounded-xl text-2xl text-blue-600">
           <GrFacebookOption />
@@ -61,7 +64,7 @@ const Login = () => {
       {/* FORM STARTS */}
       <form
         onSubmit={handleSubmit}
-        className="bg-white  shadow-md rounded px-8 pt-6 pb-8 w-96"
+        className="  rounded px-8 pt-6 pb-8 w-96 "
       >
         {error && (
           <p className="text-red-500 flex gap-5 pb-4 ">
@@ -73,7 +76,7 @@ const Login = () => {
           <label className="block text-gray-700 mb-2 text-lg">Username</label>
           <input
             type="text"
-            className="w-full p-3 mt-1 border rounded shadow appearance-none px-3 text-gray-700 focus:outline-primary"
+            className="w-full p-3 mt-1  rounded shadow appearance-none px-3 text-gray-700 border focus:outline-primary"
             value={formData.userName}
             onChange={(e) =>
               setFormData({ ...formData, userName: e.target.value })
@@ -93,10 +96,11 @@ const Login = () => {
             required
           />
         </div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+        <button className="bg-primary hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded w-full">
           Login
         </button>
       </form>
+      </div>
     </div>
   );
 };

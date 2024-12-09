@@ -54,16 +54,19 @@ useEffect(() => {
     console.log("Water meter is present");
   } else {
     console.log("Water meter not present"); 
+    setInsertedWaterMeter(false);
   }
 }, [monthlyData]);
 
   useEffect(() => {
     if (selectedEndMonth) {
       refetch2();
+      console.log("RUNNED")
     }
   }, [refetch2, selectedEndMonth]);
   const handleChange = (event) => {
     setSelectedEndMonth(event.target.value);
+    
   };
 
   return (
