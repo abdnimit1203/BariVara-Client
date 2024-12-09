@@ -33,7 +33,7 @@ const Login = () => {
 
   return (
     <div className="bg-[url('https://i.ibb.co.com/kSzPXSH/home002.jpg')] bg-center min-h-screen flex-center  ">
-      <div className="bg-[#ffffff] glass flex flex-col gap-2  items-center justify-center pt-8 rounded-xl">
+      <div className="bg-[#ffffff02] glass flex flex-col gap-2  items-center text-white justify-center pt-8 rounded-xl">
 
     
       {/* Form Headings */}
@@ -49,14 +49,14 @@ const Login = () => {
       <h2 className="text-3xl font-bold">LOG IN</h2>
       <h2 className="text-lg font-bold opacity-70">Lets Hop In </h2>
       <p className="w-[80%]">Login and start insert and calculate data!</p>
-      <section className="flex gap-6 flex-center">
-        <span className="p-2 border rounded-xl text-2xl text-blue-600">
+      <section className="flex gap-6 flex-center ">
+        <span className="p-2 border rounded-xl text-2xl text-blue-600 bg-white">
           <GrFacebookOption />
         </span>
-        <span className="p-2 border rounded-xl text-2xl ">
+        <span className="p-2 border rounded-xl text-2xl bg-white">
           <FcGoogle />
         </span>
-        <span className="p-2 border rounded-xl text-2xl text-cyan-700">
+        <span className="p-2 border rounded-xl text-2xl text-cyan-700 bg-white">
           <FaLinkedinIn />
         </span>
       </section>
@@ -64,7 +64,7 @@ const Login = () => {
       {/* FORM STARTS */}
       <form
         onSubmit={handleSubmit}
-        className="  rounded px-8 pt-6 pb-8 w-96 "
+        className="text-white  rounded px-8 pt-6 pb-8 w-[22rem] md:w-96 "
       >
         {error && (
           <p className="text-red-500 flex gap-5 pb-4 ">
@@ -73,10 +73,11 @@ const Login = () => {
           </p>
         )}
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2 text-lg">Username</label>
+          <label htmlFor="userName" className="block  mb-2 text-lg">Username</label>
           <input
             type="text"
-            className="w-full p-3 mt-1  rounded shadow appearance-none px-3 text-gray-700 border focus:outline-primary"
+            className="w-full p-3 mt-1  rounded shadow appearance-none px-3 bg-transparent border focus:outline-primary"
+            id="userName"
             value={formData.userName}
             onChange={(e) =>
               setFormData({ ...formData, userName: e.target.value })
@@ -85,10 +86,11 @@ const Login = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2 text-lg">Password</label>
+          <label htmlFor="password" className="block  mb-2 text-lg">Password</label>
           <input
             type="password"
-            className="w-full p-3 mt-1 border rounded shadow appearance-none px-3 text-gray-700 focus:outline-primary"
+            id="password"
+            className="w-full p-3 mt-1 border rounded bg-transparent  shadow appearance-none px-3  focus:outline-primary"
             value={formData.password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
