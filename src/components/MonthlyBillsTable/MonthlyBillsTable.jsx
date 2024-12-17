@@ -12,7 +12,7 @@ import { getMonth, getYear } from "date-fns";
 import BillCalculations from "../BillCalculations/BillCalculations";
 import InfoTooltip from "../../utils/InfoTooltip";
 import { IoIosWarning } from "react-icons/io";
-import useMonthlyBills from './../../hooks/useMonthlyBills';
+import useMonthlyBills from "./../../hooks/useMonthlyBills";
 
 const MonthlyBillsTable = () => {
   const now = new Date();
@@ -33,7 +33,7 @@ const MonthlyBillsTable = () => {
 
   const month = monthNames[now.getMonth()];
   const year = now.getFullYear();
-console.log(month, year)
+  console.log(month, year);
   // Function for getting next month name
   const getNextMonth = (month) => {
     const index = monthNames.indexOf(month);
@@ -43,7 +43,7 @@ console.log(month, year)
     const nextIndex = (index + 1) % monthNames.length;
     return monthNames[nextIndex];
   };
- 
+
   // Month Year Selector
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
@@ -57,7 +57,6 @@ console.log(month, year)
     getNextMonth(monthNames[getMonth(selectedDate)])
   );
 
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setSelectedYear(getYear(date));
@@ -69,7 +68,7 @@ console.log(month, year)
 
   // Room data
   const [rooms, isLoading, refetch] = useRooms();
-  console.log(rooms)
+  console.log(rooms);
 
   // Selected month data
   const [selectedMonthsData, isLoading2, refetch2] = useMonthlyMeterData(
@@ -87,8 +86,7 @@ console.log(month, year)
     selectedMonth,
     selectedYear
   );
-console.log("NEW DATA :", monthlyBillsData)
-
+  console.log("NEW DATA :", monthlyBillsData);
 
   return (
     <CompoWrapper>
@@ -136,8 +134,7 @@ console.log("NEW DATA :", monthlyBillsData)
             {rooms
               .filter(
                 (data) =>
-                  isNaN(data.roomNo) === false ||
-                  data.roomNo === "Water Meter (পানি)"
+                  isNaN(data.roomNo) === false 
               )
               .sort((a, b) => a.roomNo - b.roomNo)
               .map((item, index) => {
@@ -162,27 +159,24 @@ console.log("NEW DATA :", monthlyBillsData)
                       Name: {item?.leaseholder[0]?.name}
                     </td>
                     <td className="font-semibold text-center border-l-2 w-[35%]">
-                      {
-                      
-                      monthlyBillsData?.find(
+                      {monthlyBillsData?.find(
                         (item2) => item2.roomNo === item.roomNo
-                      ) || item.roomNo ==="3" ? (
+                      ) || item.roomNo === "3" ? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
                         //   <FaSackDollar className="inline text-xl text-secondary" />
                         //   {selectedMonthReading.meterNumber}
                         //   <FaEdit className="inline text-xl text-secondary ml-6" />
                         // </span>
                         <BillCalculations
-                          room ={item}
+                          room={item}
                           billingRoomNo={item.roomNo}
                           selectedMonth={selectedMonth}
                           myData={myData}
                           refetch4={refetch4}
                         />
-                    
                       ) : (
                         <p className="flex-center text-error animate-pulse">
-                          <IoIosWarning className="text-lg mr-1"/>
+                          <IoIosWarning className="text-lg mr-1" />
                           Data missing
                         </p>
                       )}

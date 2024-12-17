@@ -25,8 +25,6 @@ const MeterForm = ({ roomData, month, year, refetch, refetch2 }) => {
       month: month,
       year: year,
     };
-   
-
     // for Creating MonthlyBill
     const formData2 = {
       paid: "false",

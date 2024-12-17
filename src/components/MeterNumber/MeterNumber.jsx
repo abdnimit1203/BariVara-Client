@@ -34,8 +34,6 @@ const MeterNumber = () => {
   // console.log(`Current Month: ${month}`);
   // console.log(`Current Year: ${year}`);
 
-  
-
   // DATA FETCHING
   const [rooms, isLoading, refetch] = useRooms();
   console.log(rooms);
@@ -46,27 +44,30 @@ const MeterNumber = () => {
   );
   console.log("monthlyData : ", monthlyData);
 
-//  water meter inserted login
-useEffect(() => {
-  if (monthlyData[0]?.meterReadings.find(room => room.roomNo == "Water Meter (পানি)")) { 
-    console.log("ACHE");
-    setInsertedWaterMeter(true);
-    console.log("Water meter is present");
-  } else {
-    console.log("Water meter not present"); 
-    setInsertedWaterMeter(false);
-  }
-}, [monthlyData]);
+  //  water meter inserted login
+  useEffect(() => {
+    if (
+      monthlyData[0]?.meterReadings.find(
+        (room) => room.roomNo == "Water Meter (পানি)"
+      )
+    ) {
+      console.log("ACHE");
+      setInsertedWaterMeter(true);
+      console.log("Water meter is present");
+    } else {
+      console.log("Water meter not present");
+      setInsertedWaterMeter(false);
+    }
+  }, [monthlyData]);
 
   useEffect(() => {
     if (selectedEndMonth) {
       refetch2();
-      console.log("RUNNED")
+      console.log("RUNNED");
     }
   }, [refetch2, selectedEndMonth]);
   const handleChange = (event) => {
     setSelectedEndMonth(event.target.value);
-    
   };
 
   return (
@@ -114,7 +115,14 @@ useEffect(() => {
             {isLoading && <Loader />}
             {rooms
               .filter((data) => data.hasMeter === true)
-              .sort((a, b) => a.roomNo - b.roomNo)
+              .sort((a, b) => {
+                // Place "Water Meter (পানি)" at the beginning
+                if (a.roomNo === "Water Meter (পানি)") return -1;
+                if (b.roomNo === "Water Meter (পানি)") return 1;
+
+                // Sort the remaining room numbers numerically
+                return parseInt(a.roomNo) - parseInt(b.roomNo);
+              })
               .map((item, index) => {
                 const meterReading = monthlyData[0]?.meterReadings?.find(
                   (item2) => item2.roomNo === item.roomNo
@@ -140,16 +148,19 @@ useEffect(() => {
                           {/* {meterReading.meterNumber.toLocaleString("bn-BD", { useGrouping: false })} */}
                           {meterReading.meterNumber}
 
-                          <MeterEditModal meterReading={meterReading}
-                          refetch2={refetch2}
-                          month={selectedEndMonth}
-                          year={year}/>
-                          
+                          <MeterEditModal
+                            meterReading={meterReading}
+                            refetch2={refetch2}
+                            month={selectedEndMonth}
+                            year={year}
+                          />
                         </span>
-                      ) : 
-                        (["12", "13", "14"].includes(item?.roomNo) && !insertedWaterMeter?
-                       <span className="text-error animate-pulse duration-300">⚠️Insert Water Meter </span>
-                        :
+                      ) : ["12", "13", "14"].includes(item?.roomNo) &&
+                        !insertedWaterMeter ? (
+                        <span className="text-error animate-pulse duration-300">
+                          ⚠️Insert Water Meter{" "}
+                        </span>
+                      ) : (
                         <MeterForm
                           roomData={item}
                           month={selectedEndMonth}
@@ -164,7 +175,6 @@ useEffect(() => {
               })}
           </tbody>
         </table>
-        
       </div>
     </CompoWrapper>
   );
