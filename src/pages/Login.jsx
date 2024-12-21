@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginUser } from "../API/api";
@@ -13,6 +13,14 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("loginInfo"));
+  // for animation
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Trigger the transition once the component is mounted
+  useEffect(() => {
+    // After the page loads, set the state to trigger the transition
+    setIsLoaded(true);
+  }, []);
 
   if (user) {
     return <Navigate to="/" />;
@@ -32,13 +40,19 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="bg-center bg-cover min-h-screen flex-center"
-      style={{
-        backgroundImage: "url('/house1.jpg')",
-      }}
-    >
-      <div className="bg-[#ffffff02] glass flex flex-col gap-2  items-center text-white justify-center pt-8  w-full sm:w-fit md:rounded-xl rounded-se-[40px]">
+    <div className="bg-center bg-cover min-h-screen sm:flex-center sm:flex    relative ">
+      <div className="bg-black z-10 w-full bg-cover sm:flex-1">
+        <img
+          src="/house1.jpg"
+          alt="Background image ..."
+          className="h-screen object-cover sm:opacity-80 w-screen"
+        />
+      </div>
+      <div
+        className={` flex flex-col gap-2  text-black bg-white shadow-xl items-center justify-center pt-8 w-full mx-auto sm:w-fit xs:rounded-r-xl rounded-se-[60px] absolute bottom-0 -left-16 sm:static transition-all transform sm:flex-1 ${
+          isLoaded ? "translate-x-16 sm:translate-x-0" : ""
+        } duration-[1000ms] ease-in-out`}
+      >
         {/* Form Headings */}
         <div className=" bg-neutral px-10 rounded-t-full ">
           <Link to={"/"}>
@@ -51,15 +65,17 @@ const Login = () => {
         </div>
         <h2 className="text-3xl font-bold">LOG IN</h2>
         <h2 className="text-lg font-bold opacity-70">Lets Hop In </h2>
-        <p className="w-[80%]">Login and start insert and calculate data!</p>
+        <p className="w-[80%] mx-auto text-center">
+          Login and start insert and calculate data!
+        </p>
         <section className="flex gap-6 flex-center ">
-          <span className="p-2 border rounded-xl text-2xl text-blue-600 bg-white">
+          <span className="p-2  border-2 rounded-xl text-2xl text-blue-600  ">
             <GrFacebookOption />
           </span>
-          <span className="p-2 border rounded-xl text-2xl bg-white">
+          <span className="p-2  border-2 rounded-xl text-2xl  ">
             <FcGoogle />
           </span>
-          <span className="p-2 border rounded-xl text-2xl text-cyan-700 bg-white">
+          <span className="p-2  border-2 rounded-xl text-2xl text-cyan-700  ">
             <FaLinkedinIn />
           </span>
         </section>
@@ -67,7 +83,7 @@ const Login = () => {
         {/* FORM STARTS */}
         <form
           onSubmit={handleSubmit}
-          className="text-white  rounded px-8 pt-6 pb-8 w-[22rem] md:w-96 "
+          className="   rounded px-8 pt-6 pb-8 w-[22rem] md:w-96 "
         >
           {error && (
             <p className="text-red-500 flex gap-5 pb-4 ">
@@ -105,7 +121,7 @@ const Login = () => {
               required
             />
           </div>
-          <button className="bg-primary hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded w-full">
+          <button className="bg-primary hover:bg-cyan-500 text-white  font-bold py-2 px-4 rounded w-full">
             Login
           </button>
         </form>

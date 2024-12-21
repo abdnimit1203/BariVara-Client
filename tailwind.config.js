@@ -32,6 +32,10 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+        
+      },
       keyframes: {
         wave: {
           '0%': { transform: 'rotate(0.0deg)' },
