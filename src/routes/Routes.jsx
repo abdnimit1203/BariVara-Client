@@ -8,50 +8,57 @@ import MeterNumber from "../components/MeterNumber/MeterNumber";
 import MonthlyBills from "../pages/MonthlyBills";
 import Login from "../pages/Login";
 import PrivateRoutes from "./PrivateRoutes";
+import Dashboard from "../pages/Dashboard";
 const baseURL = import.meta.env.VITE_BASE_URL;
-import TestData from "../pages/TestData";
 
 export const router = createBrowserRouter([
-    {
-        path:'/',
-        element: <MainLayout/>,
-        errorElement: <ErrorPage/>,
-        children:[
-            {
-                path:"/",
-                element: <Home/>
-            },
-            {
-                path:"/meterNumber",
-                element:<PrivateRoutes><MeterNumber/></PrivateRoutes> 
-            },
-            {
-                path:"/testData",
-                element:<TestData/> 
-            },
-            {
-                path:"/monthlyBills",
-                element: <MonthlyBills/>
-            },
-            {
-                path: "/singleroom/:id",
-                element:<PrivateRoutes><SingleRoom/></PrivateRoutes> ,
-                loader: ({params})=> fetch(`${baseURL}/rooms/${params.id}`)
-              },
-            // {
-            //     path:'/dashboard',
-            //     element: <Dashboard/>
-            // }
-        ]
+  {
+    path: "/",
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/meterNumber",
+        element: (
+          <PrivateRoutes>
+            <MeterNumber />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/monthlyBills",
+        element: <MonthlyBills />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/singleroom/:id",
+        element: (
+          <PrivateRoutes>
+            <SingleRoom />
+          </PrivateRoutes>
+        ),
+        loader: ({ params }) => fetch(`${baseURL}/rooms/${params.id}`),
+      },
+      // {
+      //     path:'/dashboard',
+      //     element: <Dashboard/>
+      // }
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
 
-    },
-    {
-        path:"/login",
-        element: <Login/>
-    },
-  
-    // {
-    //     path:"/register",
-    //     element: <Register/>
-    // },
-])
+  // {
+  //     path:"/register",
+  //     element: <Register/>
+  // },
+]);

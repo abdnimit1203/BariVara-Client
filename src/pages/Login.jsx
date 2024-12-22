@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { FaRegUser, FaUnlockAlt } from "react-icons/fa";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginUser } from "../API/api";
 import toast from "react-hot-toast";
@@ -49,41 +49,26 @@ const Login = () => {
         />
       </div>
       <div
-        className={` flex flex-col gap-2  text-black bg-white shadow-xl items-center justify-center pt-8 w-full mx-auto sm:w-fit xs:rounded-r-xl rounded-se-[60px] absolute bottom-0 -left-16 sm:static transition-all transform sm:flex-1 ${
-          isLoaded ? "translate-x-16 sm:translate-x-0" : ""
+        className={` flex flex-col gap-2  text-black bg-white shadow-xl items-center justify-center pt-8 w-full mx-auto sm:w-fit xs:rounded-r-xl rounded-se-[60px] absolute bottom-0 -left-36 sm:static transition-all transform sm:flex-1 ${
+          isLoaded ? "translate-x-36 sm:translate-x-0" : ""
         } duration-[1000ms] ease-in-out`}
       >
         {/* Form Headings */}
-        <div className=" bg-neutral px-10 rounded-t-full ">
+        <div className="glass bg-neutral px-6 sm:px-10 rounded-t-full ">
           <Link to={"/"}>
             <img
               src="/logo.png"
               alt="logo"
-              className="w-24 drop-shadow-lg animate-wave"
+              className="w-20 sm:w-24 drop-shadow-lg animate-wave"
             />
           </Link>
         </div>
-        <h2 className="text-3xl font-bold">LOG IN</h2>
-        <h2 className="text-lg font-bold opacity-70">Lets Hop In </h2>
-        <p className="w-[80%] mx-auto text-center">
-          Login and start insert and calculate data!
-        </p>
-        <section className="flex gap-6 flex-center ">
-          <span className="p-2  border-2 rounded-xl text-2xl text-blue-600  ">
-            <GrFacebookOption />
-          </span>
-          <span className="p-2  border-2 rounded-xl text-2xl  ">
-            <FcGoogle />
-          </span>
-          <span className="p-2  border-2 rounded-xl text-2xl text-cyan-700  ">
-            <FaLinkedinIn />
-          </span>
-        </section>
+        <h2 className="text-3xl font-bold mt-6">Login</h2>
 
         {/* FORM STARTS */}
         <form
           onSubmit={handleSubmit}
-          className="   rounded px-8 pt-6 pb-8 w-[22rem] md:w-96 "
+          className="   rounded px-8 pt-6 pb-8 w-[22rem] md:w-96 space-y-6"
         >
           {error && (
             <p className="text-red-500 flex gap-5 pb-4 ">
@@ -91,14 +76,20 @@ const Login = () => {
               {error}
             </p>
           )}
-          <div className="mb-4">
-            <label htmlFor="userName" className="block  mb-2 text-lg">
+          <div className="mb-4 relative">
+            <label
+              htmlFor="userName"
+              className="block  mb-2 text-sm sm:text-lg"
+            >
               Username
             </label>
+            <FaRegUser className="opacity-50 absolute bottom-3 -left-2 sm:bottom-5" />
+
             <input
               type="text"
-              className="w-full p-3 mt-1  rounded shadow appearance-none px-3 bg-transparent border focus:outline-primary"
+              className="w-full p-1.5 sm:p-3 mt-1  rounded border-b-2 appearance-none px-3 bg-transparent   focus:border-b-primary focus:outline-none"
               id="userName"
+              placeholder="Type your usename"
               value={formData.userName}
               onChange={(e) =>
                 setFormData({ ...formData, userName: e.target.value })
@@ -106,14 +97,20 @@ const Login = () => {
               required
             />
           </div>
-          <div className="mb-6">
-            <label htmlFor="password" className="block  mb-2 text-lg">
+          <div className="mb-6 relative">
+            <label
+              htmlFor="password"
+              className="block  mb-2 text-base sm:text-lg"
+            >
               Password
             </label>
+            <FaUnlockAlt className="opacity-50 absolute bottom-3 -left-2 sm:bottom-5" />
+
             <input
               type="password"
               id="password"
-              className="w-full p-3 mt-1 border rounded bg-transparent  shadow appearance-none px-3  focus:outline-primary"
+              className="w-full p-1.5 sm:p-3 mt-1  rounded border-b-2 appearance-none px-3 bg-transparent   focus:border-b-primary focus:outline-none"
+              placeholder="Type your password"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
@@ -121,10 +118,30 @@ const Login = () => {
               required
             />
           </div>
-          <button className="bg-primary hover:bg-cyan-500 text-white  font-bold py-2 px-4 rounded w-full">
+          <button className="bg-gradient-to-r from-cyan-500 via-primary to-cyan-500 hover:from-cyan-400 hover:to-cyan-400 text-white transition-all duration-500  font-bold py-2  px-4 rounded-full w-full ">
             Login
           </button>
         </form>
+        <section className="flex  gap-6 flex-center ">
+          <span className="p-2  border-2 rounded-xl text-base sm:text-2xl text-blue-600  ">
+            <GrFacebookOption />
+          </span>
+          <span className="p-2  border-2 rounded-xl text-base sm:text-2xl  ">
+            <FcGoogle />
+          </span>
+          <span className="p-2  border-2 rounded-xl text-base sm:text-2xl text-cyan-700  ">
+            <FaLinkedinIn />
+          </span>
+        </section>
+        <p className="text-center leading-10 pb-5 sm:pb-2 text-gray-600">
+          Or create a new account <br />
+          <Link
+            to={"/login"}
+            className="font-semibold text-primary uppercase hover:text-lg transition-all duration-500"
+          >
+            Sign Up
+          </Link>
+        </p>
       </div>
     </div>
   );
