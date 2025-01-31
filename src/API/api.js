@@ -34,3 +34,7 @@ export const updateMeterReadingById = (id, data) =>
   API.put(`/meterReadings/${id}`, data);
 export const updatePaymentById = (id, data) =>
   API.put(`/monthlyBill/${id}`, data);
+
+// Delete by ID
+export const DeleteMeterReadingById = (id, data) =>
+  API.delete(`/meterReadings/${id}`, data);

@@ -86,7 +86,7 @@ const MonthlyBillsTable = () => {
     selectedMonth,
     selectedYear
   );
-  console.log("NEW DATA :", monthlyBillsData);
+  console.log("NEW DATA :", monthlyBillsData[0]?.bills);
 
   return (
     <CompoWrapper>
@@ -145,7 +145,7 @@ const MonthlyBillsTable = () => {
                 // const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
                 //   (item2) => item2.roomNo === item.roomNo
                 // );
-                const myData = monthlyBillsData?.find(
+                const myData = monthlyBillsData[0]?.bills?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );
                 return (
@@ -159,7 +159,7 @@ const MonthlyBillsTable = () => {
                       Name: {item?.leaseholder[0]?.name}
                     </td>
                     <td className="font-semibold text-center border-l-2 w-[35%]">
-                      {monthlyBillsData?.find(
+                      {monthlyBillsData[0]?.bills?.find(
                         (item2) => item2.roomNo === item.roomNo
                       ) || item.roomNo === "3" ? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">

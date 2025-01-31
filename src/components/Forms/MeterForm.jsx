@@ -56,23 +56,25 @@ const MeterForm = ({ roomData, month, year, refetch, refetch2 }) => {
       //     toast.error(error.response.data);
       //   });
 
+  // Post request to INSERT Meter Data
       try {
         const { data } = await fetchMonthlyData(formData);
         console.log(data);
         toast.success("meter data submitted!");
+        // Post request to Monthly Bill data creation
         try {
           const { data2 } = await createMonthlyBill(formData2);
           console.log(data2);
           toast.success("Monthly  data created!");
-        } catch (err) {
-          console.log(err.response?.data?.message || "Invalid credentials!");
-          toast.error(err.response?.data.message);
+        } catch (err2) {
+          console.log(err2.response?.data?.message || "Invalid credentials!");
+          toast.error(err2.response?.data?.error);
         }
         reset();
         refetch2();
       } catch (err) {
         console.log(err.response?.data?.message || "Invalid credentials!");
-        toast.error(err.response?.data.message);
+        toast.error(err.response?.data?.message || "Monthly Database error!");
       }
     }
   };

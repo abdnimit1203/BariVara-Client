@@ -22,7 +22,7 @@ const BillCalculations = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  console.log("Monthly Data:",myData);
+  console.log(myData);
 
   // ------------------- PRINT --------------------
   const printRef = useRef();

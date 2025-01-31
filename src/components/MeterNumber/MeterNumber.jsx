@@ -9,6 +9,10 @@ import useRooms from "../../hooks/useRooms";
 import Loader from "../../utils/Loader";
 import UniversalModal from "./../Modals/UniversalModal";
 import MeterEditModal from "../Modals/MeterEditModal";
+import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { DeleteMeterReadingById } from "../../API/api";
 
 const MeterNumber = () => {
   const now = new Date();
@@ -70,6 +74,39 @@ const MeterNumber = () => {
     setSelectedEndMonth(event.target.value);
   };
 
+  // Delete Meter Reading
+  const handleDelete = (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to get the meter details!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes - remove data",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const { data } = await DeleteMeterReadingById(id);
+          console.log(data);
+          Swal.fire({
+            position: "top-end",
+            text: `Meter Data has been deleted`,
+            showConfirmButton: false,
+            timer: 2500,
+            icon: 'success'
+            
+          }) 
+          refetch2();
+      
+        } catch (err) {
+          console.log(err.response?.data?.message || "Invalid credentials!");
+          toast.error(err.response?.data.error);
+        }
+      }
+    });
+  };
   return (
     <CompoWrapper>
       <HeaderText
@@ -154,6 +191,11 @@ const MeterNumber = () => {
                             month={selectedEndMonth}
                             year={year}
                           />
+                          <button
+                            onClick={() => handleDelete(meterReading?._id)}
+                          >
+                            <MdDelete className="text-xl text-error" />
+                          </button>
                         </span>
                       ) : ["12", "13", "14"].includes(item?.roomNo) &&
                         !insertedWaterMeter ? (
