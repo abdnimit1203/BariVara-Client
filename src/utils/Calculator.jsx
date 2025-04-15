@@ -35,29 +35,28 @@ const Calculator = () => {
       </div>
       <div className="grid grid-cols-4 gap-4">
         <button
-          onClick={() => handleClick("1")}
+          onClick={() => handleClick("7")}
           className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
         >
-          1
+          7
         </button>
         <button
-          onClick={() => handleClick("2")}
+          onClick={() => handleClick("8")}
           className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
         >
-          2
+          8
         </button>
         <button
-          onClick={() => handleClick("3")}
+          onClick={() => handleClick("9")}
           className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
         >
-          3
+          9
         </button>
         <button
-          onClick={() => handleClick("+")}
-          className="p-4 text-xl bg-orange-500 text-white rounded-lg  hover:bg-orange-600"
+          onClick={() => handleClick("/")}
+          className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
         >
-          <FiPlus className="inline text-2xl" />
-
+          /
         </button>
 
         <button
@@ -78,36 +77,36 @@ const Calculator = () => {
         >
           6
         </button>
-        <button
-          onClick={() => handleClick("-")}
-          className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
-        >
-          -
-        </button>
 
-        <button
-          onClick={() => handleClick("7")}
-          className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
-        >
-          7
-        </button>
-        <button
-          onClick={() => handleClick("8")}
-          className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
-        >
-          8
-        </button>
-        <button
-          onClick={() => handleClick("9")}
-          className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
-        >
-          9
-        </button>
         <button
           onClick={() => handleClick("*")}
           className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
         >
           ✕
+        </button>
+        <button
+          onClick={() => handleClick("1")}
+          className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
+        >
+          1
+        </button>
+        <button
+          onClick={() => handleClick("2")}
+          className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
+        >
+          2
+        </button>
+        <button
+          onClick={() => handleClick("3")}
+          className="p-4 text-xl bg-gray-200 rounded-lg hover:bg-gray-300"
+        >
+          3
+        </button>
+        <button
+          onClick={() => handleClick("-")}
+          className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+        >
+          -
         </button>
 
         <button
@@ -129,10 +128,10 @@ const Calculator = () => {
           =
         </button>
         <button
-          onClick={() => handleClick("/")}
-          className="p-4 text-xl bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+          onClick={() => handleClick("+")}
+          className="p-4 text-xl bg-orange-500 text-white rounded-lg  hover:bg-orange-600"
         >
-          /
+          <FiPlus className="inline text-2xl" />
         </button>
       </div>
     </div>

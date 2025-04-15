@@ -7,6 +7,7 @@ import { GrFacebookOption } from "react-icons/gr";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { BiSolidErrorAlt } from "react-icons/bi";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [formData, setFormData] = useState({ userName: "", password: "" });
@@ -16,6 +17,8 @@ const Login = () => {
   // for animation
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Password visibility
+  const [showPassword, setShowPassword] = useState(false);
   // Trigger the transition once the component is mounted
   useEffect(() => {
     // After the page loads, set the state to trigger the transition
@@ -107,7 +110,7 @@ const Login = () => {
             <FaUnlockAlt className="opacity-50 absolute bottom-3 -left-2 sm:bottom-5" />
 
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               className="w-full p-1.5 sm:p-3 mt-1  rounded border-b-2 appearance-none px-3 bg-transparent   focus:border-b-primary focus:outline-none"
               placeholder="Type your password"
@@ -117,6 +120,13 @@ const Login = () => {
               }
               required
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-14 transform -translate-y-1/2 text-gray-500 hover:text-primary"
+            >
+              {showPassword ? <FaEyeSlash size={22} /> : <FaEye size={22} />}
+            </button>
           </div>
           <button className="bg-gradient-to-r from-cyan-500 via-primary to-cyan-500 hover:from-cyan-400 hover:to-cyan-400 text-white transition-all duration-500  font-bold py-2  px-4 rounded-full w-full ">
             Login
