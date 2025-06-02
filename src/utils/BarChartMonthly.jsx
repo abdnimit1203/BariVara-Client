@@ -38,7 +38,7 @@ const BarChartMonthly = ({ bills }) => {
 
   return (
     <div className="bg-base-100 p-4 rounded-lg shadow-lg mt-4">
-      <h2 className="text-lg font-semibold mb-2 bg-green-200 p-2">
+      <h2 className="text-md sm:text-lg font-semibold mb-2 bg-green-200 p-2">
         মাসিক বাড়ি ভাড়া লিস্ট (Room-wise )
       </h2>
       {/* Toggler starts */}
@@ -58,10 +58,10 @@ const BarChartMonthly = ({ bills }) => {
 </div>
       {/* Toggler ends */}
       {bills.length > 0 && (
-  <ResponsiveContainer width="100%" height={300}>
+  <ResponsiveContainer width="115%" height={350} className={`-ml-8`}>
     <BarChart
       data={chartData}
-      margin={{ top: 20, right: 20, left: 0, bottom: 60 }}
+      margin={{ top: 40, right: 20, left: 0, bottom: 60 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis
@@ -70,8 +70,9 @@ const BarChartMonthly = ({ bills }) => {
         textAnchor="end"
         interval={0}
         height={80}
+        className="text-sm sm:text-base "
       />
-      <YAxis />
+      <YAxis className="text-xs sm:text-base"    tickCount={6}/>
       <Tooltip />
       <Bar
         dataKey={barType}
