@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { getMonth, getYear } from "date-fns";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useMonthlyBills from "../../hooks/useMonthlyBills";
+import InfoTooltip from "../../utils/InfoTooltip";
 
 const monthNames = [
   "January",
@@ -41,8 +43,13 @@ const MonthlyBillSelector = () => {
     (sum, item) => sum + (item.paidAmount || 0),
     0
   );
+  const paidCount = monthlyBillsData[0]?.bills.filter(
+    (item) => item.paid !== "false"
+  ).length;
   console.log("Total Rent = ", totalRent);
   console.log("Total Collected = ", totalCollected);
+  console.log("Total Vara Payed = ", paidCount);
+
   useEffect(() => {
     console.log("NEW DATA :", monthlyBillsData[0]?.bills);
   }, [monthlyBillsData]);
@@ -68,9 +75,16 @@ const MonthlyBillSelector = () => {
       <div className="flex text-center  justify-between items-center px-2 py-3 gap-3">
         <div className="rounded-lg  px-2 py-3 font-semibold flex flex-col w-full bg-blue-400 text-white  shadow-md border">
           <p className="text-sm  underline-offset-4 underline pb-2">
-            Total Rooms
+            <span>Total Rooms Data</span>
+            <span >
+              <InfoTooltip
+                tipTexts="পানি বিলসহ তাই ১ টি বেশি গণনায় "
+                position="top"
+              />
+            </span>
           </p>
-          <p className="text-xl">15</p>
+
+          <p className="text-xl">{monthlyBillsData[0]?.bills?.length}</p>
         </div>
         <div className="rounded-lg  px-2 py-3 font-semibold flex flex-col w-full text-white bg-red-500  shadow-md border">
           <p className="text-sm underline-offset-4 underline pb-2">
@@ -80,10 +94,9 @@ const MonthlyBillSelector = () => {
             4/15 <span className="text-xs ">(9 left)</span>
           </p>
         </div>
-       
       </div>
       <div className="flex text-center  justify-between items-center px-2 py-3 gap-3">
-      <div className="rounded-lg  px-2 py-3 font-semibold flex flex-col w-full bg-warning  shadow-md border">
+        <div className="rounded-lg  px-2 py-3 font-semibold flex flex-col w-full bg-warning  shadow-md border">
           <p className="text-sm  underline-offset-4 underline pb-2">
             Total Rent
           </p>
@@ -95,8 +108,8 @@ const MonthlyBillSelector = () => {
           </p>
           <p className="text-xl">৳ {totalCollected}</p>
         </div>
-       
       </div>
+      {/* charts */}
     </div>
   );
 };

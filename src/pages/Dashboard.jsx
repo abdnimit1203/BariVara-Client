@@ -2,15 +2,16 @@ import Lottie from "lottie-react";
 import loaderAnimation from "../../public/dash_calc_anim.json"; // adjust path
 import useMonthlyBills from "../hooks/useMonthlyBills";
 import MonthlyBillSelector from "../components/MonthlyBillSelector/MonthlyBillSelector";
+import MonthlyDataDashboard from "../components/MonthlyBillSelector/MonthlyDataDashboard";
 
 const Dashboard = () => {
-    const date = new Date()
-    console.log(date.getMonth())
+  const date = new Date();
+  console.log(date.getMonth());
   const [monthlyBillsData, isLoading4, refetch4] = useMonthlyBills(
     "March",
     2025
   );
-  console.log(monthlyBillsData)
+  console.log(monthlyBillsData);
   return (
     <div className="">
       <div className="flex text-center  bg-gradient-to-tr from-primary via-cyan-400 to-white justify-between items-center px-8">
@@ -29,9 +30,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      
       <div>
-        <MonthlyBillSelector/>
+        <MonthlyDataDashboard />
       </div>
     </div>
   );
