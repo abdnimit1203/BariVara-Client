@@ -117,7 +117,7 @@ const Login = () => {
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
-              }
+            }
               required
             />
             <button
