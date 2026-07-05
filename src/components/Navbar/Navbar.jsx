@@ -25,18 +25,20 @@ const Navbar = () => {
 
   const navlinks = (
     <>
-      <NavLink
-        to="/dashboard"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
-            : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-        }
-      >
-        <RxDashboard  className="md:hidden inline text-xl mr-3" /> Dashboard
-      </NavLink>
+      {user && (
+        <NavLink
+          to="/dashboard"
+          className={({ isActive, isPending }) =>
+            isPending
+              ? "pending"
+              : isActive
+              ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
+              : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
+          }
+        >
+          <RxDashboard className="md:hidden inline text-xl mr-3" /> Dashboard
+        </NavLink>
+      )}
       <NavLink
         to="/"
         className={({ isActive, isPending }) =>

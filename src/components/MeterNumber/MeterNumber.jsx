@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { getMonth, getYear } from "date-fns";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import HeaderText from "../../utils/HeaderText";
 import MeterForm from "../Forms/MeterForm";
 import { FcDisplay } from "react-icons/fc";
@@ -13,6 +16,7 @@ import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { DeleteMeterReadingById } from "../../API/api";
+import { getPreviousMonthAndYear } from "../../utils/getPreviousMonthYear";
 
 const MeterNumber = () => {
   const now = new Date();
@@ -30,48 +34,48 @@ const MeterNumber = () => {
     "November",
     "December",
   ];
-  const month = monthNames[now.getMonth()];
-  const year = now.getFullYear();
-  const [selectedEndMonth, setSelectedEndMonth] = useState(month);
-  const [insertedWaterMeter, setInsertedWaterMeter] = useState(false);
 
-  // console.log(`Current Month: ${month}`);
-  // console.log(`Current Year: ${year}`);
+  const defaultDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  const [selectedDate, setSelectedDate] = useState(defaultDate);
+  const [selectedEndMonth, setSelectedEndMonth] = useState(monthNames[now.getMonth()]);
+  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+  const [insertedWaterMeter, setInsertedWaterMeter] = useState(false);
 
   // DATA FETCHING
   const [rooms, isLoading, refetch] = useRooms();
-  console.log(rooms);
 
   const [monthlyData, isLoading2, refetch2] = useMonthlyMeterData(
     selectedEndMonth,
-    year
+    selectedYear
   );
-  console.log("monthlyData : ", monthlyData);
 
-  //  water meter inserted login
+  const { previousMonth, previousYear } = getPreviousMonthAndYear(
+    selectedEndMonth,
+    selectedYear
+  );
+  const [prevMonthlyData] = useMonthlyMeterData(previousMonth, previousYear);
+
+  //  water meter inserted logic
   useEffect(() => {
     if (
       monthlyData[0]?.meterReadings.find(
         (room) => room.roomNo == "Water Meter (পানি)"
       )
     ) {
-      console.log("ACHE");
       setInsertedWaterMeter(true);
-      console.log("Water meter is present");
     } else {
-      console.log("Water meter not present");
       setInsertedWaterMeter(false);
     }
   }, [monthlyData]);
 
   useEffect(() => {
-    if (selectedEndMonth) {
-      refetch2();
-      console.log("RUNNED");
-    }
-  }, [refetch2, selectedEndMonth]);
-  const handleChange = (event) => {
-    setSelectedEndMonth(event.target.value);
+    refetch2();
+  }, [refetch2, selectedEndMonth, selectedYear]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedEndMonth(monthNames[getMonth(date)]);
+    setSelectedYear(getYear(date));
   };
 
   // Delete Meter Reading
@@ -111,25 +115,22 @@ const MeterNumber = () => {
     <CompoWrapper>
       <HeaderText
         title={"Insert Meter Number 🔢"}
-        subTitle={`Current Month : ${month} , ${year}`}
+        subTitle={`Selected : ${selectedEndMonth} , ${selectedYear}`}
       />
-      <div className="grid grid-cols-3 pb-2">
-        <p className="border w-fit p-2 rounded-full m-2 col-span-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-3">
+        <p className="border w-fit p-2 rounded-full">
           Meter inserted: {monthlyData[0]?.meterReadings?.length} / 15
         </p>
-        <select
-          id="month"
-          value={selectedEndMonth}
-          onChange={handleChange}
-          className="border-2 border-secondary rounded-lg p-2 "
-        >
-          <option value="">--Select current month</option>
-          {monthNames.map((item, index) => (
-            <option key={index} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2 bg-blue-950 text-white px-3 py-2 rounded-lg">
+          <span className="text-sm font-semibold">মাস ও সাল:</span>
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            dateFormat="MMMM yyyy"
+            showMonthYearPicker
+            className="text-black rounded p-1 text-sm w-36"
+          />
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-t-lg ">
@@ -164,6 +165,11 @@ const MeterNumber = () => {
                 const meterReading = monthlyData[0]?.meterReadings?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );
+                const prevMeterReading = prevMonthlyData?.[0]?.meterReadings?.find(
+                  (item2) => item2.roomNo === item.roomNo
+                );
+                const prevReadingNum = prevMeterReading?.meterNumber ?? null;
+
                 return (
                   <tr key={index} className="h-12 odd:bg-[#f8f8f8] ">
                     <td className="p-3 font-semibold leading-relaxed">
@@ -179,24 +185,31 @@ const MeterNumber = () => {
                     </td>
                     <td className="font-semibold text-center border-l-2 ">
                       {meterReading ? (
-                        <span className="flex justify-center items-center  gap-2">
-                          <FcDisplay className="inline text-xl border pb-1 border-b-2 border-primary" />
+                        <div className="flex flex-col items-center justify-center py-1">
+                          <span className="flex justify-center items-center gap-2">
+                            <FcDisplay className="inline text-xl border pb-1 border-b-2 border-primary" />
 
-                          {/* {meterReading.meterNumber.toLocaleString("bn-BD", { useGrouping: false })} */}
-                          {meterReading.meterNumber}
+                            {/* {meterReading.meterNumber.toLocaleString("bn-BD", { useGrouping: false })} */}
+                            {meterReading.meterNumber}
 
-                          <MeterEditModal
-                            meterReading={meterReading}
-                            refetch2={refetch2}
-                            month={selectedEndMonth}
-                            year={year}
-                          />
-                          <button
-                            onClick={() => handleDelete(meterReading?._id)}
-                          >
-                            <MdDelete className="text-xl text-error" />
-                          </button>
-                        </span>
+                            <MeterEditModal
+                              meterReading={meterReading}
+                              refetch2={refetch2}
+                              month={selectedEndMonth}
+                              year={selectedYear}
+                            />
+                            <button
+                              onClick={() => handleDelete(meterReading?._id)}
+                            >
+                              <MdDelete className="text-xl text-error" />
+                            </button>
+                          </span>
+                          {prevReadingNum !== null && (
+                            <p className="text-[10px] opacity-40 mt-0.5 truncate leading-tight">
+                              prev: {prevReadingNum}
+                            </p>
+                          )}
+                        </div>
                       ) : ["12", "13", "14"].includes(item?.roomNo) &&
                         !insertedWaterMeter ? (
                         <span className="text-error animate-pulse duration-300">
@@ -206,9 +219,10 @@ const MeterNumber = () => {
                         <MeterForm
                           roomData={item}
                           month={selectedEndMonth}
-                          year={year}
+                          year={selectedYear}
                           refetch={refetch}
                           refetch2={refetch2}
+                          prevReading={prevReadingNum}
                         />
                       )}
                     </td>

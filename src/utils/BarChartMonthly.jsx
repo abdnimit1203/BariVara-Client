@@ -53,7 +53,7 @@ const BarChartMonthly = ({ bills }) => {
     onClick={() => setBarType("currentBill")}
     className={`btn btn-sm ${barType === "currentBill" ? "btn-primary" : "btn-outline"}`}
   >
-    Show Current Bill
+    Show Electric Bill
   </button>
 </div>
       {/* Toggler ends */}

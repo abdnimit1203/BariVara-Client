@@ -126,7 +126,7 @@ const MonthlyDataDashboard = () => {
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-blue-100 rounded-lg p-3 shadow-md">
             <p className="font-semibold text-amber-600  mb-1">
-              Total Current Bill
+              Total Electric Bill
             </p>
             <p>৳ ⚡{totalCurrentBill}</p>
           </div>

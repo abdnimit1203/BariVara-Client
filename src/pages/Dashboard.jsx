@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import loaderAnimation from "../../public/dash_calc_anim.json"; // adjust path
+import loaderAnimation from "../dash_calc_anim.json";
 import useMonthlyBills from "../hooks/useMonthlyBills";
 import MonthlyBillSelector from "../components/MonthlyBillSelector/MonthlyBillSelector";
 import MonthlyDataDashboard from "../components/MonthlyBillSelector/MonthlyDataDashboard";

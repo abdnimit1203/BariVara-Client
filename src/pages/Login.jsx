@@ -146,7 +146,7 @@ const Login = () => {
         <p className="text-center leading-10 pb-5 sm:pb-2 text-gray-600">
           Or create a new account <br />
           <Link
-            to={"/login"}
+            to={"/register"}
             className="font-semibold text-primary uppercase hover:text-lg transition-all duration-500"
           >
             Sign Up

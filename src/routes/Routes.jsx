@@ -2,11 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
-
 import SingleRoom from "../components/SingleRoom/SingleRoom";
 import MeterNumber from "../components/MeterNumber/MeterNumber";
 import MonthlyBills from "../pages/MonthlyBills";
 import Login from "../pages/Login";
+import Register from "../pages/Register";
 import PrivateRoutes from "./PrivateRoutes";
 import Dashboard from "../pages/Dashboard";
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -56,9 +56,8 @@ export const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
-
-  // {
-  //     path:"/register",
-  //     element: <Register/>
-  // },
+  {
+    path: "/register",
+    element: <Register />,
+  },
 ]);
