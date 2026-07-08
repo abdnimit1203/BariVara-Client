@@ -35,8 +35,9 @@ const Login = () => {
       localStorage.setItem("token", data.token);
       toast.success("Login Successful!");
       localStorage.setItem("loginInfo", JSON.stringify(data.user));
-      navigate(location?.state ? location.state : "/");
-      navigate("/");
+      window.dispatchEvent(new Event("auth-change"));
+      const targetRoute = location?.state ? location.state : "/";
+      navigate(targetRoute);
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials!");
     }
@@ -46,13 +47,14 @@ const Login = () => {
     <div className="bg-center bg-cover min-h-screen sm:flex-center sm:flex    relative ">
       <div className="bg-black z-10 w-full bg-cover sm:flex-1">
         <img
-          src="/house1.jpg"
+          src="/aerial.jpg"
+          
           alt="Background image ..."
           className="h-screen object-cover sm:opacity-80 w-screen"
         />
       </div>
       <div
-        className={` flex flex-col gap-2  text-black bg-white shadow-xl items-center justify-center pt-8 w-full mx-auto sm:w-fit xs:rounded-r-xl rounded-se-[60px] absolute bottom-0 -left-36 sm:static transition-all transform sm:flex-1 ${
+        className={` flex flex-col gap-2  text-black bg-white shadow-xl items-center justify-center pt-8 w-full mx-auto sm:w-fit xs:rounded-r-xl rounded-se-[60px] absolute bottom-0 -left-36  sm:static transition-all transform sm:flex-1 ${
           isLoaded ? "translate-x-36 sm:translate-x-0" : ""
         } duration-[1000ms] ease-in-out`}
       >

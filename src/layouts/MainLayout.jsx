@@ -13,7 +13,7 @@ const MainLayout = () => {
       }, []);
     return (
         <div>
-            <div>
+            <div className="sticky top-0 z-[1000] shadow-lg">
                 <Navbar/>
             </div>
             <div className="min-h-screen">

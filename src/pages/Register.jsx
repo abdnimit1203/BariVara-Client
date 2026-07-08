@@ -74,7 +74,7 @@ const Register = () => {
       {/* Left side image */}
       <div className="bg-black z-10 w-full bg-cover sm:flex-1">
         <img
-          src="/house1.jpg"
+          src="/loginbg.jpeg"
           alt="Background"
           className="h-screen object-cover sm:opacity-80 w-screen"
         />

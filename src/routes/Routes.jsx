@@ -2,14 +2,12 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
-import SingleRoom from "../components/SingleRoom/SingleRoom";
-import MeterNumber from "../components/MeterNumber/MeterNumber";
-import MonthlyBills from "../pages/MonthlyBills";
+import MyRooms from "../pages/MyRooms";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import PrivateRoutes from "./PrivateRoutes";
 import Dashboard from "../pages/Dashboard";
-const baseURL = import.meta.env.VITE_BASE_URL;
+import MonthlyBills from "../pages/MonthlyBills";
+import MeterNumber from "../components/MeterNumber/MeterNumber";
 
 export const router = createBrowserRouter([
   {
@@ -22,42 +20,29 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/meterNumber",
-        element: (
-          <PrivateRoutes>
-            <MeterNumber />
-          </PrivateRoutes>
-        ),
+        path: "/my-rooms",
+        element: <MyRooms />,
       },
       {
-        path: "/monthlyBills",
-        element: <MonthlyBills />,
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
       {
         path: "/dashboard",
         element: <Dashboard />,
       },
       {
-        path: "/singleroom/:id",
-        element: (
-          <PrivateRoutes>
-            <SingleRoom />
-          </PrivateRoutes>
-        ),
-        loader: ({ params }) => fetch(`${baseURL}/rooms/${params.id}`),
+        path: "/monthlyBills",
+        element: <MonthlyBills />,
       },
-      // {
-      //     path:'/dashboard',
-      //     element: <Dashboard/>
-      // }
+      {
+        path: "/meterNumber",
+        element: <MeterNumber />,
+      },
     ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
   },
 ]);

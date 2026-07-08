@@ -5,9 +5,9 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Remove user data from local storage
     localStorage.removeItem("loginInfo");
     localStorage.removeItem("token");
+    window.dispatchEvent(new Event("auth-change"));
     // Redirect to the home page
     navigate("/");
     window.location.reload();

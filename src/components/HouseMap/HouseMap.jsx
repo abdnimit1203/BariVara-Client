@@ -123,15 +123,14 @@ const HouseMap = () => {
                   .map((item, index) => (
                     <div
                       key={index}
-                      className={`${
-                        item.roomNo === "WashRoom"
-                          ? "bg-sky-300"
-                          : item.roomNo === "Water Meter (পানি)"
+                      className={`${item.roomNo === "WashRoom"
+                        ? "bg-sky-300"
+                        : item.roomNo === "Water Meter (পানি)"
                           ? "bg-blue-600"
                           : item.roomNo === "Mango Tree (আমগাছ)"
-                          ? "bg-lime-500"
-                          : "bg-rose-700"
-                      } shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center h-20`}
+                            ? "bg-lime-500"
+                            : "bg-rose-700"
+                        } shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center h-20`}
                     >
                       <div className="flex-center gap-2 font-semibold">
                         {item.roomNo === "WashRoom" ? (
@@ -151,7 +150,7 @@ const HouseMap = () => {
                         </span>
                       </div>
                       {item.roomNo === "WashRoom" ||
-                      item.roomNo === "Mango Tree (আমগাছ)" ? (
+                        item.roomNo === "Mango Tree (আমগাছ)" ? (
                         <GiSun className="text-2xl text-orange-200" />
                       ) : (
                         <div>

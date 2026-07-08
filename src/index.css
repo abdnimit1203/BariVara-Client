@@ -4,8 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html[data-theme="dark"] body,
+html.dark body {
+  background: linear-gradient(to bottom right, #0b1120, #0f172a, #172033);
+  color: #f1f5f9;
+  min-height: 100vh;
 }
 .flex-center{
   display: flex;
