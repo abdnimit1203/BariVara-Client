@@ -22,11 +22,12 @@ const Clock = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center ">
-      <div className="text-3xl font-bold py-3 rounded-lg shadow-md">
+    <div className="flex flex-col items-center justify-center lg:flex-row ">
+      <div className="text-3xl font-bold py-3 rounded-lg shadow-md lg:text-sm lg:py-0">
         {formatTime(now)}
       </div>
-      <div className="border-t-2 rounded-lg p-2  text-gray-200">
+<hr className='hidden lg:block p-2 rotate-90' />
+      <div className="border-t-2 lg:border-t-0 rounded-lg p-2  text-gray-200">
         {formatDate(now)}
       </div>
     </div>

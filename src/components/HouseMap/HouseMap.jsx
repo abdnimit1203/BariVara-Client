@@ -19,7 +19,7 @@ const HouseMap = () => {
       ) : (
         <div className="text-white bg-gray-100 mb-6 ">
           {/* There is a navigator compass on bottom left . This is  */}
-          
+
           {/* Tin Shed(টিনশেড) MAP AREA STARTS */}
           <section>
             <div>
@@ -34,10 +34,10 @@ const HouseMap = () => {
             </div>
             {/* Divider image portion starts */}
             <div className="flex items-center flex-col">
-            <div className="bg-sky-200 w-[16%] h-4 border-2 border-sky-300"></div>
-            <div className="bg-sky-200 w-[14%] h-4 border-2 border-sky-300"></div>
-            <div className="bg-sky-200 w-[12%] h-4 border-2 border-sky-300"></div>
-          </div>
+              <div className="bg-sky-200 w-[16%] h-4 border-2 border-sky-300"></div>
+              <div className="bg-sky-200 w-[14%] h-4 border-2 border-sky-300"></div>
+              <div className="bg-sky-200 w-[12%] h-4 border-2 border-sky-300"></div>
+            </div>
             <div className="grid grid-cols-5 gap-2">
               <div className="space-y-2 col-span-2">
                 {rooms
@@ -45,11 +45,12 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Tin Shed(টিনশেড)" &&
                       room.position === "right"
-                  ).sort((a, b) => a.roomNo - b.roomNo)
+                  )
+                  .sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}
-                      className="bg-blue-500 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center "
+                      className="bg-primary shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center "
                     >
                       <div className="flex-center gap-2 font-semibold">
                         <FaHouseChimneyUser className="flex-center" />
@@ -63,7 +64,7 @@ const HouseMap = () => {
                   ))}
               </div>
               <div className="h-full bg-sky-950 relative">
-                  <span className="w-2 h-full left-[45%] border-dotted border-2 absolute"></span>
+                <span className="w-2 h-full left-[45%] border-dotted border-2 absolute"></span>
               </div>
               <div className="space-y-2 col-span-2">
                 {rooms
@@ -71,11 +72,12 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Tin Shed(টিনশেড)" &&
                       room.position === "left"
-                  ).sort((a, b) => a.roomNo - b.roomNo)
+                  )
+                  .sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}
-                      className="bg-blue-500 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center "
+                      className="bg-primary shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center "
                     >
                       <div className="flex-center gap-2 font-semibold">
                         <FaHouseChimneyUser className="flex-center" />
@@ -116,18 +118,19 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Lal Gate(লাল গেইট)" &&
                       room.position === "right"
-                  ).sort((a, b) => a.roomNo - b.roomNo).map((item, index) => (
+                  )
+                  .sort((a, b) => a.roomNo - b.roomNo)
+                  .map((item, index) => (
                     <div
                       key={index}
-                      className={`${
-                        item.roomNo === "WashRoom"
-                          ? "bg-sky-300"
-                          : item.roomNo === "Water Meter (পানি)"
+                      className={`${item.roomNo === "WashRoom"
+                        ? "bg-sky-300"
+                        : item.roomNo === "Water Meter (পানি)"
                           ? "bg-blue-600"
                           : item.roomNo === "Mango Tree (আমগাছ)"
-                          ? "bg-lime-500"
-                          : "bg-rose-700"
-                      } shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center h-20`}
+                            ? "bg-lime-500"
+                            : "bg-rose-700"
+                        } shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center h-20`}
                     >
                       <div className="flex-center gap-2 font-semibold">
                         {item.roomNo === "WashRoom" ? (
@@ -147,7 +150,7 @@ const HouseMap = () => {
                         </span>
                       </div>
                       {item.roomNo === "WashRoom" ||
-                      item.roomNo === "Mango Tree (আমগাছ)" ? (
+                        item.roomNo === "Mango Tree (আমগাছ)" ? (
                         <GiSun className="text-2xl text-orange-200" />
                       ) : (
                         <div>
@@ -163,7 +166,8 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Lal Gate(লাল গেইট)" &&
                       room.position === "left"
-                  ).sort((a, b) => a.roomNo - b.roomNo)
+                  )
+                  .sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}
@@ -207,7 +211,9 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Kechi Gate(কেচি গেইট)" &&
                       room.position === "top"
-                  ).sort((a, b) => a.roomNo - b.roomNo).map((item, index) => (
+                  )
+                  .sort((a, b) => a.roomNo - b.roomNo)
+                  .map((item, index) => (
                     <div
                       key={index}
                       className="bg-amber-800 shadow-md hover:scale-105 rounded-md transition-all duration-200 font-medium py-2 flex  justify-between flex-col gap-2 items-center w-1/3 "
@@ -229,7 +235,8 @@ const HouseMap = () => {
                     (room) =>
                       room.category === "Kechi Gate(কেচি গেইট)" &&
                       room.position === "bottom"
-                  ).sort((a, b) => a.roomNo - b.roomNo)
+                  )
+                  .sort((a, b) => a.roomNo - b.roomNo)
                   .map((item, index) => (
                     <div
                       key={index}

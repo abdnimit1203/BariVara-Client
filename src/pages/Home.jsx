@@ -1,26 +1,59 @@
-import HouseMap from "../components/HouseMap/HouseMap";
-import HeaderText from "../utils/HeaderText";
+import { useState } from "react";
+import HeroSearchSection from "../components/Home/HeroSearchSection";
+import DivisionFilterBar from "../components/Home/DivisionFilterBar";
+import FeaturedHouseGrid from "../components/Home/FeaturedHouseGrid";
+import LandlordBenefitsSection from "../components/Home/LandlordBenefitsSection";
+import CallToActionBanner from "../components/Home/CallToActionBanner";
+import ContactLandlordModal from "../components/Home/ContactLandlordModal";
 
 const Home = () => {
+  const [selectedDivision, setSelectedDivision] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedHouse, setSelectedHouse] = useState(null);
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   return (
-    <div className="max-w-[500px] mx-auto">
-      <HeaderText
-        title={"নুরেজা ভিলা"}
-        subTitle={"Holding:31 , Syed Ali munsi Road"}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Hero & Search Section */}
+      <HeroSearchSection
+        onSearch={handleSearch}
+        selectedDivision={selectedDivision}
+        setSelectedDivision={setSelectedDivision}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
       />
 
-      <h2 className="text-xl text-center font-bold bg-red-500 w-fit mx-auto px-5 pt-5  mb-2 rounded-t-full text-white">MAP</h2>
-      <img
-        src="compass.png"
-        alt="compass"
-        className="rounded-full border-2 border-red-600 pw w-16 fixed bottom-4 right-6 hover:animate-spin bg-[#ffffffe7]"
+      {/* Division Quick Filter Bar */}
+      <DivisionFilterBar
+        selectedDivision={selectedDivision}
+        setSelectedDivision={setSelectedDivision}
       />
-      <div className="h-12 w-full bg-sky-950 relative">
-        <span className="w-full h-1  border-dotted border-2 absolute top-[45%]"></span>
-        <span className="absolute bg-white p-1 rounded-lg text-xs font-semibold left-2 top-3">⬅Noagao</span>
-        <span className="absolute bg-white p-1 rounded-lg text-xs font-semibold right-2 top-3">Anwarsilk ➡</span>
-      </div>
-      <HouseMap />
+
+      {/* Featured Properties Grid */}
+      <FeaturedHouseGrid
+        selectedDivision={selectedDivision}
+        selectedCategory={selectedCategory}
+        searchTerm={searchTerm}
+        onSelectHouse={(house) => setSelectedHouse(house)}
+      />
+
+      {/* SaaS Feature Highlights for Landlords */}
+      <LandlordBenefitsSection />
+
+      {/* Call To Action Banner */}
+      <CallToActionBanner />
+
+      {/* Contact & Details Modal */}
+      {selectedHouse && (
+        <ContactLandlordModal
+          house={selectedHouse}
+          onClose={() => setSelectedHouse(null)}
+        />
+      )}
     </div>
   );
 };

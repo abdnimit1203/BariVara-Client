@@ -1,27 +1,34 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   daisyui: {
     themes: [
       {
-        mytheme: {
-        
-            "primary": "#0CC0DF",
-                    
-            "secondary": "#7ED957",
-                    
-            "accent": "#96d5f7",
-                    
-            "neutral": "#38393f",
-                    
-            "base-100": "#ffffff",
-                    
-            "info": "#fda4af",
-                    
-            "success": "#18b47b",
-                    
-            "warning": "#f0d447",
-                    
-            "error": "#f41042",
+        light: {
+          "primary": "#0CC0DF",
+          "secondary": "#7ED957",
+          "accent": "#96d5f7",
+          "neutral": "#38393f",
+          "base-100": "#ffffff",
+          "base-200": "#f8fafc",
+          "base-300": "#e2e8f0",
+          "info": "#fda4af",
+          "success": "#18b47b",
+          "warning": "#f0d447",
+          "error": "#f41042",
+        },
+        dark: {
+          "primary": "#0CC0DF",
+          "secondary": "#7ED957",
+          "accent": "#38bdf8",
+          "neutral": "#1e293b",
+          "base-100": "#0b1120", // Deep slate/blue-950 dark background
+          "base-200": "#172033",
+          "base-300": "#1e293b",
+          "info": "#38bdf8",
+          "success": "#36d399",
+          "warning": "#fbbd23",
+          "error": "#f87272",
         },
       },
     ],
@@ -32,6 +39,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+      },
       keyframes: {
         wave: {
           '0%': { transform: 'rotate(0.0deg)' },

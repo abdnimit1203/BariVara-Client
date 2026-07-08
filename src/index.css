@@ -1,11 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html[data-theme="dark"] body,
+html.dark body {
+  background: linear-gradient(to bottom right, #0b1120, #0f172a, #172033);
+  color: #f1f5f9;
+  min-height: 100vh;
 }
 .flex-center{
   display: flex;
@@ -15,4 +23,24 @@ body{
 }
 .btn-ok{
   background-color: blueviolet;
+}
+.font_secondary{
+  font-family: "Noto Sans Bengali", sans-serif;
+
+}
+/* SCROLLBAR CSS */
+ 
+html::-webkit-scrollbar {
+  width: 8px;
+
+}
+ 
+html::-webkit-scrollbar-track {
+  background: rgba(12, 0, 0, 0.596);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+html::-webkit-scrollbar-thumb {
+  background: rgb(36, 187, 207);
+  border-radius: 10px;
 }

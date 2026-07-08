@@ -12,6 +12,7 @@ import { getMonth, getYear } from "date-fns";
 import BillCalculations from "../BillCalculations/BillCalculations";
 import InfoTooltip from "../../utils/InfoTooltip";
 import { IoIosWarning } from "react-icons/io";
+import useMonthlyBills from "./../../hooks/useMonthlyBills";
 
 const MonthlyBillsTable = () => {
   const now = new Date();
@@ -32,7 +33,7 @@ const MonthlyBillsTable = () => {
 
   const month = monthNames[now.getMonth()];
   const year = now.getFullYear();
-
+  console.log(month, year);
   // Function for getting next month name
   const getNextMonth = (month) => {
     const index = monthNames.indexOf(month);
@@ -44,7 +45,10 @@ const MonthlyBillsTable = () => {
   };
 
   // Month Year Selector
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth() - 1, 1); // First day of the previous month
+  });
   const [selectedYear, setSelectedYear] = useState(getYear(selectedDate));
   const [selectedMonth, setSelectedMonth] = useState(
     monthNames[getMonth(selectedDate)]
@@ -52,7 +56,6 @@ const MonthlyBillsTable = () => {
   const [nextMonth, setNextMonth] = useState(
     getNextMonth(monthNames[getMonth(selectedDate)])
   );
-  const [waterMeter, setWaterMeter] = useState(0);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -65,6 +68,7 @@ const MonthlyBillsTable = () => {
 
   // Room data
   const [rooms, isLoading, refetch] = useRooms();
+  console.log(rooms);
 
   // Selected month data
   const [selectedMonthsData, isLoading2, refetch2] = useMonthlyMeterData(
@@ -77,14 +81,12 @@ const MonthlyBillsTable = () => {
     nextMonth,
     selectedYear
   );
-
-  // const prevWater = selectedMonthsData[0]?.meterReadings.find(
-  //   (item) => item.roomNo === "Water Meter (পানি)"
-  // );
-  // const nextWater = nextMonthsData[0]?.meterReadings.find(
-  //   (item) => item.roomNo === "Water Meter (পানি)"
-  // );
-  // console.log("NEXT ==",nextWater.meterNumber - prevWater.meterNumber)
+  // Monthly data at once
+  const [monthlyBillsData, isLoading4, refetch4] = useMonthlyBills(
+    selectedMonth,
+    selectedYear
+  );
+  console.log("NEW DATA :", monthlyBillsData[0]?.bills);
 
   return (
     <CompoWrapper>
@@ -106,14 +108,14 @@ const MonthlyBillsTable = () => {
             />
           </span>
           <span className="col-span-1">
-            <InfoTooltip tipTexts="চলতি মাসে বিল দেয়া হয় গত মাসের টি ।  তাই গত মাস সিলেক্ট করুন " />
+            <InfoTooltip tipTexts="ভাড়া উঠানো হয় গত মাসের (চলতি মাসের নয়)। তাই তাই গত মাস সিলেক্ট করুন " />
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
+        {/* <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
           <p>NEXT MONTH :</p>
           {nextMonth}
-        </div>
+        </div> */}
       </section>
       <div className="overflow-x-auto rounded-t-lg">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -132,20 +134,22 @@ const MonthlyBillsTable = () => {
             {rooms
               .filter(
                 (data) =>
-                  Number.isInteger(data.roomNo) === true ||
-                  data.roomNo === "Water Meter (পানি)"
+                  isNaN(data.roomNo) === false 
               )
               .sort((a, b) => a.roomNo - b.roomNo)
               .map((item, index) => {
-                const selectedMonthReading =
-                  selectedMonthsData[0]?.meterReadings?.find(
-                    (item2) => item2.roomNo === item.roomNo
-                  );
-                const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
+                // const selectedMonthReading =
+                //   selectedMonthsData[0]?.meterReadings?.find(
+                //     (item2) => item2.roomNo === item.roomNo
+                //   );
+                // const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
+                //   (item2) => item2.roomNo === item.roomNo
+                // );
+                const myData = monthlyBillsData[0]?.bills?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );
                 return (
-                  <tr key={index} className="h-12  odd:bg-[#f8f8f8]">
+                  <tr key={index} className="h-12  odd:bg-[#e7fdff]">
                     <td className="p-3 font-semibold leading-relaxed">
                       Room No:{" "}
                       <span className="text-white bg-primary p-1 rounded-full">
@@ -155,21 +159,24 @@ const MonthlyBillsTable = () => {
                       Name: {item?.leaseholder[0]?.name}
                     </td>
                     <td className="font-semibold text-center border-l-2 w-[35%]">
-                      {(selectedMonthReading && nextMonthReading) ||
-                      item?.roomNo === 3 ? (
+                      {monthlyBillsData[0]?.bills?.find(
+                        (item2) => item2.roomNo === item.roomNo
+                      ) || item.roomNo === "3" ? (
                         // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
                         //   <FaSackDollar className="inline text-xl text-secondary" />
                         //   {selectedMonthReading.meterNumber}
                         //   <FaEdit className="inline text-xl text-secondary ml-6" />
                         // </span>
                         <BillCalculations
-                          billingMonthMeter={selectedMonthReading}
-                          nextMonthMeter={nextMonthReading}
+                          room={item}
                           billingRoomNo={item.roomNo}
+                          selectedMonth={selectedMonth}
+                          myData={myData}
+                          refetch4={refetch4}
                         />
                       ) : (
                         <p className="flex-center text-error animate-pulse">
-                          <IoIosWarning className="text-lg mr-1"/>
+                          <IoIosWarning className="text-lg mr-1" />
                           Data missing
                         </p>
                       )}

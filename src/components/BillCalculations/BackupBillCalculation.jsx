@@ -22,7 +22,7 @@ const BillCalculations = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  console.log("Monthly Data:", myData);
+  console.log(myData);
 
   // ------------------- PRINT --------------------
   const printRef = useRef();
@@ -40,11 +40,7 @@ const BillCalculations = ({
     <div className="flex flex-col justify-center ">
       <div className="">
         <p className="flex justify-center text-center gap-2">
-          <FaSackDollar
-            className={`${
-              myData?.paid === "false" ? "text-error" : "text-secondary"
-            } inline text-xl `}
-          />
+          <FaSackDollar className={`${myData?.paid === "false" ? "text-error":"text-secondary"} inline text-xl `}/>
           {myData?.roomNo == undefined ? (
             <span>1800 টাকা</span>
           ) : (
@@ -253,12 +249,9 @@ const BillCalculations = ({
           {myData?.paid == "false" ? (
             <PaymentForm billID={myData._id} refetch4={refetch4} />
           ) : (
-            <>
-              <p className="btn-success btn btn-sm mt-2 text-white">
-                Already paid
-              </p>
-              <span className="block  text-xs opacity-60">Last Updated: {myData?.updatedAt}</span>
-            </>
+            <p className="btn-success btn btn-sm mt-2 text-white">
+              Already paid
+            </p>
           )}
         </UniversalModal>
       </div>
