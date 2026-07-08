@@ -80,8 +80,8 @@ const ContactLandlordModal = ({ house, onClose }) => {
               <span>সরাসরি কল করুন ({house.phone})</span>
             </a>
             <a
-              href={`https://wa.me/8801711890000?text=${encodeURIComponent(
-                `নমস্কার, আমি BariVara ওয়েবসাইট থেকে আপনার '${house.name}' প্রোপার্টি সম্পর্কে জানতে যোগাযোগ করছি।`
+              href={`https://wa.me/8801761609974?text=${encodeURIComponent(
+                `Hello, আমি BariVara ওয়েবসাইট থেকে আপনার '${house.name}' প্রোপার্টি সম্পর্কে জানতে যোগাযোগ করছি।`
               )}`}
               target="_blank"
               rel="noreferrer"
