@@ -90,46 +90,42 @@ const MonthlyBillsTable = () => {
 
   return (
     <CompoWrapper>
-      <section className="border-2 border-primary px-4 my-2 rounded-lg shadow-lg ">
+      <section className="border-2 border-primary bg-base-100 text-base-content px-4 my-2 rounded-2xl shadow-lg">
         <HeaderText
           title={"💵 Monthly Bill Page"}
           subTitle={`Current Month : ${month} , ${year}`}
         />
 
-        <div className="grid grid-cols-8 gap-2  w-[100%] p-2 items-center font-semibold ">
-          <p className="col-span-3">ভাড়ার মাস:</p>
+        <div className="grid grid-cols-8 gap-2 w-full p-2 items-center font-semibold">
+          <p className="col-span-3 text-base-content font-bold">ভাড়ার মাস:</p>
           <span className="col-span-4">
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
               dateFormat="MMMM yyyy"
               showMonthYearPicker
-              className="border-primary border-2 w-[100%] p-2 rounded-full font-semibold text-primary focus:outline-sky-600"
+              className="border-primary border-2 bg-base-100 text-primary w-full p-2 rounded-full font-bold focus:outline-primary"
             />
           </span>
           <span className="col-span-1">
-            <InfoTooltip tipTexts="ভাড়া উঠানো হয় গত মাসের (চলতি মাসের নয়)। তাই তাই গত মাস সিলেক্ট করুন " />
+            <InfoTooltip tipTexts="ভাড়া উঠানো হয় গত মাসের (চলতি মাসের নয়)। তাই গত মাস সিলেক্ট করুন" />
           </span>
         </div>
-
-        {/* <div className="grid grid-cols-2 gap-2  w-[100%] p-2 items-center font-semibold ">
-          <p>NEXT MONTH :</p>
-          {nextMonth}
-        </div> */}
       </section>
-      <div className="overflow-x-auto rounded-t-lg">
-        <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+
+      <div className="overflow-x-auto rounded-t-2xl border border-base-300 shadow-xl mt-4">
+        <table className="min-w-full divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
           <thead className="ltr:text-left rtl:text-right bg-primary text-white h-12">
             <tr>
-              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
+              <th className="whitespace-nowrap border-r-2 border-primary-content/20 px-4 py-2 font-medium">
                 Room No
               </th>
-              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium">
+              <th className="whitespace-nowrap px-4 py-2 font-medium">
                 Total Bill
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y-2 divide-gray-200">
+          <tbody className="divide-y-2 divide-base-300">
             {isLoading && <Loader />}
             {rooms
               .filter(
@@ -138,35 +134,24 @@ const MonthlyBillsTable = () => {
               )
               .sort((a, b) => a.roomNo - b.roomNo)
               .map((item, index) => {
-                // const selectedMonthReading =
-                //   selectedMonthsData[0]?.meterReadings?.find(
-                //     (item2) => item2.roomNo === item.roomNo
-                //   );
-                // const nextMonthReading = nextMonthsData[0]?.meterReadings?.find(
-                //   (item2) => item2.roomNo === item.roomNo
-                // );
                 const myData = monthlyBillsData[0]?.bills?.find(
                   (item2) => item2.roomNo === item.roomNo
                 );
                 return (
-                  <tr key={index} className="h-12  odd:bg-[#e7fdff]">
+                  <tr key={index} className="h-12 odd:bg-base-200/50 hover:bg-base-200 transition-colors">
                     <td className="p-3 font-semibold leading-relaxed">
-                      Room No:{" "}
-                      <span className="text-white bg-primary p-1 rounded-full">
+                      <span className="text-xs opacity-70 mr-1">Room No:</span>{" "}
+                      <span className="text-white bg-primary p-1 px-2.5 rounded-full font-bold">
                         {item?.roomNo}
                       </span>{" "}
                       <br />
-                      Name: {item?.leaseholder[0]?.name}
+                      <span className="text-xs opacity-70 mr-1">Name:</span>{" "}
+                      <span className="font-bold text-primary">{item?.leaseholder[0]?.name || "N/A"}</span>
                     </td>
-                    <td className="font-semibold text-center border-l-2 w-[35%]">
+                    <td className="font-semibold text-center border-l-2 border-base-300 w-[35%]">
                       {monthlyBillsData[0]?.bills?.find(
                         (item2) => item2.roomNo === item.roomNo
                       ) || item.roomNo === "3" ? (
-                        // <span className="flex justify-center items-center gap-2 drop-shadow-xl bg-white w-fit mx-auto p-3 rounded-full border">
-                        //   <FaSackDollar className="inline text-xl text-secondary" />
-                        //   {selectedMonthReading.meterNumber}
-                        //   <FaEdit className="inline text-xl text-secondary ml-6" />
-                        // </span>
                         <BillCalculations
                           room={item}
                           billingRoomNo={item.roomNo}
@@ -175,7 +160,7 @@ const MonthlyBillsTable = () => {
                           refetch4={refetch4}
                         />
                       ) : (
-                        <p className="flex-center text-error animate-pulse">
+                        <p className="flex-center text-error font-bold animate-pulse">
                           <IoIosWarning className="text-lg mr-1" />
                           Data missing
                         </p>
@@ -192,3 +177,4 @@ const MonthlyBillsTable = () => {
 };
 
 export default MonthlyBillsTable;
+

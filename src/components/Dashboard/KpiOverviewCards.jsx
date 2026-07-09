@@ -40,9 +40,9 @@ const KpiOverviewCards = ({ totalRent, totalCollected, totalDue, totalCurrentBil
       tooltip: "যে সকল রুম এখনও ভাড়া পরিশোধ করেনি তাদের মোট বকেয়া",
       icon: <FaExclamationTriangle className={`text-base sm:text-2xl ${totalDue > 0 ? "text-rose-500 animate-pulse" : "text-slate-400"}`} />,
       bgGradient: totalDue > 0 ? "from-rose-500/10 to-orange-500/10" : "from-slate-500/10 to-gray-500/10",
-      borderColor: totalDue > 0 ? "border-rose-500/30" : "border-slate-200",
-      iconBg: totalDue > 0 ? "bg-rose-500/10" : "bg-slate-100",
-      textColor: totalDue > 0 ? "text-rose-600 dark:text-rose-400" : "text-slate-600"
+      borderColor: totalDue > 0 ? "border-rose-500/30" : "border-slate-200 dark:border-slate-800",
+      iconBg: totalDue > 0 ? "bg-rose-500/10" : "bg-slate-100 dark:bg-slate-800",
+      textColor: totalDue > 0 ? "text-rose-600 dark:text-rose-400" : "text-slate-600 dark:text-slate-300"
     },
     {
       id: "electric",

@@ -35,7 +35,7 @@ const PaymentForm = ({ billID, refetch4 }) => {
       <input
         type="number"
         {...register("paidAmount", { required: true })}
-        className="border-2 outline-2 outline-success py-1 rounded-md border-gray-400 px-2"
+        className="bg-base-100 text-base-content border-2 outline-2 outline-success py-1 rounded-md border-base-300 px-2 font-bold"
         placeholder="amount"
       />
 

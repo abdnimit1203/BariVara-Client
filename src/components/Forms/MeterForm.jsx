@@ -84,7 +84,7 @@ const MeterForm = ({ roomData, month, year, refetch, refetch2, prevReading = nul
           {...register("meterNumber", {
             required: "meterNumber is required",
           })}
-          className="rounded-lg p-2 w-full text-sm shadow-sm border-2 border-secondary focus:outline-secondary"
+          className="bg-base-100 text-base-content rounded-lg p-2 w-full text-sm shadow-sm border-2 border-secondary focus:outline-secondary"
           placeholder="Enter meterNumber"
         />
         {/* Previous month reading hint — tiny faded, no line break */}

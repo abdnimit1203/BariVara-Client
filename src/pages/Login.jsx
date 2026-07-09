@@ -54,7 +54,7 @@ const Login = () => {
         />
       </div>
       <div
-        className={` flex flex-col gap-2  text-black bg-white shadow-xl items-center justify-center pt-8 w-full mx-auto sm:w-fit xs:rounded-r-xl rounded-se-[60px] absolute bottom-0 -left-36  sm:static transition-all transform sm:flex-1 ${
+        className={` flex flex-col gap-2 text-base-content bg-base-100 dark:bg-slate-900 shadow-xl items-center justify-center pt-8 w-full mx-auto sm:w-fit xs:rounded-r-xl rounded-se-[60px] absolute bottom-0 -left-36 sm:static transition-all transform sm:flex-1 ${
           isLoaded ? "translate-x-36 sm:translate-x-0" : ""
         } duration-[1000ms] ease-in-out`}
       >

@@ -1,168 +1,195 @@
 /* eslint-disable react/prop-types */
-
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTimes, FaPhoneAlt, FaCalendarAlt, FaHistory, FaMapMarkerAlt, FaCompass } from "react-icons/fa";
 import ClipboardButton from "./ClipboardButton";
 import { Link } from "react-router-dom";
 
-// eslint-disable-next-line react/prop-types
 const ModalUniversal = ({ roomData }) => {
-  console.log("Single Room = ", roomData);
-  const {_id, roomNo,position, category, leaseholder, rent } = roomData;
+  const { _id, roomNo, position, category, leaseholder = [], rent } = roomData || {};
+  const currentTenant = leaseholder.length > 0 ? leaseholder[0] : null;
+
   return (
-    <div className="text-black">
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
+    <div className="text-black w-full">
+      {/* Trigger Button */}
       <button
-        className="btn btn-warning btn-xs mx-auto rounded-sm w-full"
-        onClick={() => document.getElementById(roomNo).showModal()}
+        className="btn btn-warning btn-xs mx-auto rounded-md w-full font-bold shadow-sm hover:brightness-105 transition-all text-gray-900"
+        onClick={() => document.getElementById(roomNo)?.showModal()}
       >
-        view
+        View Details
       </button>
-      <dialog id={`${roomNo}`} className="modal">
-        <div className="modal-box">
+
+      {/* Dialog Modal */}
+      <dialog id={`${roomNo}`} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box p-5 sm:p-7 rounded-2xl sm:rounded-3xl shadow-2xl bg-base-100 border border-base-300 max-h-[90vh] overflow-y-auto space-y-6 text-left">
+          {/* Close Header Bar */}
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-              ✕
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3 text-base-content/70 hover:bg-base-200">
+              <FaTimes className="text-base" />
             </button>
           </form>
-          <div>
-            <h2 className="font-bold text-xl text-center border-b-4 pb-2 border-blue-500">
-              Room : {roomNo} | Details
-            </h2>
-            <h4 className="font-bold text-xl text-center  p-2 border-blue-500">
-              ভাড়া : {rent}
-            </h4>
-            <div className="flex justify-end items-center gap-2 text-red-700  ">
-              <Link to={`/singleroom/${_id}`} className="btn btn-error text-white mx-auto">
-                <FaEdit className="inline" /> GO TO EDIT PAGE
-              </Link>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="table table-zebra">
-                {/* head */}
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* row 1 */}
-                  <tr>
-                    <td className="bg-blue-100">লোকেশন </td>
-                    <td>{category}</td>
-                  </tr>
-                  <tr>
-                    <td className="bg-blue-100">সাইড  </td>
-                    <td>{position}</td>
-                  </tr>
-                  {/* row 2 */}
-                  <tr>
-                    <td className="bg-blue-100">ভাড়াটিয়া </td>
-                    <td className="bg-primary text-base-100 text-lg drop-shadow-lg">{leaseholder[0]?.name}</td>
-                  </tr>
-                  {/* row 3 */}
-                  <tr>
-                    <td className="bg-blue-100">ফোন নম্বর </td>
-                    <td className="flex justify-between">
-                      {leaseholder[0]?.phoneNumber}{" "}
-                      <ClipboardButton
-                        textToCopy={leaseholder[0]?.phoneNumber}
-                      />
-                    </td>
-                  </tr>
-                  {/* row 4 */}
-                  <tr>
-                    <td className="bg-blue-100">আগমন </td>
-                    <td>
-                      {new Date(leaseholder[0]?.rentFrom).toLocaleDateString(
-                        "en-US",
-                        {
-                          month: "long",
-                          year: "numeric",
-                        }
-                      )}
-                    </td>
-                  </tr>
-                  {/* row 5 */}
-                  <tr>
-                    <td className="bg-blue-100">বিদায় </td>
-                    <td>
-                      {leaseholder[0]?.rentTo
-                        ? new Date(leaseholder[0]?.rentTo).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "long",
-                              year: "numeric",
-                            }
-                          )
-                        : "Present..."}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div className="collapse ">
-                <input type="checkbox" className="peer" />
-                <div className="collapse-title text-center text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content ">
-                  View More
-                </div>
-                <div className="collapse-content focus:bg-secondary focus:text-secondary">
-                  {leaseholder?.map((item, index) => (
-                    <table key={index} className="table">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="bg-blue-100">ভাড়াটিয়া </td>
-                          <td>{item?.name}</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr>
-                          <td className="bg-blue-100">ফোন নম্বর </td>
-                          <td className="flex justify-between">
-                            {item?.phoneNumber}{" "}
-                            <ClipboardButton textToCopy={item?.phoneNumber} />
-                          </td>
-                        </tr>
-                        {/* row 4 */}
-                        <tr>
-                          <td className="bg-blue-100">আগমন </td>
-                          <td>
-                            {new Date(item?.rentFrom).toLocaleDateString(
-                              "en-US",
-                              {
-                                month: "long",
-                                year: "numeric",
-                              }
-                            )}
-                          </td>
-                        </tr>
-                        {/* row 5 */}
-                        <tr>
-                          <td className="bg-blue-100">বিদায় </td>
-                          <td>
-                            {item?.rentTo
-                              ? new Date(item?.rentTo).toLocaleDateString(
-                                  "en-US",
-                                  {
-                                    month: "long",
-                                    year: "numeric",
-                                  }
-                                )
-                              : "Present..."}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  ))}
-                </div>
-              </div>
+
+          {/* Modal Header & Room Title */}
+          <div className="flex flex-col items-center gap-2 border-b border-base-200 pb-5 pt-1">
+            <span className="px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">
+              Room No: {roomNo}
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-base-content text-center">
+              {category}
+            </h3>
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+              <span className="badge badge-lg badge-success font-bold text-white shadow-sm px-4 py-3.5 text-xs sm:text-sm">
+                ভাড়া: {rent} টাকা
+              </span>
+              <span className="badge badge-lg badge-outline border-base-300 gap-1.5 px-3 py-3.5 text-xs font-semibold text-base-content/80">
+                <FaCompass className="text-primary text-xs" /> সাইড: {position}
+              </span>
+              <span className="badge badge-lg badge-outline border-base-300 gap-1.5 px-3 py-3.5 text-xs font-semibold text-base-content/80">
+                <FaMapMarkerAlt className="text-secondary text-xs" /> লোকেশন: {category}
+              </span>
             </div>
           </div>
+
+          {/* Quick Action Bar (Go To Edit Page) */}
+          <div className="flex justify-center">
+            <Link
+              to={`/singleroom/${_id}`}
+              onClick={() => {
+                const modal = document.getElementById(roomNo);
+                if (modal) modal.close();
+              }}
+              className="btn btn-error btn-sm sm:btn-md text-white font-bold w-full rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 py-3 h-auto"
+            >
+              <FaEdit className="text-base" />
+              <span>রুম এডিট পেইজে যান (GO TO EDIT PAGE)</span>
+            </Link>
+          </div>
+
+          {/* Current Tenant Information Section */}
+          <div className="space-y-3">
+            <h4 className="text-xs sm:text-sm font-bold text-base-content/70 uppercase tracking-wider flex items-center gap-2">
+              <span>বর্তমান ভাড়াটিয়া (Current Tenant)</span>
+            </h4>
+
+            {currentTenant && currentTenant.name ? (
+              <div className="bg-base-200/60 border border-base-300 rounded-2xl p-4 sm:p-5 space-y-4 shadow-sm">
+                {/* Name & Status Badge */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-base-300 pb-3.5">
+                  <div>
+                    <span className="text-[11px] text-base-content/60 font-semibold uppercase tracking-wider">ভাড়াটিয়ার নাম</span>
+                    <p className="text-lg sm:text-xl font-black text-primary mt-0.5">{currentTenant.name}</p>
+                  </div>
+                  <span className="badge badge-primary badge-sm sm:badge-md text-white font-bold self-start sm:self-auto px-3 py-2.5">
+                    Active Tenant
+                  </span>
+                </div>
+
+                {/* Phone Number with Copy Button */}
+                <div className="flex items-center justify-between gap-3 bg-base-100 p-3.5 rounded-xl border border-base-300">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                      <FaPhoneAlt className="text-sm" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[11px] text-base-content/60 font-semibold uppercase">ফোন নম্বর</span>
+                      <span className="text-sm sm:text-base font-mono font-bold text-base-content">
+                        {currentTenant.phoneNumber || "N/A"}
+                      </span>
+                    </div>
+                  </div>
+                  {currentTenant.phoneNumber && (
+                    <ClipboardButton textToCopy={currentTenant.phoneNumber} />
+                  )}
+                </div>
+
+                {/* Dates Grid */}
+                <div className="grid grid-cols-2 gap-3 pt-0.5">
+                  <div className="bg-base-100 p-3.5 rounded-xl border border-base-300 flex flex-col gap-1">
+                    <span className="text-[11px] text-base-content/60 font-semibold uppercase flex items-center gap-1">
+                      <FaCalendarAlt className="text-xs text-accent" /> আগমন (Rent From)
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-base-content">
+                      {currentTenant.rentFrom
+                        ? new Date(currentTenant.rentFrom).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "N/A"}
+                    </span>
+                  </div>
+
+                  <div className="bg-base-100 p-3.5 rounded-xl border border-base-300 flex flex-col gap-1">
+                    <span className="text-[11px] text-base-content/60 font-semibold uppercase flex items-center gap-1">
+                      <FaCalendarAlt className="text-xs text-success" /> বিদায় (Rent To)
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-success">
+                      {currentTenant.rentTo
+                        ? new Date(currentTenant.rentTo).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "Present..."}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-base-200/40 border-2 border-dashed border-base-300 rounded-2xl p-6 text-center space-y-1">
+                <p className="font-bold text-base-content/70">বর্তমানে কোনো ভাড়াটিয়া নেই (No Active Tenant)</p>
+                <p className="text-xs text-base-content/50">রুম এডিট পেইজে গিয়ে নতুন ভাড়াটিয়া যুক্ত করুন</p>
+              </div>
+            )}
+          </div>
+
+          {/* Previous Tenants History Collapse */}
+          {leaseholder && leaseholder.length > 1 && (
+            <div className="collapse collapse-arrow bg-base-200/40 border border-base-300 rounded-2xl">
+              <input type="checkbox" className="peer" />
+              <div className="collapse-title font-bold text-xs sm:text-sm text-base-content/80 flex items-center gap-2 py-3.5">
+                <FaHistory className="text-secondary" />
+                <span>পূর্ববর্তী ভাড়াটিয়া ইতিহাস (Previous Tenants: {leaseholder.length - 1})</span>
+              </div>
+              <div className="collapse-content space-y-3 pt-2 border-t border-base-200">
+                {leaseholder.slice(1).map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-base-100 p-3.5 rounded-xl border border-base-200 shadow-sm space-y-2 text-xs sm:text-sm mt-2"
+                  >
+                    <div className="flex justify-between items-center font-bold text-base-content border-b border-base-200 pb-2">
+                      <span className="text-primary font-black">{item?.name || "Unknown"}</span>
+                      <span className="badge badge-ghost badge-sm text-base-content/60 font-mono">
+                        #{index + 1}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center py-0.5">
+                      <span className="text-base-content/70">
+                        ফোন: <span className="font-mono text-base-content font-bold">{item?.phoneNumber || "N/A"}</span>
+                      </span>
+                      {item?.phoneNumber && <ClipboardButton textToCopy={item?.phoneNumber} />}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 pt-1.5 border-t border-base-200/60 text-[11px] text-base-content/70">
+                      <div>
+                        <span className="font-semibold block text-base-content/50 uppercase">আগমন</span>
+                        <span className="font-medium">
+                          {item?.rentFrom
+                            ? new Date(item.rentFrom).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+                            : "N/A"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="font-semibold block text-base-content/50 uppercase">বিদায়</span>
+                        <span className="font-medium">
+                          {item?.rentTo
+                            ? new Date(item.rentTo).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+                            : "N/A"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </dialog>
     </div>
@@ -170,3 +197,4 @@ const ModalUniversal = ({ roomData }) => {
 };
 
 export default ModalUniversal;
+

@@ -37,8 +37,8 @@ const BarChartMonthly = ({ bills }) => {
 
 
   return (
-    <div className="bg-base-100 p-4 rounded-lg shadow-lg mt-4">
-      <h2 className="text-md sm:text-lg font-semibold mb-2 bg-green-200 p-2">
+    <div className="bg-base-100 border border-base-300 p-4 sm:p-6 rounded-2xl shadow-lg mt-4 text-base-content">
+      <h2 className="text-md sm:text-lg font-bold mb-3 bg-base-200 text-base-content p-3 rounded-xl border border-base-300">
         মাসিক বাড়ি ভাড়া লিস্ট (Room-wise )
       </h2>
       {/* Toggler starts */}
@@ -70,9 +70,9 @@ const BarChartMonthly = ({ bills }) => {
         textAnchor="end"
         interval={0}
         height={80}
-        className="text-sm sm:text-base "
+        className="text-sm sm:text-base fill-base-content"
       />
-      <YAxis className="text-xs sm:text-base"    tickCount={6}/>
+      <YAxis className="text-xs sm:text-base fill-base-content" tickCount={6}/>
       <Tooltip />
       <Bar
         dataKey={barType}
@@ -86,7 +86,7 @@ const BarChartMonthly = ({ bills }) => {
         <LabelList
           dataKey={barType}
           position="top"
-          fill="#000"
+          fill="#0ea5e9"
           fontSize={12}
           angle={-90}
           offset={18} // This ensures label stays above bar

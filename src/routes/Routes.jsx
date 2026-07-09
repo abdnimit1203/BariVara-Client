@@ -8,6 +8,9 @@ import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import MonthlyBills from "../pages/MonthlyBills";
 import MeterNumber from "../components/MeterNumber/MeterNumber";
+import SingleRoom from "../components/SingleRoom/SingleRoom";
+import PrivateRoutes from "./PrivateRoutes";
+import axiosInstance from "../utils/axiosConfig";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +45,18 @@ export const router = createBrowserRouter([
       {
         path: "/meterNumber",
         element: <MeterNumber />,
+      },
+      {
+        path: "/singleroom/:id",
+        element: (
+          <PrivateRoutes>
+            <SingleRoom />
+          </PrivateRoutes>
+        ),
+        loader: async ({ params }) => {
+          const res = await axiosInstance.get(`/rooms/${params.id}`);
+          return res.data;
+        },
       },
     ],
   },

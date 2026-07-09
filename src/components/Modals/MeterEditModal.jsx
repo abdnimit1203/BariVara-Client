@@ -78,7 +78,7 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
               </p>
               <p>
                 Previous inserted M Number :{" "}
-                <span className="bg-base-100 px-2 text-[15px] text-black rounded-lg block text-center py-1 font-mono text-xl ">
+                <span className="bg-base-100 px-2 text-[15px] text-base-content font-bold rounded-lg block text-center py-1 font-mono text-xl shadow-inner border border-base-300">
                   {meterNumber}
                 </span>{" "}
               </p>
@@ -100,7 +100,7 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex px-2 justify-center items-center gap-4 "
           >
-            <div >
+            <div className="w-full">
               <input
                 id="meterNumber"
                 name="meterNumber"
@@ -109,7 +109,7 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
                 {...register("meterNumber", {
                   required: "meterNumber is required",
                 })}
-                className=" rounded-lg p-2 w-full text-sm shadow-sm border-2 border-gray-500 focus:outline-secondary  "
+                className="bg-base-100 text-base-content rounded-lg p-2.5 w-full text-sm shadow-sm border-2 border-base-300 focus:border-secondary focus:outline-none"
                 placeholder="Enter New Meter Number"
               />
 
@@ -118,7 +118,7 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
               )}
             </div>
 
-            <button type="submit" className="btn btn-sm bg-warning  text-black">
+            <button type="submit" className="btn btn-sm btn-warning text-slate-950 font-bold">
               Update
             </button>
           </form>

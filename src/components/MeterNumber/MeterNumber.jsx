@@ -118,38 +118,35 @@ const MeterNumber = () => {
         subTitle={`Selected : ${selectedEndMonth} , ${selectedYear}`}
       />
       <div className="flex flex-wrap items-center justify-between gap-2 pb-3">
-        <p className="border w-fit p-2 rounded-full">
+        <p className="border border-base-300 bg-base-100 text-base-content font-bold w-fit p-2 rounded-full shadow-sm">
           Meter inserted: {monthlyData[0]?.meterReadings?.length} / 15
         </p>
-        <div className="flex items-center gap-2 bg-blue-950 text-white px-3 py-2 rounded-lg">
+        <div className="flex items-center gap-2 bg-blue-950 text-white px-3 py-2 rounded-lg shadow-md">
           <span className="text-sm font-semibold">মাস ও সাল:</span>
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="MMMM yyyy"
             showMonthYearPicker
-            className="text-black rounded p-1 text-sm w-36"
+            className="bg-base-100 text-base-content border border-base-300 rounded p-1 text-sm w-36 font-bold focus:outline-primary"
           />
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-t-lg ">
-        <table
-          className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm"
-          //   ref={componentRef}
-        >
+      <div className="overflow-x-auto rounded-t-lg border border-base-300 shadow-xl">
+        <table className="min-w-full divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
           <thead className="ltr:text-left rtl:text-right bg-secondary text-white h-12">
             <tr>
-              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
+              <th className="whitespace-nowrap border-r-2 border-secondary-content/20 px-4 py-2 font-medium">
                 Room No
               </th>
-              <th className="whitespace-nowrap border-r-2 px-4 py-2 font-medium ">
+              <th className="whitespace-nowrap px-4 py-2 font-medium">
                 Meter No
               </th>
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-200 ">
+          <tbody className="divide-y divide-base-300">
             {isLoading && <Loader />}
             {rooms
               .filter((data) => data.hasMeter === true)
@@ -171,25 +168,24 @@ const MeterNumber = () => {
                 const prevReadingNum = prevMeterReading?.meterNumber ?? null;
 
                 return (
-                  <tr key={index} className="h-12 odd:bg-[#f8f8f8] ">
+                  <tr key={index} className="h-12 odd:bg-base-200/60 hover:bg-base-200 transition-colors">
                     <td className="p-3 font-semibold leading-relaxed">
                       <span className="text-xs opacity-70 mr-2">রুম :</span>
-                      <span className="text-white bg-primary p-1 rounded-full">
+                      <span className="text-white bg-primary p-1 px-2.5 rounded-full font-bold">
                         {item?.roomNo}
                       </span>{" "}
                       <br />
                       <span className="text-xs opacity-70 mr-1">নাম :</span>
-                      <span className="text-xs drop-shadow-xl mr-2">
-                        {item?.leaseholder[0]?.name}
+                      <span className="text-xs drop-shadow-sm mr-2 font-bold text-primary">
+                        {item?.leaseholder[0]?.name || "N/A"}
                       </span>
                     </td>
-                    <td className="font-semibold text-center border-l-2 ">
+                    <td className="font-semibold text-center border-l-2 border-base-300">
                       {meterReading ? (
                         <div className="flex flex-col items-center justify-center py-1">
-                          <span className="flex justify-center items-center gap-2">
+                          <span className="flex justify-center items-center gap-2 text-base font-bold">
                             <FcDisplay className="inline text-xl border pb-1 border-b-2 border-primary" />
 
-                            {/* {meterReading.meterNumber.toLocaleString("bn-BD", { useGrouping: false })} */}
                             {meterReading.meterNumber}
 
                             <MeterEditModal
@@ -201,18 +197,18 @@ const MeterNumber = () => {
                             <button
                               onClick={() => handleDelete(meterReading?._id)}
                             >
-                              <MdDelete className="text-xl text-error" />
+                              <MdDelete className="text-xl text-error hover:scale-110 transition-transform" />
                             </button>
                           </span>
                           {prevReadingNum !== null && (
-                            <p className="text-[10px] opacity-40 mt-0.5 truncate leading-tight">
+                            <p className="text-[11px] opacity-60 mt-0.5 truncate leading-tight font-mono">
                               prev: {prevReadingNum}
                             </p>
                           )}
                         </div>
                       ) : ["12", "13", "14"].includes(item?.roomNo) &&
                         !insertedWaterMeter ? (
-                        <span className="text-error animate-pulse duration-300">
+                        <span className="text-error font-bold animate-pulse duration-300">
                           ⚠️Insert Water Meter{" "}
                         </span>
                       ) : (
@@ -237,3 +233,4 @@ const MeterNumber = () => {
 };
 
 export default MeterNumber;
+

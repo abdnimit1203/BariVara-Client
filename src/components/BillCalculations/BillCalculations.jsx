@@ -98,7 +98,7 @@ const BillCalculations = ({
                   <div
                     className={`transition-all duration-500 ease-in-out ${
                       isOpen ? "max-h-auto" : "max-h-0 p-0"
-                    } bg-gray-100 text-gray-700 overflow-hidden`}
+                    } bg-base-200 text-base-content overflow-hidden`}
                   >
                     {isOpen && (
                       <div className="text-left font-medium">

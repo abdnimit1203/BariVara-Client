@@ -17,7 +17,7 @@ const HouseMap = () => {
           <Loader />
         </div>
       ) : (
-        <div className="text-white bg-gray-100 mb-6 ">
+        <div className="text-white bg-base-200/50 rounded-3xl p-3 sm:p-6 mb-6 border border-base-300">
           {/* There is a navigator compass on bottom left . This is  */}
 
           {/* Tin Shed(টিনশেড) MAP AREA STARTS */}
