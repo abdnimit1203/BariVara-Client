@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { FcDisplay } from "react-icons/fc";
-import { FaHouseChimneyUser, FaMoneyBill, FaDoorOpen } from "react-icons/fa6";
+import { FaHouseChimneyUser, FaMoneyBill, FaDoorOpen, FaUserShield } from "react-icons/fa6";
 import UserProfile from "../../utils/UserProfile";
 import { FcCalculator } from "react-icons/fc";
 import { RxDashboard } from "react-icons/rx";
@@ -27,115 +27,117 @@ const Navbar = () => {
     };
   }, []);
 
- // ----------------MODAL CALLING ---------------
- const [isModalOpen, setIsModalOpen] = useState(false);
-
- const openModal = () => {
-   setIsModalOpen(true);
- };
-
- const closeModal = () => {
-   setIsModalOpen(false);
- };
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const navlinks = (
     <>
-      {user && (
-        <NavLink
-          to="/dashboard"
-          className={({ isActive, isPending }) =>
-            isPending
-              ? "pending"
-              : isActive
-              ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
-              : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-          }
-        >
-          <RxDashboard className="md:hidden inline text-xl mr-3" /> Dashboard
-        </NavLink>
-      )}
       <NavLink
         to="/"
         className={({ isActive, isPending }) =>
           isPending
             ? "pending"
             : isActive
-            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
+            ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
             : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
         }
       >
         <FaHouseChimneyUser className="md:hidden inline text-xl mr-3" /> Home
       </NavLink>
-      <NavLink
-        to="/my-rooms"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
-            : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-        }
-      >
-        <FaDoorOpen className="md:hidden inline text-xl mr-3" /> My Rooms
-      </NavLink>
-      <NavLink
-        to="/meterNumber"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
-            : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-        }
-      >
-        <FcDisplay className="md:hidden inline text-xl mr-3" />
-        Meter Number
-      </NavLink>
-      <NavLink
-        to="/monthlyBills"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
-            : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-        }
-      >
-        <FaMoneyBill className="md:hidden inline text-xl mr-3 text-green-400 " />
-        Monthly Bills
-      </NavLink>
+
       {user ? (
-        <UserProfile />
-      ) : (
         <>
+          {/* Main Financial Dashboard */}
           <NavLink
-            to="/login"
+            to="/dashboard"
             className={({ isActive, isPending }) =>
               isPending
                 ? "pending"
                 : isActive
-                ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
+                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
                 : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
             }
           >
-            Login
+            <RxDashboard className="md:hidden inline text-xl mr-3" /> Dashboard
           </NavLink>
+
+          {/* Admin Management Dedicated Area */}
           <NavLink
-            to="/register"
+            to="/admin/tenants"
+            className={({ isActive }) =>
+              `px-3 py-2 rounded-xl transition duration-200 flex items-center gap-1.5 ${
+                isActive
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-md shadow-cyan-500/30"
+                  : "bg-cyan-950/60 hover:bg-cyan-800 text-cyan-300 border border-cyan-500/40"
+              }`
+            }
+          >
+            <FaUserShield className="inline text-base text-cyan-300" />
+            <span>Admin Management</span>
+          </NavLink>
+
+          <NavLink
+            to="/my-rooms"
             className={({ isActive, isPending }) =>
               isPending
                 ? "pending"
                 : isActive
-                ? " active bg-primary px-3 py-2  text-neutral rounded-xl"
+                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
                 : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
             }
           >
-            Register
+            <FaDoorOpen className="md:hidden inline text-xl mr-3" /> My Rooms
           </NavLink>
+
+          <NavLink
+            to="/meterNumber"
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "pending"
+                : isActive
+                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
+                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
+            }
+          >
+            <FcDisplay className="md:hidden inline text-xl mr-3" />
+            Meter Number
+          </NavLink>
+
+          <NavLink
+            to="/monthlyBills"
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "pending"
+                : isActive
+                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
+                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
+            }
+          >
+            <FaMoneyBill className="md:hidden inline text-xl mr-3 text-green-400" />
+            Monthly Bills
+          </NavLink>
+
+          <UserProfile />
         </>
+      ) : (
+        <NavLink
+          to="/login"
+          className={({ isActive, isPending }) =>
+            isPending
+              ? "pending"
+              : isActive
+              ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
+              : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
+          }
+        >
+          Login
+        </NavLink>
       )}
     </>
   );
+
   return (
     <div className="drawer text-base-100 font-semibold z-[100]">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
@@ -166,12 +168,16 @@ const Navbar = () => {
 
           <div className="flex-1 xl:px-2 xl:mx-2 xl:ml-6 w-full lg:ml-0 flex items-center justify-between text-white">
             <Link to={"/"} className="mx-auto lg:mx-0">
-              <img src="/logo.png" alt="BariVara logo" className="w-20 -ml-2" />
+              <img src="/logo.png" alt="BariVara logo" className="w-20 -ml-2 animate-wave" />
             </Link>
-            
+
             <div className="flex items-center gap-3 absolute right-4 lg:hidden">
               <ThemeToggle />
-              <button onClick={openModal} title="বিল ক্যালকুলেটর (Calculator)" className="p-1 hover:scale-110 transition active:scale-95">
+              <button
+                onClick={openModal}
+                title="বিল ক্যালকুলেটর (Calculator)"
+                className="p-1 hover:scale-110 transition active:scale-95"
+              >
                 <FcCalculator className="text-4xl sm:text-5xl animate-wave" />
               </button>
             </div>
@@ -185,8 +191,14 @@ const Navbar = () => {
             </UniversalModal>
           </div>
           <div className="flex-none hidden lg:flex items-center space-x-4">
-            <div className="menu menu-horizontal space-x-3 items-center">{navlinks}</div>
-            <button onClick={openModal} title="বিল ক্যালকুলেটর (Calculator)" className="p-1 hover:scale-110 transition active:scale-95">
+            <div className="menu menu-horizontal space-x-3 items-center">
+              {navlinks}
+            </div>
+            <button
+              onClick={openModal}
+              title="বিল ক্যালকুলেটর (Calculator)"
+              className="p-1 hover:scale-110 transition active:scale-95"
+            >
               <FcCalculator className="text-4xl sm:text-5xl animate-wave" />
             </button>
             <div className="pl-2">

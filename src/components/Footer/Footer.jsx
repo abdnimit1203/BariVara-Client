@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="text-sm text-slate-100">
         Developed by{" "}
         <Link
-          to={"https://abdullah-portfolio-frontend.netlify.app/"}
+          to={"https://abdullah-ibne-ali.netlify.app/"}
           target="__blank"
           className="font-bold text-cyan-400 hover:text-cyan-300 underline transition"
         >

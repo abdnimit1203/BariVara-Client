@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt, FaBuilding, FaDownload, FaSyncAlt, FaCalculator } from "react-icons/fa";
@@ -45,6 +46,15 @@ const DashboardHeader = ({ selectedDate, handleDateChange, totalRooms, totalPaid
               className="bg-slate-900/80 text-white font-bold text-sm px-3 py-1.5 rounded-xl border border-cyan-500/40 focus:outline-none cursor-pointer w-36 text-center hover:bg-slate-900 transition"
             />
           </div>
+
+          {/* Shortcut to Admin Management */}
+          <Link
+            to="/admin/tenants"
+            className="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 shadow-md shadow-cyan-500/20 active:scale-95"
+          >
+            <FaBuilding className="text-xs" />
+            <span>অ্যাডমিন ম্যানেজমেন্ট ➔</span>
+          </Link>
 
           {/* Refresh Button */}
           <button

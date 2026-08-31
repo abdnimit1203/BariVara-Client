@@ -178,8 +178,20 @@ BariVara-client/
 
 ## 👥 Contributors & Authors
 
-- **Developed & Designed by:** [Abdullah Ibne Ali (ABD NIMIT)](https://abdullah-portfolio-frontend.netlify.app/)
+- **Developed & Designed by:** [Abdullah Ibne Ali (ABD NIMIT)](https://abdullah-ibne-ali.netlify.app/)
 - **Co-User & Property Manager:** Syed Ali Munsi (_Father & Co-Owner_)
+
+---
+
+## 🖨️ Mobile Rent Slip / Token Printing Guide
+
+For printing instant, token-style rent memos directly from a mobile phone to hand over to tenants:
+
+- **Recommended Device:** 58mm or 80mm Portable Bluetooth Thermal POS Printer (e.g., *Xprinter XP-58IIH / XP-P300*, *Rongta*, *Zjiang POS-5802DD*)
+- **Paper Roll:** 58mm (2-inch) or 80mm (3-inch) Thermal Receipt Paper Roll
+- **Ink Cost:** **৳ ০ (No ink/ribbon needed)** — uses heat-sensitive thermal technology
+- **Search Keywords on Star Tech / IT Shops:** `POS Printer`, `Thermal Printer`, `Receipt Printer`, `Bluetooth POS Printer`, `Xprinter`
+- **Where to Buy in Bangladesh:** [Star Tech](https://www.startech.com.bd/), Ryans Computers, Daraz BD, Multiplan Center (Elephant Road), or local stationery stores.
 
 ---
 
