@@ -134,13 +134,13 @@ const MeterNumber = () => {
       </div>
 
       <div className="overflow-x-auto rounded-t-lg border border-base-300 shadow-xl">
-        <table className="min-w-full divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
-          <thead className="ltr:text-left rtl:text-right bg-secondary text-white h-12">
+        <table className="w-full table-fixed divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
+          <thead className="ltr:text-left rtl:text-right bg-secondary text-white h-11">
             <tr>
-              <th className="whitespace-nowrap border-r-2 border-secondary-content/20 px-4 py-2 font-medium">
+              <th className="w-[44%] border-r-2 border-secondary-content/20 px-2 sm:px-4 py-2 font-medium text-xs sm:text-sm">
                 Room No
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium">
+              <th className="w-[56%] px-2 sm:px-4 py-2 font-medium text-center text-xs sm:text-sm">
                 Meter No
               </th>
             </tr>
@@ -160,7 +160,7 @@ const MeterNumber = () => {
               })
               .map((item, index) => {
                 const meterReading = monthlyData[0]?.meterReadings?.find(
-                  (item2) => item2.roomNo === item.roomNo
+                   (item2) => item2.roomNo === item.roomNo
                 );
                 const prevMeterReading = prevMonthlyData?.[0]?.meterReadings?.find(
                   (item2) => item2.roomNo === item.roomNo
@@ -169,16 +169,19 @@ const MeterNumber = () => {
 
                 return (
                   <tr key={index} className="h-12 odd:bg-base-200/60 hover:bg-base-200 transition-colors">
-                    <td className="p-3 font-semibold leading-relaxed">
-                      <span className="text-xs opacity-70 mr-2">রুম :</span>
-                      <span className="text-white bg-primary p-1 px-2.5 rounded-full font-bold">
-                        {item?.roomNo}
-                      </span>{" "}
-                      <br />
-                      <span className="text-xs opacity-70 mr-1">নাম :</span>
-                      <span className="text-xs drop-shadow-sm mr-2 font-bold text-primary">
-                        {item?.leaseholder[0]?.name || "N/A"}
-                      </span>
+                    <td className="p-2 sm:p-3 font-semibold leading-relaxed">
+                      <div className="flex flex-wrap items-center gap-1">
+                        <span className="text-[11px] opacity-70">রুম:</span>
+                        <span className="text-white bg-primary py-0.5 px-2 rounded-full font-bold text-xs">
+                          {item?.roomNo}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1 mt-1">
+                        <span className="text-[11px] opacity-70">নাম:</span>
+                        <span className="text-xs drop-shadow-sm font-bold text-primary truncate max-w-[120px] sm:max-w-none">
+                          {item?.leaseholder[0]?.name || "N/A"}
+                        </span>
+                      </div>
                     </td>
                     <td className="font-semibold text-center border-l-2 border-base-300 p-1 sm:p-2">
                       {meterReading ? (

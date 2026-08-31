@@ -28,20 +28,29 @@ const PaymentForm = ({ billID, refetch4 }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-3 justify-between items-center gap-2 font_secondary py-5 border bg-blue-600 glass rounded-xl mt-2"
+      className="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 bg-base-200/80 rounded-xl border border-base-300"
     >
-      <p className="text-white">Submit Payment</p>
+      <span className="text-xs font-bold text-base-content/90 shrink-0">
+        পরিশোধ জমা দিন:
+      </span>
 
-      <input
-        type="number"
-        {...register("paidAmount", { required: true })}
-        className="bg-base-100 text-base-content border-2 outline-2 outline-success py-1 rounded-md border-base-300 px-2 font-bold"
-        placeholder="amount"
-      />
+      <div className="flex items-center gap-2 w-full sm:w-auto">
+        <input
+          type="number"
+          step="any"
+          inputMode="numeric"
+          {...register("paidAmount", { required: true })}
+          className="bg-base-100 text-base-content border-2 border-base-300 focus:border-success focus:outline-none py-1 px-3 rounded-lg font-mono font-bold text-sm w-full sm:w-32 shadow-inner"
+          placeholder="টাকার পরিমাণ"
+        />
 
-      <button type="submit" className="btn btn-sm w-fit btn-success text-white">
-        Submit
-      </button>
+        <button
+          type="submit"
+          className="btn btn-sm btn-success text-white font-bold px-3 shrink-0 shadow-sm"
+        >
+          পরিশোধ (Pay)
+        </button>
+      </div>
     </form>
   );
 };

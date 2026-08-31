@@ -114,13 +114,13 @@ const MonthlyBillsTable = () => {
       </section>
 
       <div className="overflow-x-auto rounded-t-2xl border border-base-300 shadow-xl mt-4">
-        <table className="min-w-full divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
+        <table className="w-full table-fixed divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
           <thead className="ltr:text-left rtl:text-right bg-primary text-white h-12">
             <tr>
-              <th className="whitespace-nowrap border-r-2 border-primary-content/20 px-4 py-2 font-medium">
+              <th className="w-[48%] border-r-2 border-primary-content/20 px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm">
                 Room No
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium">
+              <th className="w-[52%] px-3 sm:px-4 py-2 font-medium text-center text-xs sm:text-sm">
                 Total Bill
               </th>
             </tr>
@@ -139,16 +139,21 @@ const MonthlyBillsTable = () => {
                 );
                 return (
                   <tr key={index} className="h-12 odd:bg-base-200/50 hover:bg-base-200 transition-colors">
-                    <td className="p-3 font-semibold leading-relaxed">
-                      <span className="text-xs opacity-70 mr-1">Room No:</span>{" "}
-                      <span className="text-white bg-primary p-1 px-2.5 rounded-full font-bold">
-                        {item?.roomNo}
-                      </span>{" "}
-                      <br />
-                      <span className="text-xs opacity-70 mr-1">Name:</span>{" "}
-                      <span className="font-bold text-primary">{item?.leaseholder[0]?.name || "N/A"}</span>
+                    <td className="p-2 sm:p-3 font-semibold leading-relaxed">
+                      <div className="flex flex-wrap items-center gap-1">
+                        <span className="text-[11px] opacity-70">Room:</span>
+                        <span className="text-white bg-primary py-0.5 px-2.5 rounded-full font-bold text-xs">
+                          {item?.roomNo}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1 mt-1">
+                        <span className="text-[11px] opacity-70">Name:</span>
+                        <span className="font-bold text-primary text-xs truncate max-w-[120px] sm:max-w-none">
+                          {item?.leaseholder[0]?.name || "N/A"}
+                        </span>
+                      </div>
                     </td>
-                    <td className="font-semibold text-center border-l-2 border-base-300 w-[35%]">
+                    <td className="font-semibold text-center border-l-2 border-base-300 p-2">
                       {monthlyBillsData[0]?.bills?.find(
                         (item2) => item2.roomNo === item.roomNo
                       ) || item.roomNo === "3" ? (
@@ -156,12 +161,13 @@ const MonthlyBillsTable = () => {
                           room={item}
                           billingRoomNo={item.roomNo}
                           selectedMonth={selectedMonth}
+                          selectedYear={selectedYear}
                           myData={myData}
                           refetch4={refetch4}
                         />
                       ) : (
-                        <p className="flex-center text-error font-bold animate-pulse">
-                          <IoIosWarning className="text-lg mr-1" />
+                        <p className="flex-center text-error font-bold text-xs animate-pulse">
+                          <IoIosWarning className="text-base mr-1" />
                           Data missing
                         </p>
                       )}
