@@ -57,7 +57,7 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
   return (
     <div>
       <button onClick={openModal} className="underline text-xs text-success">
-        <FaEdit className="inline text-xl text-secondary ml-6 hover:opacity-70" />
+        <FaEdit className="inline text-lg sm:text-xl text-secondary ml-2 sm:ml-3 hover:opacity-70" />
       </button>
       <UniversalModal
         isOpen={isModalOpen}
@@ -78,7 +78,7 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
               </p>
               <p>
                 Previous inserted M Number :{" "}
-                <span className="bg-base-100 px-2 text-[15px] text-base-content font-bold rounded-lg block text-center py-1 font-mono text-xl shadow-inner border border-base-300">
+                <span className="bg-base-100 px-2 text-[15px] text-base-content font-bold rounded-lg block text-center py-1 font-mono text-xl shadow-inner border border-base-300 tracking-wider">
                   {meterNumber}
                 </span>{" "}
               </p>
@@ -93,32 +93,34 @@ const MeterEditModal = ({ meterReading, refetch2, month, year }) => {
           </section>
 
           <hr />
-          <div className="relative rounded-lg shadow-lg p-8  bg-primary">
-          <div className="glass  absolute inset-0 rounded-lg"></div>
-          <div className="relative ">
+          <div className="relative rounded-lg shadow-lg p-6 sm:p-8 bg-primary">
+          <div className="glass absolute inset-0 rounded-lg"></div>
+          <div className="relative">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex px-2 justify-center items-center gap-4 "
+            className="flex px-1 sm:px-2 justify-center items-center gap-2 sm:gap-3"
           >
             <div className="w-full">
               <input
                 id="meterNumber"
                 name="meterNumber"
                 type="number"
+                step="any"
+                inputMode="numeric"
                 required
                 {...register("meterNumber", {
                   required: "meterNumber is required",
                 })}
-                className="bg-base-100 text-base-content rounded-lg p-2.5 w-full text-sm shadow-sm border-2 border-base-300 focus:border-secondary focus:outline-none"
-                placeholder="Enter New Meter Number"
+                className="bg-base-100 text-base-content rounded-lg p-2 sm:p-2.5 w-full text-base font-mono font-medium tracking-wider shadow-sm border-2 border-base-300 focus:border-secondary focus:outline-none placeholder:text-sm placeholder:font-sans placeholder:tracking-normal placeholder:opacity-50 text-center sm:text-left"
+                placeholder="e.g. 12345"
               />
 
               {errors.meterNumber && (
-                <p style={{ color: "red" }}>{errors.meterNumber.message}</p>
+                <p className="text-xs text-error mt-1">{errors.meterNumber.message}</p>
               )}
             </div>
 
-            <button type="submit" className="btn btn-sm btn-warning text-slate-950 font-bold">
+            <button type="submit" className="btn btn-sm btn-warning text-slate-950 font-bold shrink-0">
               Update
             </button>
           </form>

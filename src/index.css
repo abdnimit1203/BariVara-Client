@@ -44,3 +44,14 @@ html::-webkit-scrollbar-thumb {
   background: rgb(36, 187, 207);
   border-radius: 10px;
 }
+
+/* Remove default number input spinner buttons for clean mobile rendering */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

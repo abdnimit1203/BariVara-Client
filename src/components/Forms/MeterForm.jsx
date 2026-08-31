@@ -73,32 +73,34 @@ const MeterForm = ({ roomData, month, year, refetch, refetch2, prevReading = nul
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex px-2 justify-center items-center gap-4"
+      className="flex px-1 sm:px-2 justify-center items-center gap-1.5 sm:gap-2"
     >
-      <div>
+      <div className="flex flex-col items-center">
         <input
           id="meterNumber"
           name="meterNumber"
           type="number"
+          step="any"
+          inputMode="numeric"
           required
           {...register("meterNumber", {
             required: "meterNumber is required",
           })}
-          className="bg-base-100 text-base-content rounded-lg p-2 w-full text-sm shadow-sm border-2 border-secondary focus:outline-secondary"
-          placeholder="Enter meterNumber"
+          className="bg-base-100 text-base-content rounded-md px-2 py-1 w-24 sm:w-28 text-sm font-mono font-medium tracking-wide shadow-sm border-2 border-secondary focus:outline-secondary text-center placeholder:text-xs placeholder:font-sans placeholder:tracking-normal placeholder:opacity-40"
+          placeholder="00000"
         />
         {/* Previous month reading hint — tiny faded, no line break */}
         {prevReading !== null && (
-          <p className="text-[10px] opacity-40 mt-0.5 truncate leading-tight">
+          <p className="text-[10px] opacity-40 mt-0.5 truncate leading-tight font-mono">
             prev: {prevReading}
           </p>
         )}
         {errors.meterNumber && (
-          <p style={{ color: "red" }}>{errors.meterNumber.message}</p>
+          <p className="text-xs text-error mt-0.5">{errors.meterNumber.message}</p>
         )}
       </div>
 
-      <button type="submit" className="btn btn-xs btn-secondary text-white">
+      <button type="submit" className="btn btn-xs btn-secondary text-white shrink-0 px-2 font-medium">
         Submit
       </button>
     </form>

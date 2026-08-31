@@ -180,13 +180,13 @@ const MeterNumber = () => {
                         {item?.leaseholder[0]?.name || "N/A"}
                       </span>
                     </td>
-                    <td className="font-semibold text-center border-l-2 border-base-300">
+                    <td className="font-semibold text-center border-l-2 border-base-300 p-1 sm:p-2">
                       {meterReading ? (
                         <div className="flex flex-col items-center justify-center py-1">
-                          <span className="flex justify-center items-center gap-2 text-base font-bold">
-                            <FcDisplay className="inline text-xl border pb-1 border-b-2 border-primary" />
+                          <span className="flex justify-center items-center gap-1.5 sm:gap-2 text-base font-bold font-mono tracking-wide">
+                            <FcDisplay className="inline text-lg sm:text-xl border pb-1 border-b-2 border-primary shrink-0" />
 
-                            {meterReading.meterNumber}
+                            <span>{meterReading.meterNumber}</span>
 
                             <MeterEditModal
                               meterReading={meterReading}
@@ -197,7 +197,7 @@ const MeterNumber = () => {
                             <button
                               onClick={() => handleDelete(meterReading?._id)}
                             >
-                              <MdDelete className="text-xl text-error hover:scale-110 transition-transform" />
+                              <MdDelete className="text-lg sm:text-xl text-error hover:scale-110 transition-transform" />
                             </button>
                           </span>
                           {prevReadingNum !== null && (
