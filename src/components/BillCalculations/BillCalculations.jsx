@@ -3,7 +3,10 @@ import { useRef, useState } from "react";
 import UniversalModal from "../Modals/UniversalModal";
 import { FaSackDollar } from "react-icons/fa6";
 import { FcPrint } from "react-icons/fc";
+import { FaShareAlt } from "react-icons/fa";
 import PaymentForm from "../Forms/PaymentForm";
+import { toBlob } from "html-to-image";
+import toast from "react-hot-toast";
 
 // Helper function to convert English digits to Bengali digits
 const toBn = (num) => {
@@ -21,6 +24,7 @@ const BillCalculations = ({
   refetch4,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const printRef = useRef(null);
 
   const openModal = () => setIsModalOpen(true);
@@ -35,8 +39,8 @@ const BillCalculations = ({
   const waterBill = room?.hasWaterBill ? (myData?.waterBill ?? 0) : 0;
   const rentAmount = myData?.rent ?? 1800;
   const dueAmount = myData?.due ?? 0;
-  const paidAmount = myData?.paidAmount ?? (myData?.paid === "true" ? totalAmount : 0);
-  const isPaid = myData?.paid === "true";
+  const isPaid = myData?.paid === "true" || myData?.paid === true;
+  const paidAmount = myData?.paidAmount !== undefined && myData?.paidAmount !== null ? myData.paidAmount : (isPaid ? totalAmount : 0);
   const tenantName = room?.leaseholder?.length ? room.leaseholder[0].name : "N/A";
   const yearDisplay = selectedYear ?? new Date().getFullYear();
 
@@ -46,6 +50,69 @@ const BillCalculations = ({
     year: "numeric",
   });
   const dateFormattedBn = toBn(currentDateFormatted);
+
+  // High-resolution image generation for WhatsApp / Web Share
+  const handleShareImage = async () => {
+    const printElement = printRef.current;
+    if (!printElement) return;
+
+    setIsSharing(true);
+    const toastId = toast.loading("মেমোর ছবি তৈরি হচ্ছে...");
+    try {
+      const blob = await toBlob(printElement, {
+        pixelRatio: 2.5,
+        backgroundColor: "#ffffff",
+        cacheBust: true,
+      });
+
+      if (!blob) {
+        throw new Error("Failed to generate image blob");
+      }
+
+      const fileName = `Rent_Receipt_Room_${room.roomNo}_${selectedMonth}_${yearDisplay}.png`;
+      const file = new File([blob], fileName, { type: "image/png" });
+
+      // 1. Native Mobile Web Share (WhatsApp, Messenger, etc.)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        toast.dismiss(toastId);
+        await navigator.share({
+          title: `ভাড়া রশিদ - রুম ${toBn(room.roomNo)} (${selectedMonth} ${toBn(yearDisplay)})`,
+          text: `🏡 নুরেজা ভিলা - রুম ${toBn(room.roomNo)} এর ${selectedMonth} ${toBn(yearDisplay)} মাসের ভাড়া রশিদ। মোট: ৳ ${toBn(totalAmount)}`,
+          files: [file],
+        });
+      } else {
+        // 2. Desktop Fallback: Download PNG + Clipboard Copy
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(url);
+
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({ "image/png": blob }),
+            ]);
+            toast.success("ছবি ডাউনলোড হয়েছে ও ক্লিপবোর্ডে কপি হয়েছে! WhatsApp Web এ Ctrl+V দিয়ে পেস্ট করুন।", { id: toastId });
+          } catch {
+            toast.success("রশিদের ছবি ডাউনলোড হয়েছে!", { id: toastId });
+          }
+        } else {
+          toast.success("রশিদের ছবি ডাউনলোড হয়েছে!", { id: toastId });
+        }
+      }
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        console.error(err);
+        toast.error("ছবি তৈরিতে সমস্যা হয়েছে!", { id: toastId });
+      } else {
+        toast.dismiss(toastId);
+      }
+    } finally {
+      setIsSharing(false);
+    }
+  };
 
   // Smooth, high-quality printing without reloading or destroying DOM
   const handlePrint = () => {
@@ -72,8 +139,8 @@ const BillCalculations = ({
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
             @page {
-              size: 80mm auto;
-              margin: 4mm;
+              size: 3in 5in;
+              margin: 3mm;
             }
             * {
               box-sizing: border-box;
@@ -85,8 +152,8 @@ const BillCalculations = ({
               color: #0f172a;
               background: #ffffff;
               margin: 0;
-              padding: 4px;
-              width: 72mm;
+              padding: 0;
+              width: 100%;
               max-width: 100%;
             }
             .memo-wrapper {
@@ -158,6 +225,26 @@ const BillCalculations = ({
               border-top: 1px solid #0f172a;
               padding-top: 3px;
               margin-top: 4px;
+            }
+            .paid-box {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border: 1.5px solid #16a34a;
+              background: #f0fdf4;
+              border-radius: 4px;
+              padding: 4px 6px;
+              margin-top: 4px;
+              font-size: 11px;
+              font-weight: 700;
+              color: #15803d;
+            }
+            .paid-box .amount {
+              font-size: 13px;
+              font-weight: 800;
+              font-family: 'Poppins', monospace;
+              min-width: 40px;
+              text-align: right;
             }
             .status-row {
               display: flex;
@@ -261,9 +348,14 @@ const BillCalculations = ({
                 <span>৳ ${toBn(totalAmount)}</span>
               </div>
 
-              <div class="status-row">
-                <span>Paid Amount (পরিশোধিত):</span>
-                <span class="row-bold">৳ ${toBn(paidAmount)}</span>
+              <div class="row" style="margin-top: 5px; align-items: center; justify-content: space-between;">
+                <span style="font-weight: 700; color: #15803d;">Paid Amount (পরিশোধিত):</span>
+                <span style="display: inline-flex; align-items: center; gap: 4px; font-weight: 700; color: #15803d;">
+                  <span style="font-size: 12px;">৳</span>
+                  <span style="display: inline-block; border: 1.5px solid #16a34a; border-radius: 4px; min-width: 58px; height: 22px; line-height: 20px; text-align: center; font-family: 'Poppins', monospace; font-size: 12px; font-weight: 800; background: #ffffff; color: #15803d; vertical-align: middle;">
+                    ${isPaid ? toBn(paidAmount) : '&nbsp;'}
+                  </span>
+                </span>
               </div>
 
               <div class="status-row">
@@ -323,19 +415,35 @@ const BillCalculations = ({
         title={`💵 RENT RECEIPT (Room: ${room.roomNo})`}
       >
         <div className="flex flex-col gap-3">
-          {/* Top Bar: Print Button */}
-          <div className="flex items-center justify-between pb-1 border-b border-base-300">
+          {/* Top Bar: Print & WhatsApp Share Buttons */}
+          <div className="flex items-center justify-between pb-2 border-b border-base-300 gap-2 flex-wrap">
             <span className="text-xs font-semibold opacity-75">
-              প্রিন্ট টোকেন / স্লিপ মেমো:
+              মেমো অ্যাকশন:
             </span>
-            <button
-              onClick={handlePrint}
-              title="Print Memo Token"
-              className="btn btn-xs sm:btn-sm bg-base-200 hover:bg-base-300 border border-base-300 rounded-lg px-3 flex items-center gap-1.5 shadow-xs transition-transform active:scale-95"
-            >
-              <FcPrint className="text-xl" />
-              <span className="text-xs font-bold text-base-content">প্রিন্ট (Print)</span>
-            </button>
+            <div className="flex items-center gap-1.5">
+              {/* 1. Universal Image Share Button (WhatsApp, Messenger, Bluetooth, etc.) */}
+              <button
+                type="button"
+                onClick={handleShareImage}
+                disabled={isSharing}
+                title="মেমো ছবি হিসেবে যেকোনো মাধ্যমে সরাসরি শেয়ার করুন"
+                className="btn btn-xs sm:btn-sm btn-primary text-white border-none rounded-lg px-2.5 flex items-center gap-1.5 shadow-xs transition-transform active:scale-95 font-bold"
+              >
+                <FaShareAlt className="text-xs" />
+                <span className="text-xs">{isSharing ? "তৈরি হচ্ছে..." : "ছবি শেয়ার (Share)"}</span>
+              </button>
+
+              {/* 2. Print Button (Preserved 100%) */}
+              <button
+                type="button"
+                onClick={handlePrint}
+                title="Print Memo Token"
+                className="btn btn-xs sm:btn-sm bg-base-200 hover:bg-base-300 border border-base-300 rounded-lg px-2.5 flex items-center gap-1.5 shadow-xs transition-transform active:scale-95"
+              >
+                <FcPrint className="text-lg" />
+                <span className="text-xs font-bold text-base-content">প্রিন্ট (Print)</span>
+              </button>
+            </div>
           </div>
 
           {/* PRINTABLE ZONE (Clean, Tight, High Readability with Paid Seal) */}
@@ -431,16 +539,21 @@ const BillCalculations = ({
                 <span className="text-right font-mono text-base text-red-600 dark:text-red-400">৳ {toBn(totalAmount)}</span>
               </div>
 
-              <div className="grid grid-cols-2 justify-between items-center py-0.5 text-xs">
-                <span className="opacity-80">Paid Amount:</span>
-                <span className="text-right font-mono font-bold text-success">৳ {toBn(paidAmount)}</span>
+              <div className="grid grid-cols-2 justify-between items-center py-1 text-xs">
+                <span className="font-semibold text-emerald-700 dark:text-emerald-300">Paid Amount (পরিশোধিত):</span>
+                <div className="flex items-center justify-end gap-1.5 font-bold text-emerald-700 dark:text-emerald-300">
+                  <span className="font-mono text-sm">৳</span>
+                  <div className="border border-emerald-500/60 bg-base-100 rounded-md w-20 h-7 flex items-center justify-center font-mono font-bold text-xs text-emerald-700 dark:text-emerald-300 shadow-inner">
+                    {isPaid ? toBn(paidAmount) : ""}
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 justify-between items-center py-0.5 text-xs">
                 <span className="opacity-80">Payment Status:</span>
                 <div className="text-right">
                   <span className={`badge badge-sm font-bold text-[10px] ${isPaid ? "badge-success text-white" : "badge-error text-white"}`}>
-                    {myData?.paid ?? "false"}
+                    {isPaid ? "PAID (পরিশোধিত)" : "UNPAID (বকেয়া)"}
                   </span>
                 </div>
               </div>

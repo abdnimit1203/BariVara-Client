@@ -1,43 +1,32 @@
-import axios from "axios";
+import client from "./client";
 
-const API = axios.create({ baseURL: import.meta.env.VITE_BASE_URL });
-
-// Attach token to every request
-API.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.token = token; // Send token in 'token' header
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// Re-export client as API for backwards compatibility
+export const API = client;
 
 // Auth endpoints
-export const registerUser = (data) => API.post("/register", data);
-export const loginUser = (data) => API.post("/login", data);
+export const registerUser = (data) => client.post("/register", data);
+export const loginUser = (data) => client.post("/login", data);
 
 // Example data fetch
-export const fetchRoomData = () => API.get("/roomDatas");
-export const fetchCategories = () => API.get("/categories");
+export const fetchRoomData = () => client.get("/roomDatas");
+export const fetchCategories = () => client.get("/categories");
 
-// post data
+// Monthly data & bills
+export const fetchMonthlyData = (data) => client.post("/monthlyData", data);
+export const createMonthlyBill = (data) => client.post("/monthlyBill", data);
 
-export const fetchMonthlyData = (data) => API.post("/monthlyData", data);
-export const createMonthlyBill = (data) => API.post("/monthlyBill", data);
-
-// Update by ID
+// Updates
 export const updateMeterReadingById = (id, data) =>
-  API.put(`/meterReadings/${id}`, data);
+  client.put(`/meterReadings/${id}`, data);
 export const updatePaymentById = (id, data) =>
-  API.put(`/monthlyBill/${id}`, data);
+  client.put(`/monthlyBill/${id}`, data);
 export const updateLeaseholder = (roomId, leaseholderId, data) =>
-  API.put(`/rooms/${roomId}/leaseholder/${leaseholderId}`, data);
+  client.put(`/rooms/${roomId}/leaseholder/${leaseholderId}`, data);
+export const vacateLeaseholder = (roomId, leaseholderId, data = {}) =>
+  client.put(`/rooms/${roomId}/leaseholder/${leaseholderId}/vacate`, data);
 
-// Delete by ID
+// Deletions
 export const DeleteMeterReadingById = (id, data) =>
-  API.delete(`/meterReadings/${id}`, data);
+  client.delete(`/meterReadings/${id}`, data);
 
+export default client;

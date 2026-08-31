@@ -8,22 +8,22 @@ const PaymentForm = ({ billID, refetch4 }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm();
+
   const onSubmit = async (formData) => {
-    console.log(formData, billID)
     try {
-      const { data: responseData } = await updatePaymentById(billID, formData);
-      console.log(responseData);
-      toast.success("Payment Done!");
+      const payload = {
+        paidAmount: Number(formData.paidAmount),
+      };
+      await updatePaymentById(billID, payload);
+      toast.success("পরিশোধ সফলভাবে সম্পন্ন হয়েছে!");
       refetch4();
       reset();
     } catch (err) {
-      console.log(err.response?.data?.message || "Invalid credentials!");
-      toast.error(err.response?.data.message);
+      console.error(err);
+      toast.error(err.response?.data?.error || err.response?.data?.message || "পরিশোধ ব্যর্থ হয়েছে!");
     }
   };
-  
 
   return (
     <form
@@ -39,9 +39,12 @@ const PaymentForm = ({ billID, refetch4 }) => {
           type="number"
           step="any"
           inputMode="numeric"
-          {...register("paidAmount", { required: true })}
+          {...register("paidAmount", {
+            required: "টাকার পরিমাণ দিন",
+            validate: (val) => !isNaN(Number(val)) || "সঠিক সংখ্যা দিন",
+          })}
           className="bg-base-100 text-base-content border-2 border-base-300 focus:border-success focus:outline-none py-1 px-3 rounded-lg font-mono font-bold text-sm w-full sm:w-32 shadow-inner"
-          placeholder="টাকার পরিমাণ"
+          placeholder="যেমন: 0 বা 3000"
         />
 
         <button

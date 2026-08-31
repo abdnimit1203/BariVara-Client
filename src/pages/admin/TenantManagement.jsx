@@ -13,8 +13,10 @@ import {
   FaCheck,
   FaHistory,
   FaSync,
+  FaSignOutAlt,
+  FaExclamationTriangle,
 } from "react-icons/fa";
-import { updateLeaseholder } from "../../API/api";
+import { updateLeaseholder, vacateLeaseholder } from "../../API/api";
 import toast from "react-hot-toast";
 import NewLeaseHolderForm from "../../components/Forms/NewLeaseHolderForm";
 import UniversalModal from "../../components/Modals/UniversalModal";
@@ -38,6 +40,7 @@ const TenantManagement = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDueModalOpen, setIsDueModalOpen] = useState(false);
   const [isAddTenantModalOpen, setIsAddTenantModalOpen] = useState(false);
+  const [isVacateModalOpen, setIsVacateModalOpen] = useState(false);
 
   // Edit form state
   const [editFormData, setEditFormData] = useState({
@@ -52,6 +55,9 @@ const TenantManagement = () => {
 
   // Due adjustment form state
   const [newDueAmount, setNewDueAmount] = useState("");
+
+  // Vacate date state
+  const [vacateDate, setVacateDate] = useState(new Date());
 
   // Filter only actual residential rooms (skip water meter / tree if any)
   const residentialRooms = useMemo(() => {
@@ -82,7 +88,7 @@ const TenantManagement = () => {
         room.leaseholder && room.leaseholder.length > 0
           ? room.leaseholder[0]
           : null;
-      const isOccupied = !!(currentTenant && currentTenant.name);
+      const isOccupied = !!(currentTenant && currentTenant.name && !currentTenant.rentTo);
       const hasDue = isOccupied && (currentTenant.due || 0) > 0;
 
       // Status filter
@@ -106,7 +112,7 @@ const TenantManagement = () => {
   // Overview stats
   const totalRoomsCount = residentialRooms.length;
   const occupiedCount = residentialRooms.filter(
-    (r) => r.leaseholder?.length && r.leaseholder[0]?.name
+    (r) => r.leaseholder?.length && r.leaseholder[0]?.name && !r.leaseholder[0]?.rentTo
   ).length;
   const vacantCount = totalRoomsCount - occupiedCount;
   const totalDuesSum = residentialRooms.reduce(
@@ -196,6 +202,37 @@ const TenantManagement = () => {
     }
   };
 
+  // Handlers for Vacate Modal
+  const handleOpenVacateModal = (room) => {
+    const tenant = room.leaseholder?.[0];
+    if (!tenant || tenant.rentTo) {
+      toast.error("রুমটি ইতিমধ্যে ফাঁকা রয়েছে।");
+      return;
+    }
+    setSelectedRoom(room);
+    setVacateDate(new Date());
+    setIsVacateModalOpen(true);
+  };
+
+  const handleConfirmVacate = async (e) => {
+    e.preventDefault();
+    if (!selectedRoom || !selectedRoom.leaseholder?.[0]) return;
+
+    setIsSubmitting(true);
+    try {
+      const tenant = selectedRoom.leaseholder[0];
+      await vacateLeaseholder(selectedRoom._id, tenant._id, { vacateDate });
+      toast.success(`রুম ${toBn(selectedRoom.roomNo)} সফলভাবে খালি করা হয়েছে!`);
+      setIsVacateModalOpen(false);
+      refetch();
+    } catch (err) {
+      console.error(err);
+      toast.error("রুম খালি করতে সমস্যা হয়েছে!");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Handlers for Add/Replace Tenant
   const handleOpenAddTenantModal = (room) => {
     setSelectedRoom(room);
@@ -223,7 +260,7 @@ const TenantManagement = () => {
             <span>ভাড়াটিয়া ও রুম ব্যবস্থাপনা (Tenant Management)</span>
           </h1>
           <p className="text-xs text-base-content/60 mt-0.5">
-            সরাসরি ড্যাশবোর্ড থেকে ভাড়াটিয়ার তথ্য এডিট, নতুন ভাড়াটিয়া যোগ এবং বকেয়া (Due) নিয়ন্ত্রণ করুন।
+            সরাসরি ড্যাশবোর্ড থেকে ভাড়াটিয়ার তথ্য এডিট, নতুন ভাড়াটিয়া যোগ, রুম খালি এবং বকেয়া (Due) নিয়ন্ত্রণ করুন।
           </p>
         </div>
 
@@ -347,7 +384,7 @@ const TenantManagement = () => {
                     room.leaseholder && room.leaseholder.length > 0
                       ? room.leaseholder[0]
                       : null;
-                  const isOccupied = !!(currentTenant && currentTenant.name);
+                  const isOccupied = !!(currentTenant && currentTenant.name && !currentTenant.rentTo);
                   const due = currentTenant?.due || 0;
 
                   return (
@@ -383,7 +420,7 @@ const TenantManagement = () => {
                           </div>
                         ) : (
                           <span className="badge badge-sm badge-ghost text-base-content/50 italic">
-                            কোনো ভাড়াটিয়া নেই
+                            কোনো সক্রিয় ভাড়াটিয়া নেই (ফাঁকা)
                           </span>
                         )}
                       </td>
@@ -449,6 +486,16 @@ const TenantManagement = () => {
                                 <FaMoneyBillWave className="text-xs" />
                                 <span>বকেয়া</span>
                               </button>
+
+                              {/* 3. Vacate Room */}
+                              <button
+                                onClick={() => handleOpenVacateModal(room)}
+                                title="রুম খালি করুন (Vacate Room)"
+                                className="btn btn-xs btn-outline btn-warning rounded-lg flex items-center gap-1"
+                              >
+                                <FaSignOutAlt className="text-xs" />
+                                <span className="hidden sm:inline">খালি</span>
+                              </button>
                             </>
                           ) : (
                             /* Add Tenant when Vacant */
@@ -462,7 +509,7 @@ const TenantManagement = () => {
                             </button>
                           )}
 
-                          {/* 3. Deep History in Single Room */}
+                          {/* 4. Deep History in Single Room */}
                           <Link
                             to={`/singleroom/${room._id}`}
                             title="রুমের বিস্তারিত ইতিহাস ও হিস্ট্রি দেখুন"
@@ -655,7 +702,58 @@ const TenantManagement = () => {
         </form>
       </UniversalModal>
 
-      {/* 3. ADD NEW LEASEHOLDER MODAL */}
+      {/* 3. VACATE ROOM MODAL */}
+      <UniversalModal
+        isOpen={isVacateModalOpen}
+        onClose={() => setIsVacateModalOpen(false)}
+        title={`🚪 রুম খালি করুন (রুম নং: ${toBn(selectedRoom?.roomNo)})`}
+      >
+        <form onSubmit={handleConfirmVacate} className="space-y-4 text-left">
+          <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-300/40 rounded-xl p-3.5 space-y-2">
+            <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-xs">
+              <FaExclamationTriangle className="text-sm shrink-0" />
+              <span>ভাড়াটিয়া প্রস্থান নিশ্চিতকরণ</span>
+            </div>
+            <p className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+              আপনি কি নিশ্চিত যে <strong>{selectedRoom?.leaseholder?.[0]?.name}</strong> এই রুমটি ছেড়ে দিচ্ছেন? রুমের সমস্ত পূর্ববর্তী ইতিহাস সংরক্ষিত থাকবে এবং রুমটি ফাঁকা (Vacant) তালিকায় যুক্ত হবে।
+            </p>
+            {(selectedRoom?.leaseholder?.[0]?.due || 0) > 0 && (
+              <p className="text-[11px] font-bold text-red-600 dark:text-red-400">
+                * দ্রষ্টব্য: এই ভাড়াটিয়ার ৳ {toBn(selectedRoom.leaseholder[0].due)} বকেয়া রয়েছে, যা রেকর্ড হিসেবে সংরক্ষিত থাকবে।
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-1 flex flex-col">
+            <label className="text-xs font-bold text-base-content/80">প্রস্থানের তারিখ (Departure Date) *</label>
+            <DatePicker
+              selected={vacateDate}
+              onChange={(date) => setVacateDate(date)}
+              className="input input-sm input-bordered w-full rounded-xl"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-3 border-t border-base-300">
+            <button
+              type="button"
+              onClick={() => setIsVacateModalOpen(false)}
+              className="btn btn-sm btn-ghost rounded-xl"
+            >
+              বাতিল
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn btn-sm btn-warning text-slate-900 font-bold rounded-xl flex items-center gap-1.5"
+            >
+              <FaCheck />
+              <span>{isSubmitting ? "খালি করা হচ্ছে..." : "হ্যাঁ, রুম খালি করুন"}</span>
+            </button>
+          </div>
+        </form>
+      </UniversalModal>
+
+      {/* 4. ADD NEW LEASEHOLDER MODAL */}
       <UniversalModal
         isOpen={isAddTenantModalOpen}
         onClose={() => setIsAddTenantModalOpen(false)}
