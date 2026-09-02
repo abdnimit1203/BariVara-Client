@@ -19,7 +19,7 @@ const DivisionFilterBar = ({ selectedDivision, setSelectedDivision }) => {
           <FaMapMarkerAlt className="text-red-500 animate-bounce" />
           <span>বিভাগ অনুযায়ী প্রোপার্টি ও বাসা খুঁজুন</span>
         </h3>
-        <span className="text-xs text-slate-500 font-medium">ক্লিক করে ফিল্টার করুন</span>
+        <span className="text-xs text-slate-500 font-medium">Click to filter</span>
       </div>
 
       <div className="flex items-center gap-2 overflow-x-auto pb-3 pt-1 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">

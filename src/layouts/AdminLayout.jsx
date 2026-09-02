@@ -10,32 +10,21 @@ import {
   FaBars,
   FaTimes,
   FaUserShield,
+  FaUserCog,
+  FaSlidersH,
 } from "react-icons/fa";
 import { FcCalculator } from "react-icons/fc";
 import ThemeToggle from "../components/Navbar/ThemeToggle";
 import LogoutButton from "../components/Buttons/LogOutButton";
 import UniversalModal from "../components/Modals/UniversalModal";
 import Calculator from "../utils/Calculator";
+import { useAuth } from "../context/AuthContext";
 
 const AdminLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isCalcOpen, setIsCalcOpen] = useState(false);
-  const [user, setUser] = useState(() =>
-    JSON.parse(localStorage.getItem("loginInfo"))
-  );
+  const { profile, firebaseUser } = useAuth();
   const location = useLocation();
-
-  useEffect(() => {
-    const handleAuthChange = () => {
-      setUser(JSON.parse(localStorage.getItem("loginInfo")));
-    };
-    window.addEventListener("auth-change", handleAuthChange);
-    window.addEventListener("storage", handleAuthChange);
-    return () => {
-      window.removeEventListener("auth-change", handleAuthChange);
-      window.removeEventListener("storage", handleAuthChange);
-    };
-  }, []);
 
   // Close mobile drawer on route change
   useEffect(() => {
@@ -44,11 +33,10 @@ const AdminLayout = () => {
 
   const navItems = [
     {
-      to: "/dashboard",
+      to: "/admin/dashboard",
       label: "Main Dashboard",
       subLabel: "ফাইন্যান্সিয়াল ও রাজস্ব অ্যানালিটিক্স",
       icon: <FaChartPie className="text-lg text-cyan-400" />,
-      isMainDash: true,
     },
     {
       to: "/admin/tenants",
@@ -74,17 +62,28 @@ const AdminLayout = () => {
       subLabel: "বিল স্টেটমেন্ট, রসিদ ও পেমেন্ট",
       icon: <FaMoneyBillWave className="text-lg text-green-400" />,
     },
+    ...(profile?.role === "superadmin"
+      ? [
+          {
+            to: "/admin/users",
+            label: "User Management",
+            subLabel: "ইউজার তালিকা ও রোল নিয়ন্ত্রণ",
+            icon: <FaUserCog className="text-lg text-purple-400" />,
+          },
+          {
+            to: "/admin/utility-settings",
+            label: "Utility Settings",
+            subLabel: "রেট ও ইউটিলিটি সেটিংস",
+            icon: <FaSlidersH className="text-lg text-rose-400" />,
+          },
+        ]
+      : []),
   ];
 
   // Helper to get active page title
   const getPageTitle = () => {
-    const activeItem = navItems.find((item) => item.to === location.pathname);
-    if (activeItem) return activeItem.label;
-    if (location.pathname.startsWith("/admin/tenants")) return "Tenant Management";
-    if (location.pathname.startsWith("/admin/rooms")) return "My Rooms";
-    if (location.pathname.startsWith("/admin/meter")) return "Meter Number";
-    if (location.pathname.startsWith("/admin/bills")) return "Monthly Bills";
-    return "Admin Control Center";
+    const activeItem = navItems.find((item) => location.pathname.startsWith(item.to));
+    return activeItem ? activeItem.label : "Admin Control Center";
   };
 
   const navLinksContent = (
@@ -137,10 +136,10 @@ const AdminLayout = () => {
             </div>
             <div className="flex flex-col truncate">
               <span className="text-xs font-bold text-white truncate">
-                {user?.name || "Super Admin"}
+                {profile?.name || firebaseUser?.displayName || "Admin"}
               </span>
               <span className="text-[10px] text-cyan-400 font-mono">
-                @{user?.userName || "admin"}
+                {profile?.role ? profile.role : firebaseUser?.email || ""}
               </span>
             </div>
           </div>

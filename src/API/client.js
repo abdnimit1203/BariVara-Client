@@ -1,5 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+import { auth } from "../firebase/firebaseConfig";
+import { signOutUser } from "../firebase/auth";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -8,12 +10,14 @@ const client = axios.create({
   baseURL: baseURL,
 });
 
-// Request interceptor to attach JWT token
+// Request interceptor: attach the current Firebase ID token as a standard
+// Authorization: Bearer header (replaces the old custom `token` header).
 client.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.token = token;
+  async (config) => {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const idToken = await currentUser.getIdToken();
+      config.headers.Authorization = `Bearer ${idToken}`;
     }
     return config;
   },
@@ -25,22 +29,16 @@ let isToastActive = false;
 
 client.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     const status = error.response ? error.response.status : null;
-    const requestUrl = error.config ? error.config.url : "";
 
-    // If 401 occurs on login endpoint, let it pass to Login.jsx component
-    const isLoginEndpoint = requestUrl && (requestUrl.includes("/login") || requestUrl.endsWith("/login"));
+    if (status === 401) {
+      const hadUser = !!auth.currentUser;
+      await signOutUser().catch(() => {});
 
-    if (status === 401 && !isLoginEndpoint) {
-      const hadToken = !!localStorage.getItem("token");
-      localStorage.removeItem("token");
-      localStorage.removeItem("loginInfo");
-      window.dispatchEvent(new Event("auth-change"));
-
-      if (hadToken && !isToastActive) {
+      if (hadUser && !isToastActive) {
         isToastActive = true;
-        toast.error("আপনার লগইন সেশনের মেয়াদ শেষ হয়েছে। অনুগ্রহ করে আবার লগইন করুন।");
+        toast.error("আপনার লগইন সেশনের মেয়াদ শেষ হয়েছে। অনুগ্রহ করে আবার লগইন করুন।");
         setTimeout(() => {
           isToastActive = false;
         }, 4000);

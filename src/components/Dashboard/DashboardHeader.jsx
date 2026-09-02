@@ -4,9 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt, FaBuilding, FaDownload, FaSyncAlt, FaCalculator } from "react-icons/fa";
 import { MdOutlineElectricBolt } from "react-icons/md";
+import { useAuth } from "../../context/AuthContext";
 
 const DashboardHeader = ({ selectedDate, handleDateChange, totalRooms, totalPaidCount, isLoading, onRefresh }) => {
-  const user = JSON.parse(localStorage.getItem("loginInfo")) || { name: "Admin" };
+  const { profile, firebaseUser } = useAuth();
+  const user = { name: profile?.name || firebaseUser?.displayName || "Admin" };
 
   return (
     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white p-6 sm:p-8 md:p-10 shadow-2xl border border-blue-500/30 mb-8">

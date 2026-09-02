@@ -4,7 +4,7 @@ import BarChartMonthly from "../../utils/BarChartMonthly";
 import RoomStatusTable from "./RoomStatusTable";
 import UtilitySummaryCard from "./UtilitySummaryCard";
 
-const DashboardTabs = ({ bills = [], waterMeterBill }) => {
+const DashboardTabs = ({ bills = [], waterMeterBill, refetch }) => {
   const [activeTab, setActiveTab] = useState("charts"); // 'charts' | 'table' | 'utility'
 
   return (
@@ -73,7 +73,7 @@ const DashboardTabs = ({ bills = [], waterMeterBill }) => {
 
         {activeTab === "table" && (
           <div className="animate-fade-in">
-            <RoomStatusTable bills={bills} />
+            <RoomStatusTable bills={bills} refetch={refetch} />
           </div>
         )}
 

@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 import axiosInstance from "../../utils/axiosConfig";
 import DatePicker from "react-datepicker";
-import { FaUser, FaPhone, FaMoneyBillWave, FaCalendarCheck, FaCheckCircle } from "react-icons/fa";
+import { FaUser, FaPhone, FaMoneyBillWave, FaCalendarCheck, FaCheckCircle, FaTrashAlt, FaRegCalendarAlt } from "react-icons/fa";
 
 const NewLeaseHolderForm = ({ id, onSuccess }) => {
   const {
@@ -75,13 +75,16 @@ const NewLeaseHolderForm = ({ id, onSuccess }) => {
             <label className="text-xs sm:text-sm font-bold text-base-content/80 flex items-center gap-1.5">
               <FaPhone className="text-xs text-secondary" />
               <span>ফোন নম্বর (Phone Number)</span>
+              <span className="text-error">*</span>
             </label>
             <input
               id="phoneNumber"
               type="number"
               placeholder="যেমন: 017xxxxxxxx"
-              {...register("phoneNumber")}
-              className="input input-bordered w-full rounded-xl text-sm transition-all border-base-300 focus:border-secondary focus:outline-none"
+              {...register("phoneNumber", { required: "ফোন নম্বর আবশ্যক (Phone number is required)" })}
+              className={`input input-bordered w-full rounded-xl text-sm transition-all focus:border-secondary focus:outline-none ${
+                errors.phoneNumber ? "input-error border-error" : "border-base-300"
+              }`}
             />
             {errors.phoneNumber && (
               <p className="text-error text-xs font-medium pt-1">{errors.phoneNumber.message}</p>
@@ -126,23 +129,42 @@ const NewLeaseHolderForm = ({ id, onSuccess }) => {
               name="rentFrom"
               rules={{ required: "তারিখ নির্বাচন করুন (Date is required)" }}
               render={({ field }) => (
-                <DatePicker
-                  showIcon
-                  isClearable
-                  placeholderText="তারিখ নির্বাচন করুন"
-                  onChange={(date) => field.onChange(date)}
-                  selected={field.value}
-                  className={`input input-bordered w-full rounded-xl text-sm transition-all border-base-300 focus:border-info focus:outline-none ${
-                    errors.rentFrom ? "input-error border-error" : ""
-                  }`}
-                  wrapperClassName="w-full"
-                />
+                <div className="relative w-full">
+                  <FaRegCalendarAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-base-content/40 pointer-events-none z-[1]" />
+                  <DatePicker
+                    isClearable
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="তারিখ নির্বাচন করুন"
+                    onChange={(date) => field.onChange(date)}
+                    selected={field.value}
+                    className={`input input-bordered w-full rounded-xl pl-9 text-sm transition-all border-base-300 focus:border-info focus:outline-none ${
+                      errors.rentFrom ? "input-error border-error" : ""
+                    }`}
+                    wrapperClassName="w-full"
+                    portalId="tenant-datepicker-portal"
+                  />
+                </div>
               )}
             />
             {errors.rentFrom && (
               <p className="text-error text-xs font-medium pt-1">{errors.rentFrom?.message}</p>
             )}
           </div>
+        </div>
+
+        {/* Waste Bill Toggle */}
+        <div className="flex items-center justify-between gap-3 bg-base-200/50 rounded-xl px-4 py-3">
+          <label htmlFor="hasWasteBill" className="text-xs sm:text-sm font-bold text-base-content/80 flex items-center gap-1.5">
+            <FaTrashAlt className="text-xs text-emerald-500" />
+            <span>ময়লা বিল (Waste Bill)</span>
+          </label>
+          <input
+            id="hasWasteBill"
+            type="checkbox"
+            defaultChecked
+            {...register("hasWasteBill")}
+            className="toggle toggle-success"
+          />
         </div>
 
         {/* Submit Button */}

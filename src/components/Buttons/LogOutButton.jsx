@@ -1,17 +1,14 @@
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { signOutUser } from "../../firebase/auth";
 
 const LogoutButton = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("loginInfo");
-    localStorage.removeItem("token");
-    window.dispatchEvent(new Event("auth-change"));
-    // Redirect to the home page
+  const handleLogout = async () => {
+    await signOutUser();
     navigate("/");
-    window.location.reload();
-    toast.error("User Logged out!")
+    toast.error("User Logged out!");
   };
 
   return (

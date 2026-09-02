@@ -37,6 +37,7 @@ const BillCalculations = ({
   const usedUnits = Math.max(0, currentReading - previousReading);
   const currentBill = myData?.currentBill ?? (usedUnits * 10);
   const waterBill = room?.hasWaterBill ? (myData?.waterBill ?? 0) : 0;
+  const wasteBill = myData?.wasteBill ?? 0;
   const rentAmount = myData?.rent ?? 1800;
   const dueAmount = myData?.due ?? 0;
   const isPaid = myData?.paid === "true" || myData?.paid === true;
@@ -331,6 +332,13 @@ const BillCalculations = ({
               </div>
               ` : ''}
 
+              ${wasteBill > 0 ? `
+              <div class="row">
+                <span style="color: #059669; font-weight: 600;">Waste Bill (ময়লা)</span>
+                <span class="row-bold">৳ ${toBn(wasteBill)}</span>
+              </div>
+              ` : ''}
+
               <div class="row">
                 <span style="color: #dc2626;">Rent (ঘর ভাড়া)</span>
                 <span class="row-bold">৳ ${toBn(rentAmount)}</span>
@@ -517,6 +525,13 @@ const BillCalculations = ({
                 <div className="grid grid-cols-2 justify-between py-0.5 text-xs">
                   <span className="text-primary font-semibold">Water bill</span>
                   <span className="text-right font-mono font-bold text-primary">৳ {toBn(waterBill)}</span>
+                </div>
+              )}
+
+              {wasteBill > 0 && (
+                <div className="grid grid-cols-2 justify-between py-0.5 text-xs">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Waste bill</span>
+                  <span className="text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">৳ {toBn(wasteBill)}</span>
                 </div>
               )}
 

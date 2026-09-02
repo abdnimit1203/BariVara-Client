@@ -3,16 +3,34 @@ import { FaRegUser, FaUnlockAlt, FaUserAlt } from "react-icons/fa";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BiSolidErrorAlt } from "react-icons/bi";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { registerUser } from "../API/api";
+import { signUpWithEmail } from "../firebase/auth";
+import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+
+// This page is intentionally not linked from any public navigation yet
+// (kept implemented for future activation — see AUTH_IMPLEMENTATION_PLAN.md).
+// It never sends or implies a role: the backend always assigns `tenant` on
+// first login; only Super Admin can change a role afterwards.
+const firebaseErrorMessage = (err) => {
+  switch (err.code) {
+    case "auth/email-already-in-use":
+      return "An account with this email already exists.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/weak-password":
+      return "Password is too weak — use at least 6 characters.";
+    default:
+      return "Registration failed. Try again.";
+  }
+};
 
 const Register = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("loginInfo"));
+  const { isAuthenticated } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
-    userName: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -26,14 +44,12 @@ const Register = () => {
     setIsLoaded(true);
   }, []);
 
-  if (user) return <Navigate to="/" />;
+  if (isAuthenticated) return <Navigate to="/" />;
 
   const validate = () => {
     if (!formData.name.trim()) return "Name is required.";
-    if (formData.userName.trim().length < 3)
-      return "Username must be at least 3 characters.";
-    if (/\s/.test(formData.userName))
-      return "Username cannot contain spaces.";
+    if (!/^\S+@\S+\.\S+$/.test(formData.email))
+      return "Please enter a valid email address.";
     if (formData.password.length < 6)
       return "Password must be at least 6 characters.";
     if (formData.password !== formData.confirmPassword)
@@ -51,15 +67,11 @@ const Register = () => {
     }
     setIsLoading(true);
     try {
-      await registerUser({
-        name: formData.name,
-        userName: formData.userName,
-        password: formData.password,
-      });
-      toast.success("Account created! Please log in.");
-      navigate("/login");
+      await signUpWithEmail(formData.email, formData.password);
+      toast.success("Account created!");
+      navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Try again.");
+      setError(firebaseErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -129,19 +141,19 @@ const Register = () => {
             />
           </div>
 
-          {/* Username */}
+          {/* Email */}
           <div className="relative">
-            <label htmlFor="userName" className="block mb-2 text-sm sm:text-base font-medium">
-              Username
+            <label htmlFor="email" className="block mb-2 text-sm sm:text-base font-medium">
+              Email
             </label>
             <FaRegUser className="opacity-40 absolute bottom-3 -left-2 sm:bottom-3.5" />
             <input
-              id="userName"
-              type="text"
+              id="email"
+              type="email"
               className="w-full p-1.5 sm:p-2.5 mt-1 rounded border-b-2 appearance-none px-3 bg-transparent focus:border-b-primary focus:outline-none"
-              placeholder="Choose a username (no spaces)"
-              value={formData.userName}
-              onChange={handleChange("userName")}
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={handleChange("email")}
               required
             />
           </div>

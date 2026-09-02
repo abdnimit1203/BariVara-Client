@@ -55,3 +55,11 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+/* react-datepicker calendars are portaled (portalId) so they escape a modal's
+   overflow-y-auto clipping — but portaling moves them to a sibling of the
+   modal in the DOM, so they need a z-index above UniversalModal's z-[100000]
+   to actually render on top of it instead of behind it. */
+.react-datepicker-popper {
+  z-index: 100001 !important;
+}

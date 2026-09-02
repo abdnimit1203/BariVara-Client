@@ -51,7 +51,7 @@ const ModalUniversal = ({ roomData }) => {
           {/* Quick Action Bar (Go To Edit Page) */}
           <div className="flex justify-center">
             <Link
-              to={`/singleroom/${_id}`}
+              to={`/admin/rooms/${_id}`}
               onClick={() => {
                 const modal = document.getElementById(roomNo);
                 if (modal) modal.close();

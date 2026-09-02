@@ -30,7 +30,7 @@ const CallToActionBanner = () => {
             <span>ফ্রি রেজিস্ট্রেশন করুন</span>
           </Link>
           <Link
-            to="/dashboard"
+            to="/admin"
             className="w-full sm:w-auto px-7 py-4 bg-white/15 hover:bg-white/25 text-white font-bold rounded-2xl transition duration-300 flex items-center justify-center gap-2 border border-white/30 backdrop-blur-md"
           >
             <span>ড্যাশবোর্ড দেখুন</span>

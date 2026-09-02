@@ -22,7 +22,7 @@ const SingleRoom = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-base-300 pb-4">
           <div className="flex items-center gap-3">
             <Link
-              to="/my-rooms"
+              to="/admin/rooms"
               className="btn btn-sm btn-circle btn-ghost border border-base-300 hover:bg-base-200 transition-all"
               title="Back to Rooms"
             >

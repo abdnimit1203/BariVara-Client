@@ -15,6 +15,8 @@ import {
   FaSync,
   FaSignOutAlt,
   FaExclamationTriangle,
+  FaTrashAlt,
+  FaRegCalendarAlt,
 } from "react-icons/fa";
 import { updateLeaseholder, vacateLeaseholder } from "../../API/api";
 import toast from "react-hot-toast";
@@ -135,6 +137,7 @@ const TenantManagement = () => {
       rentFrom: tenant.rentFrom ? new Date(tenant.rentFrom) : new Date(),
       rentTo: tenant.rentTo ? new Date(tenant.rentTo) : null,
       due: tenant.due || 0,
+      hasWasteBill: tenant.hasWasteBill !== false,
     });
     setIsEditModalOpen(true);
   };
@@ -311,7 +314,7 @@ const TenantManagement = () => {
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-base-content/40" />
           <input
             type="text"
-            placeholder="রুম নং, ভাড়াটিয়ার নাম বা ফোন দিয়ে খুঁজুন..."
+            placeholder="Search by room no, tenant name or phone..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="input input-sm sm:input-md input-bordered w-full pl-9 rounded-xl text-xs sm:text-sm border-base-300 focus:border-primary focus:outline-none"
@@ -334,7 +337,7 @@ const TenantManagement = () => {
               statusFilter === "all" ? "btn-primary" : "btn-ghost border border-base-300"
             }`}
           >
-            সব ({toBn(residentialRooms.length)})
+            All ({toBn(residentialRooms.length)})
           </button>
           <button
             onClick={() => setStatusFilter("occupied")}
@@ -342,7 +345,7 @@ const TenantManagement = () => {
               statusFilter === "occupied" ? "btn-success text-white" : "btn-ghost border border-base-300"
             }`}
           >
-            ভাড়া দেওয়া ({toBn(occupiedCount)})
+            Occupied ({toBn(occupiedCount)})
           </button>
           <button
             onClick={() => setStatusFilter("vacant")}
@@ -350,7 +353,7 @@ const TenantManagement = () => {
               statusFilter === "vacant" ? "btn-warning text-white" : "btn-ghost border border-base-300"
             }`}
           >
-            ফাঁকা ({toBn(vacantCount)})
+            Vacant ({toBn(vacantCount)})
           </button>
           <button
             onClick={() => setStatusFilter("due")}
@@ -358,7 +361,7 @@ const TenantManagement = () => {
               statusFilter === "due" ? "btn-error text-white" : "btn-ghost border border-base-300"
             }`}
           >
-            বকেয়া আছে
+            Has Due
           </button>
         </div>
       </div>
@@ -511,7 +514,7 @@ const TenantManagement = () => {
 
                           {/* 4. Deep History in Single Room */}
                           <Link
-                            to={`/singleroom/${room._id}`}
+                            to={`/admin/rooms/${room._id}`}
                             title="রুমের বিস্তারিত ইতিহাস ও হিস্ট্রি দেখুন"
                             className="btn btn-xs btn-ghost border border-base-300 rounded-lg"
                           >
@@ -600,28 +603,57 @@ const TenantManagement = () => {
             {/* Rent From Date */}
             <div className="space-y-1 flex flex-col">
               <label className="text-xs font-bold text-base-content/80">ভাড়া শুরু (Rent From)</label>
-              <DatePicker
-                selected={editFormData.rentFrom}
-                onChange={(date) =>
-                  setEditFormData({ ...editFormData, rentFrom: date })
-                }
-                className="input input-sm input-bordered w-full rounded-xl"
-              />
+              <div className="relative w-full">
+                <FaRegCalendarAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-base-content/40 pointer-events-none z-[1]" />
+                <DatePicker
+                  selected={editFormData.rentFrom}
+                  dateFormat="dd/MM/yyyy"
+                  onChange={(date) =>
+                    setEditFormData({ ...editFormData, rentFrom: date })
+                  }
+                  className="input input-sm input-bordered w-full rounded-xl pl-9"
+                  wrapperClassName="w-full"
+                  portalId="tenant-datepicker-portal"
+                />
+              </div>
             </div>
 
             {/* Rent To Date (Leave Date) */}
             <div className="space-y-1 flex flex-col">
               <label className="text-xs font-bold text-base-content/80">ভাড়া শেষ (Rent To)</label>
-              <DatePicker
-                selected={editFormData.rentTo}
-                isClearable
-                placeholderText="বর্তমান থাকলে ফাঁকা রাখুন"
-                onChange={(date) =>
-                  setEditFormData({ ...editFormData, rentTo: date })
-                }
-                className="input input-sm input-bordered w-full rounded-xl"
-              />
+              <div className="relative w-full">
+                <FaRegCalendarAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-base-content/40 pointer-events-none z-[1]" />
+                <DatePicker
+                  selected={editFormData.rentTo}
+                  isClearable
+                  dateFormat="dd/MM/yyyy"
+                  placeholderText="বর্তমান থাকলে ফাঁকা রাখুন"
+                  onChange={(date) =>
+                    setEditFormData({ ...editFormData, rentTo: date })
+                  }
+                  className="input input-sm input-bordered w-full rounded-xl pl-9"
+                  wrapperClassName="w-full"
+                  portalId="tenant-datepicker-portal"
+                />
+              </div>
             </div>
+          </div>
+
+          {/* Waste Bill Toggle */}
+          <div className="flex items-center justify-between gap-3 bg-base-200/50 rounded-xl px-4 py-3">
+            <label htmlFor="editHasWasteBill" className="text-xs font-bold text-base-content/80 flex items-center gap-1.5">
+              <FaTrashAlt className="text-xs text-emerald-500" />
+              <span>ময়লা বিল (Waste Bill)</span>
+            </label>
+            <input
+              id="editHasWasteBill"
+              type="checkbox"
+              checked={editFormData.hasWasteBill !== false}
+              onChange={(e) =>
+                setEditFormData({ ...editFormData, hasWasteBill: e.target.checked })
+              }
+              className="toggle toggle-success"
+            />
           </div>
 
           <div className="flex justify-end gap-2 pt-3 border-t border-base-300">
@@ -726,11 +758,17 @@ const TenantManagement = () => {
 
           <div className="space-y-1 flex flex-col">
             <label className="text-xs font-bold text-base-content/80">প্রস্থানের তারিখ (Departure Date) *</label>
-            <DatePicker
-              selected={vacateDate}
-              onChange={(date) => setVacateDate(date)}
-              className="input input-sm input-bordered w-full rounded-xl"
-            />
+            <div className="relative w-full">
+              <FaRegCalendarAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-base-content/40 pointer-events-none z-[1]" />
+              <DatePicker
+                selected={vacateDate}
+                dateFormat="dd/MM/yyyy"
+                onChange={(date) => setVacateDate(date)}
+                className="input input-sm input-bordered w-full rounded-xl pl-9"
+                wrapperClassName="w-full"
+                portalId="tenant-datepicker-portal"
+              />
+            </div>
           </div>
 
           <div className="flex justify-end gap-2 pt-3 border-t border-base-300">

@@ -11,7 +11,7 @@ const MyRooms = () => {
 
       <p className="text-xl text-center font-bold bg-red-500 w-fit mx-auto px-5 pt-5  mb-2 rounded-t-full text-white">MAP</p>
       <img
-        src="compass.png"
+        src="/compass.png"
         alt="compass"
         className="rounded-full border-2 border-red-600 pw w-16 fixed bottom-4 right-6 hover:animate-spin bg-[#ffffffe7]"
       />

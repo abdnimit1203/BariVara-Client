@@ -223,7 +223,7 @@ const FeaturedHouseGrid = ({ selectedDivision, selectedCategory, searchTerm, onS
                   <div className="grid grid-cols-2 gap-2">
                     {house.hasLiveMap ? (
                       <Link
-                        to="/my-rooms"
+                        to="/admin/rooms"
                         className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md transition text-center"
                       >
                         <span>Live Rooms Map</span>

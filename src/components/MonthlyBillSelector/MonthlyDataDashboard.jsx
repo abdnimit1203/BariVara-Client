@@ -91,7 +91,7 @@ const MonthlyDataDashboard = () => {
       />
 
       {/* 3. Interactive Analytics, Status Table, & Meter Summary Tabs */}
-      <DashboardTabs bills={bills} waterMeterBill={waterMeterBill} />
+      <DashboardTabs bills={bills} waterMeterBill={waterMeterBill} refetch={refetch} />
     </div>
   );
 };

@@ -24,7 +24,7 @@ const HouseMap = () => {
           <section>
             <div>
               <img
-                src="tin.jpg"
+                src="/tin.jpg"
                 alt="Tin Shade"
                 className="mt-1 rounded-t-2xl"
               />
@@ -101,7 +101,7 @@ const HouseMap = () => {
           <section>
             <div>
               <img
-                src="redgate.PNG"
+                src="/redgate.PNG"
                 alt="Red Gate"
                 className="mt-1 rounded-t-2xl "
               />
@@ -195,7 +195,7 @@ const HouseMap = () => {
           <section>
             <div>
               <img
-                src="kechigate.PNG"
+                src="/kechigate.PNG"
                 alt="kechi gate"
                 className="mt-1 rounded-t-2xl"
               />
@@ -257,7 +257,7 @@ const HouseMap = () => {
             {/* Divider image portion ends */}
 
             <img
-              src="wall.PNG"
+              src="/wall.PNG"
               alt="great wall"
               className="my-1 h-5 w-full rounded"
             />

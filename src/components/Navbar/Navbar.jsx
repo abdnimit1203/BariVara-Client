@@ -1,31 +1,19 @@
 import { Link, NavLink } from "react-router-dom";
-import { FcDisplay } from "react-icons/fc";
-import { FaHouseChimneyUser, FaMoneyBill, FaDoorOpen, FaUserShield } from "react-icons/fa6";
+import { FaHouseChimneyUser, FaUserShield } from "react-icons/fa6";
 import UserProfile from "../../utils/UserProfile";
 import { FcCalculator } from "react-icons/fc";
-import { RxDashboard } from "react-icons/rx";
 
 import UniversalModal from "../Modals/UniversalModal";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Calculator from "../../utils/Calculator";
 import ThemeToggle from "./ThemeToggle";
+import { useAuth } from "../../context/AuthContext";
+
+const STAFF_ROLES = ["superadmin", "admin"];
 
 const Navbar = () => {
-  const [user, setUser] = useState(() =>
-    JSON.parse(localStorage.getItem("loginInfo"))
-  );
-
-  useEffect(() => {
-    const handleAuthChange = () => {
-      setUser(JSON.parse(localStorage.getItem("loginInfo")));
-    };
-    window.addEventListener("auth-change", handleAuthChange);
-    window.addEventListener("storage", handleAuthChange);
-    return () => {
-      window.removeEventListener("auth-change", handleAuthChange);
-      window.removeEventListener("storage", handleAuthChange);
-    };
-  }, []);
+  const { isAuthenticated, role } = useAuth();
+  const isStaff = STAFF_ROLES.includes(role);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,25 +35,13 @@ const Navbar = () => {
         <FaHouseChimneyUser className="md:hidden inline text-xl mr-3" /> Home
       </NavLink>
 
-      {user ? (
+      {isStaff ? (
         <>
-          {/* Main Financial Dashboard */}
+          {/* Single entry point into the admin shell — everything else (Tenant
+              Management, My Rooms, Meter, Bills, Users) lives inside that
+              shell's own sidebar, not duplicated here. */}
           <NavLink
-            to="/dashboard"
-            className={({ isActive, isPending }) =>
-              isPending
-                ? "pending"
-                : isActive
-                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
-                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-            }
-          >
-            <RxDashboard className="md:hidden inline text-xl mr-3" /> Dashboard
-          </NavLink>
-
-          {/* Admin Management Dedicated Area */}
-          <NavLink
-            to="/admin/tenants"
+            to="/admin"
             className={({ isActive }) =>
               `px-3 py-2 rounded-xl transition duration-200 flex items-center gap-1.5 ${
                 isActive
@@ -75,52 +51,13 @@ const Navbar = () => {
             }
           >
             <FaUserShield className="inline text-base text-cyan-300" />
-            <span>Admin Management</span>
-          </NavLink>
-
-          <NavLink
-            to="/my-rooms"
-            className={({ isActive, isPending }) =>
-              isPending
-                ? "pending"
-                : isActive
-                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
-                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-            }
-          >
-            <FaDoorOpen className="md:hidden inline text-xl mr-3" /> My Rooms
-          </NavLink>
-
-          <NavLink
-            to="/meterNumber"
-            className={({ isActive, isPending }) =>
-              isPending
-                ? "pending"
-                : isActive
-                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
-                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-            }
-          >
-            <FcDisplay className="md:hidden inline text-xl mr-3" />
-            Meter Number
-          </NavLink>
-
-          <NavLink
-            to="/monthlyBills"
-            className={({ isActive, isPending }) =>
-              isPending
-                ? "pending"
-                : isActive
-                ? "active bg-primary px-3 py-2 text-neutral rounded-xl"
-                : "hover:bg-primary px-3 py-2 hover:text-neutral transition duration-200 rounded-xl"
-            }
-          >
-            <FaMoneyBill className="md:hidden inline text-xl mr-3 text-green-400" />
-            Monthly Bills
+            <span>Dashboard</span>
           </NavLink>
 
           <UserProfile />
         </>
+      ) : isAuthenticated ? (
+        <UserProfile />
       ) : (
         <NavLink
           to="/login"

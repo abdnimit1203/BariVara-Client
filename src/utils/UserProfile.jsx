@@ -1,9 +1,11 @@
 import LogoutButton from "../components/Buttons/LogOutButton";
 import Clock from "./Clock";
+import { useAuth } from "../context/AuthContext";
 
 const UserProfile = () => {
-  const user = JSON.parse(localStorage.getItem("loginInfo"));
-  // console.log("USER = ", user);
+  const { profile, firebaseUser } = useAuth();
+  const displayName = profile?.name || firebaseUser?.displayName || firebaseUser?.email || "";
+
   return (
     <div>
       <div className="border-4 shadow-xl shadow-black flex p-4 justify-center text-center flex-col space-y-4 rounded-xl lg:flex-row lg:p-1 lg:space-y-0  ">
@@ -14,7 +16,7 @@ const UserProfile = () => {
           className="w-20 aspect-square lg:hidden  mx-auto rounded-full"
         />
 
-        <p className="lg:hidden">Hello, {user.name}</p>
+        <p className="lg:hidden">Hello, {displayName}</p>
         <Clock />
         <LogoutButton />
       </div>
