@@ -13,7 +13,7 @@ const MyRooms = () => {
       <img
         src="/compass.png"
         alt="compass"
-        className="rounded-full border-2 border-red-600 pw w-16 fixed bottom-4 right-6 hover:animate-spin bg-[#ffffffe7]"
+        className="rounded-full border-2 z-20 border-red-600 pw w-16 fixed bottom-4 right-6 hover:animate-spin bg-[#ffffffe7]"
       />
       <div className="h-12 w-full bg-sky-950 relative ">
         <span className="w-full h-1  border-dotted border-2 absolute top-[45%]"></span>

@@ -558,7 +558,7 @@ const BillCalculations = ({
                 <span className="font-semibold text-emerald-700 dark:text-emerald-300">Paid Amount (পরিশোধিত):</span>
                 <div className="flex items-center justify-end gap-1.5 font-bold text-emerald-700 dark:text-emerald-300">
                   <span className="font-mono text-sm">৳</span>
-                  <div className="border border-emerald-500/60 bg-base-100 rounded-md w-20 h-7 flex items-center justify-center font-mono font-bold text-xs text-emerald-700 dark:text-emerald-300 shadow-inner">
+                  <div className={`${isPaid ? "border border-emerald-500/60" : "border-0"} bg-base-100 rounded-md w-20 h-7 flex items-center justify-center font-mono font-bold text-xs text-emerald-700 dark:text-emerald-300 shadow-inner`}>
                     {isPaid ? toBn(paidAmount) : ""}
                   </div>
                 </div>

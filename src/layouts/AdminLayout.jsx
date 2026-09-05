@@ -12,6 +12,7 @@ import {
   FaUserShield,
   FaUserCog,
   FaSlidersH,
+  FaCog,
 } from "react-icons/fa";
 import { FcCalculator } from "react-icons/fc";
 import ThemeToggle from "../components/Navbar/ThemeToggle";
@@ -78,6 +79,12 @@ const AdminLayout = () => {
           },
         ]
       : []),
+    {
+      to: "/admin/settings",
+      label: "Settings",
+      subLabel: "রুম অ্যাড, এডিট ও কনফিগারেশন",
+      icon: <FaCog className="text-lg text-slate-400" />,
+    },
   ];
 
   // Helper to get active page title
@@ -240,7 +247,7 @@ const AdminLayout = () => {
       )}
 
       {/* 3. MAIN OUTLET AREA */}
-      <main className="flex-1 w-full min-h-[calc(100vh-60px)] lg:min-h-screen overflow-x-hidden p-3 sm:p-6 lg:p-8">
+      <main className="flex-1 w-full min-h-[calc(100vh-60px)] lg:min-h-screen overflow-x-clip p-3 sm:p-6 lg:p-8">
         <Outlet />
       </main>
 

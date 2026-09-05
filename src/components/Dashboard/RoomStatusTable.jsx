@@ -33,6 +33,7 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
     waterBill: "",
     gasBill: "",
     wasteBill: "",
+    due: "",
   });
 
   const handleOpenEditModal = (bill) => {
@@ -53,6 +54,7 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
         bill.wasteBill !== undefined && bill.wasteBill !== null
           ? bill.wasteBill
           : 0,
+      due: bill.due !== undefined && bill.due !== null ? bill.due : 0,
     });
     setIsEditModalOpen(true);
   };
@@ -69,10 +71,14 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
     }));
   };
 
-  // Live calculation of recomputed total inside the edit modal
+  // Live-typing preview only — the backend is the source of truth and
+  // recomputes independently on save via calculateBillTotal in
+  // ABD_BariVara_Be/src/modules/billing.js. This is a deliberate, small
+  // duplication (separate repo/runtime, no shared package): keep the two
+  // formulas identical by hand if either one changes.
   const liveCalculatedTotal =
     (Number(formData.rent) || 0) +
-    (selectedBill?.due || 0) +
+    (Number(formData.due) || 0) +
     (Number(formData.waterBill) || 0) +
     (Number(formData.gasBill) || 0) +
     (Number(formData.wasteBill) || 0) +
@@ -91,6 +97,7 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
         waterBill: Number(formData.waterBill) || 0,
         gasBill: Number(formData.gasBill) || 0,
         wasteBill: Number(formData.wasteBill) || 0,
+        due: Number(formData.due) || 0,
       };
 
       await updatePaymentById(selectedBill._id, payload);
@@ -108,8 +115,8 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
       console.error(err);
       toast.error(
         err?.response?.data?.error ||
-          err?.response?.data?.message ||
-          "বিল আপডেট করতে সমস্যা হয়েছে!",
+        err?.response?.data?.message ||
+        "বিল আপডেট করতে সমস্যা হয়েছে!",
         { id: toastId }
       );
     } finally {
@@ -172,11 +179,10 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
         <FaFilter className="text-slate-400 text-xs mr-1 shrink-0" />
         <button
           onClick={() => setStatusFilter("all")}
-          className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
-            statusFilter === "all"
-              ? "bg-slate-900 text-white shadow-md"
-              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100"
-          }`}
+          className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${statusFilter === "all"
+            ? "bg-slate-900 text-white shadow-md"
+            : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100"
+            }`}
         >
           <span>All Rooms</span>
           <span className="bg-slate-700 text-white px-1.5 py-0.5 rounded text-[10px]">
@@ -186,11 +192,10 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
 
         <button
           onClick={() => setStatusFilter("paid")}
-          className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
-            statusFilter === "paid"
-              ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/20"
-              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-slate-700"
-          }`}
+          className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${statusFilter === "paid"
+            ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/20"
+            : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-slate-700"
+            }`}
         >
           <FaCheckCircle className="text-emerald-400" />
           <span>Paid</span>
@@ -201,11 +206,10 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
 
         <button
           onClick={() => setStatusFilter("due")}
-          className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
-            statusFilter === "due"
-              ? "bg-rose-600 text-white shadow-md shadow-rose-500/20"
-              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-rose-50 dark:hover:bg-slate-700"
-          }`}
+          className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${statusFilter === "due"
+            ? "bg-rose-600 text-white shadow-md shadow-rose-500/20"
+            : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-rose-50 dark:hover:bg-slate-700"
+            }`}
         >
           <FaExclamationCircle className="text-rose-400" />
           <span>Due Only</span>
@@ -222,11 +226,11 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
             <tr className="bg-slate-100/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider font-bold border-b border-slate-200 dark:border-slate-700">
               <th className="py-4 px-6">রুম নং (Room)</th>
               <th className="py-4 px-6">ক্যাটাগরি</th>
-              <th className="py-4 px-6 text-right">মূল ভাড়া (Rent)</th>
-              <th className="py-4 px-6 text-right">বিদ্যুৎ বিল (Electric)</th>
-              <th className="py-4 px-6 text-right">মোট দেয় (Total)</th>
-              <th className="py-4 px-6 text-right">আদায় হয়েছে</th>
-              <th className="py-4 px-6 text-right">বকেয়া (Due)</th>
+              <th className="py-4 px-6 text-center">মূল ভাড়া (Rent)</th>
+              <th className="py-4 px-6 text-center">বিদ্যুৎ বিল (Electric)</th>
+              <th className="py-4 px-6 text-center">সর্বমোট (Total)</th>
+              <th className="py-4 px-6 text-center">আদায় হয়েছে</th>
+              <th className="py-4 px-6 text-center">বকেয়া (Due)</th>
               <th className="py-4 px-6 text-center">স্ট্যাটাস</th>
               <th className="py-4 px-6 text-center">Action</th>
             </tr>
@@ -254,34 +258,33 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
                     className="hover:bg-blue-50/50 dark:hover:bg-slate-800/60 transition duration-150"
                   >
                     <td className="py-4 px-6 font-black text-slate-900 dark:text-white flex items-center gap-2">
-                      <span className="w-8 h-8 rounded-xl bg-blue-100 dark:bg-slate-800 text-blue-700 dark:text-blue-400 flex items-center justify-center font-bold text-xs shrink-0 border border-blue-200 dark:border-slate-700">
+                      <span>
+                        Room
+                      </span>
+                      <span className=" p-1 rounded-xl bg-blue-100 dark:bg-slate-800 text-blue-700 dark:text-blue-400 flex items-center font-bold justify-center text-xs shrink-0 border border-blue-200 dark:border-slate-700">
                         {bill.roomNo}
                       </span>
-                      <span>
-                        {isNaN(bill.roomNo)
-                          ? bill.roomNo
-                          : `Room - ${bill.roomNo}`}
-                      </span>
+
                     </td>
                     <td className="py-4 px-6 text-slate-600 dark:text-slate-400 text-xs">
                       {bill.category || "সাধারণ রুম"}
                     </td>
-                    <td className="py-4 px-6 text-right font-bold text-slate-700 dark:text-slate-300">
+                    <td className="py-4 px-2 text-center font-bold text-slate-700 dark:text-slate-300">
                       ৳ {(bill.rent || 0).toLocaleString()}
                     </td>
-                    <td className="py-4 px-6 text-right font-bold text-amber-600 dark:text-amber-400">
+                    <td className="py-4 px-6 text-center font-bold text-amber-600 dark:text-amber-400">
                       <span className="inline-flex items-center gap-1">
                         <MdOutlineElectricBolt className="text-xs" />
                         <span>৳ {(bill.currentBill || 0).toLocaleString()}</span>
                       </span>
                     </td>
-                    <td className="py-4 px-6 text-right font-black text-slate-900 dark:text-white">
+                    <td className="py-4 px-2 text-center font-black text-slate-900 dark:text-white">
                       ৳ {totalAmount.toLocaleString()}
                     </td>
-                    <td className="py-4 px-6 text-right font-bold text-emerald-600 dark:text-emerald-400">
+                    <td className="py-4 px-2 text-center font-bold text-emerald-600 dark:text-emerald-400">
                       ৳ {paidAmount.toLocaleString()}
                     </td>
-                    <td className="py-4 px-6 text-right font-black">
+                    <td className="py-4 px-2 text-center font-semibold">
                       {dueAmount > 0 ? (
                         <span className="text-rose-600 dark:text-rose-400 bg-rose-100 dark:bg-rose-900/40 px-2 py-0.5 rounded-md">
                           ৳ {dueAmount.toLocaleString()}
@@ -290,16 +293,16 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
                         <span className="text-slate-400 font-normal">৳ 0</span>
                       )}
                     </td>
-                    <td className="py-4 px-6 text-center">
+                    <td className="py-4 px-2 text-center">
                       {isPaid ? (
                         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
                           <FaCheckCircle />
-                          <span>পরিশোধিত (Paid)</span>
+                          <span>Paid</span>
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-300 border border-rose-300 dark:border-rose-700 animate-pulse">
                           <FaExclamationCircle />
-                          <span>বকেয়া (Due)</span>
+                          <span>Due</span>
                         </span>
                       )}
                     </td>
@@ -420,7 +423,7 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
               </div>
 
               {/* Waste Bill */}
-              <div className="sm:col-span-2">
+              <div>
                 <label className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
                   <FaTrashAlt className="text-teal-500" />
                   <span>ময়লা বিল (Waste ৳):</span>
@@ -433,16 +436,25 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
                   className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold focus:outline-none focus:border-indigo-500"
                 />
               </div>
+
+              {/* Previous Due */}
+              <div>
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <FaExclamationCircle className="text-rose-500" />
+                  <span>পূর্ববর্তী বকেয়া (Due ৳):</span>
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={formData.due}
+                  onChange={(e) => handleInputChange("due", e.target.value)}
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold focus:outline-none focus:border-indigo-500"
+                />
+              </div>
             </div>
 
             {/* Read-only components summary & Live calculated total */}
             <div className="bg-slate-100 dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
-              <div className="flex justify-between text-xs text-slate-600 dark:text-slate-300">
-                <span>পূর্বের বকেয়া (Previous Due):</span>
-                <span className="font-bold">
-                  ৳ {(selectedBill.due || 0).toLocaleString()}
-                </span>
-              </div>
               <div className="flex justify-between text-xs text-slate-600 dark:text-slate-300">
                 <span>আদায়কৃত অর্থ (Paid Amount):</span>
                 <span className="font-bold text-emerald-600 dark:text-emerald-400">
@@ -451,7 +463,7 @@ const RoomStatusTable = ({ bills = [], refetch }) => {
               </div>
               <div className="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
                 <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">
-                  নতুন মোট দেয় (Recomputed Total):
+                  নতুন সর্বমোট  (Recomputed Total):
                 </span>
                 <span className="text-base sm:text-lg font-black text-indigo-600 dark:text-cyan-400">
                   ৳ {liveCalculatedTotal.toLocaleString()}

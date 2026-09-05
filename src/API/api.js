@@ -23,6 +23,10 @@ export const saveUtilitySettings = (data) => client.put("/utilitySettings", data
 export const fetchRoomData = () => client.get("/roomDatas");
 export const fetchCategories = () => client.get("/categories");
 
+// Room management (Settings)
+export const createRoom = (data) => client.post("/rooms", data);
+export const updateRoomById = (id, data) => client.put(`/rooms/${id}`, data);
+
 // Monthly data & bills
 export const fetchMonthlyData = (data) => client.post("/monthlyData", data);
 export const createMonthlyBill = (data) => client.post("/monthlyBill", data);

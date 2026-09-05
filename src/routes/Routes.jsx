@@ -13,6 +13,9 @@ import SingleRoom from "../components/SingleRoom/SingleRoom";
 import TenantManagement from "../pages/admin/TenantManagement";
 import UserManagement from "../pages/admin/UserManagement";
 import UtilitySettings from "../pages/admin/UtilitySettings";
+import AdminSettingsHub from "../pages/admin/AdminSettingsHub";
+import AddRoomForm from "../pages/admin/rooms/AddRoomForm";
+import EditRoomsList from "../pages/admin/rooms/EditRoomsList";
 import Profile from "../pages/Profile";
 import PrivateRoutes from "./PrivateRoutes";
 import RoleRoute from "./RoleRoute";
@@ -86,6 +89,18 @@ export const router = createBrowserRouter([
       {
         path: "bills",
         element: <MonthlyBills />,
+      },
+      {
+        path: "settings",
+        element: <AdminSettingsHub />,
+      },
+      {
+        path: "settings/rooms/add",
+        element: <AddRoomForm />,
+      },
+      {
+        path: "settings/rooms/edit",
+        element: <EditRoomsList />,
       },
       {
         path: "users",

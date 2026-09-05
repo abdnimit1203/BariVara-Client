@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
-import HeaderText from "../../utils/HeaderText";
-import { FaEdit } from "react-icons/fa";
-import { FaSackDollar } from "react-icons/fa6";
+import { useEffect, useRef, useState } from "react";
+import { FaSync, FaCalendarAlt } from "react-icons/fa";
 import CompoWrapper from "../Wrapper/CompoWrapper";
-import useMonthlyMeterData from "../../hooks/useMonthlyMeterData";
 import useRooms from "../../hooks/useRooms";
 import Loader from "../../utils/Loader";
 import DatePicker from "react-datepicker";
@@ -15,7 +12,6 @@ import { IoIosWarning } from "react-icons/io";
 import useMonthlyBills from "./../../hooks/useMonthlyBills";
 
 const MonthlyBillsTable = () => {
-  const now = new Date();
   const monthNames = [
     "January",
     "February",
@@ -31,19 +27,6 @@ const MonthlyBillsTable = () => {
     "December",
   ];
 
-  const month = monthNames[now.getMonth()];
-  const year = now.getFullYear();
-  console.log(month, year);
-  // Function for getting next month name
-  const getNextMonth = (month) => {
-    const index = monthNames.indexOf(month);
-    if (index === -1) {
-      return "Invalid month name";
-    }
-    const nextIndex = (index + 1) % monthNames.length;
-    return monthNames[nextIndex];
-  };
-
   // Month Year Selector
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
@@ -53,68 +36,107 @@ const MonthlyBillsTable = () => {
   const [selectedMonth, setSelectedMonth] = useState(
     monthNames[getMonth(selectedDate)]
   );
-  const [nextMonth, setNextMonth] = useState(
-    getNextMonth(monthNames[getMonth(selectedDate)])
-  );
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setSelectedYear(getYear(date));
     setSelectedMonth(monthNames[getMonth(date)]);
-    setNextMonth(getNextMonth(monthNames[getMonth(date)]));
   };
 
   // DATA FETCHING
-
-  // Room data
   const [rooms, isLoading, refetch] = useRooms();
-  console.log(rooms);
-
-  // Selected month data
-  const [selectedMonthsData, isLoading2, refetch2] = useMonthlyMeterData(
+  const [monthlyBillsData, isLoadingBills, refetchBills] = useMonthlyBills(
     selectedMonth,
     selectedYear
   );
 
-  // Next month data
-  const [nextMonthsData, isLoading3, refetch3] = useMonthlyMeterData(
-    nextMonth,
-    selectedYear
-  );
-  // Monthly data at once
-  const [monthlyBillsData, isLoading4, refetch4] = useMonthlyBills(
-    selectedMonth,
-    selectedYear
-  );
-  console.log("NEW DATA :", monthlyBillsData[0]?.bills);
+  const residentialRooms = rooms.filter((data) => isNaN(data.roomNo) === false);
+  const totalRoomsCount = residentialRooms.length;
+  const billsFoundCount = residentialRooms.filter((item) =>
+    monthlyBillsData[0]?.bills?.some((b) => b.roomNo === item.roomNo)
+  ).length;
+  const isRefreshing = isLoading || isLoadingBills;
+
+  // Detects the exact moment the Billing Month/Refresh bar becomes pinned to
+  // the top, so we can animate a smooth "settle" transition instead of a
+  // jarring instant snap when it locks in place.
+  const stickySentinelRef = useRef(null);
+  const [isPinned, setIsPinned] = useState(false);
+
+  useEffect(() => {
+    const node = stickySentinelRef.current;
+    if (!node) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsPinned(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "-56px 0px 0px 0px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleRefreshAll = () => {
+    refetch();
+    refetchBills();
+  };
 
   return (
     <CompoWrapper>
-      <section className="border-2 border-primary bg-base-100 text-base-content px-4 my-2 rounded-2xl shadow-lg">
-        <HeaderText
-          title={"💵 Monthly Bill Page"}
-          subTitle={`Current Month : ${month} , ${year}`}
-        />
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white border border-blue-500/30 rounded-2xl shadow-sm p-3 sm:p-4 mb-4">
+        <div>
+          <span className="text-[10px] font-black uppercase tracking-wider text-cyan-300">
+            Billing Management
+          </span>
+          <h1 className="text-base sm:text-lg font-black text-white leading-tight">
+            💵 Monthly Bill Page
+          </h1>
+        </div>
+        <div className="mt-1">
+          <span className="text-[11px] text-slate-300">
+            {totalRoomsCount} rooms · {billsFoundCount}/{totalRoomsCount} bills found
+          </span>
+        </div>
+      </div>
 
-        <div className="grid grid-cols-8 gap-2 w-full p-2 items-center font-semibold">
-          <p className="col-span-3 text-base-content font-bold">ভাড়ার মাস:</p>
-          <span className="col-span-4">
+      {/* Shared container for the sticky bar + the table it scrolls with —
+          `position: sticky` can only stay pinned while its own parent box is
+          still in view, so the bar and the (tall) table must share this one
+          parent, otherwise the bar unsticks the moment its old, short parent
+          scrolls past instead of staying pinned through the whole list. */}
+      <div className="relative">
+        <div ref={stickySentinelRef} className="h-px" aria-hidden="true"></div>
+        <div
+          className={`sticky top-14 lg:top-0 z-20 mb-3 flex items-center gap-2 rounded-xl p-1.5 border transition-all duration-300 ease-out ${
+            isPinned
+              ? "bg-slate-900/80 backdrop-blur-md shadow-lg shadow-black/40 border-cyan-400/30 scale-[0.98]"
+              : "bg-slate-900 border-white/10 shadow-md scale-100"
+          }`}
+        >
+          <div className="flex items-center gap-2 bg-white/10 border border-white/20 px-3 py-1.5 rounded-lg flex-1">
+            <FaCalendarAlt className="text-cyan-300 text-sm shrink-0" />
+            <span className="text-xs font-bold text-cyan-300 shrink-0 hidden xs:inline">Billing Month:</span>
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
               dateFormat="MMMM yyyy"
               showMonthYearPicker
-              className="border-primary border-2 bg-base-100 text-primary w-full p-2 rounded-full font-bold focus:outline-primary"
+              className="bg-transparent text-white font-black text-sm sm:text-base focus:outline-none cursor-pointer w-24 sm:w-32 text-center"
+              portalId="billing-datepicker-portal"
             />
-          </span>
-          <span className="col-span-1">
-            <InfoTooltip tipTexts="ভাড়া উঠানো হয় গত মাসের (চলতি মাসের নয়)। তাই গত মাস সিলেক্ট করুন" />
-          </span>
-        </div>
-      </section>
+            <InfoTooltip tipTexts="Rent is collected for the previous month, not the current one — so select last month here." />
+          </div>
 
-      <div className="overflow-x-auto rounded-t-2xl border border-base-300 shadow-xl mt-4">
-        <table className="w-full table-fixed divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
+          <button
+            onClick={handleRefreshAll}
+            title="Refresh data"
+            className="btn btn-square btn-sm rounded-lg flex items-center justify-center bg-white/10 hover:bg-white/20 text-white border border-white/15 shrink-0"
+          >
+            <FaSync className={isRefreshing ? "animate-spin text-cyan-400" : ""} />
+          </button>
+        </div>
+
+        <div className="overflow-x-auto rounded-t-2xl border border-base-300 shadow-xl">
+          <table className="w-full table-fixed divide-y-2 divide-base-300 bg-base-100 text-base-content text-sm">
           <thead className="ltr:text-left rtl:text-right bg-primary text-white h-12">
             <tr>
               <th className="w-[48%] border-r-2 border-primary-content/20 px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm">
@@ -127,11 +149,7 @@ const MonthlyBillsTable = () => {
           </thead>
           <tbody className="divide-y-2 divide-base-300">
             {isLoading && <Loader />}
-            {rooms
-              .filter(
-                (data) =>
-                  isNaN(data.roomNo) === false 
-              )
+            {residentialRooms
               .sort((a, b) => a.roomNo - b.roomNo)
               .map((item, index) => {
                 const myData = monthlyBillsData[0]?.bills?.find(
@@ -163,7 +181,7 @@ const MonthlyBillsTable = () => {
                           selectedMonth={selectedMonth}
                           selectedYear={selectedYear}
                           myData={myData}
-                          refetch4={refetch4}
+                          refetch4={refetchBills}
                         />
                       ) : (
                         <p className="flex-center text-error font-bold text-xs animate-pulse">
@@ -177,10 +195,10 @@ const MonthlyBillsTable = () => {
               })}
           </tbody>
         </table>
+        </div>
       </div>
     </CompoWrapper>
   );
 };
 
 export default MonthlyBillsTable;
-
